@@ -10,6 +10,8 @@ navbar:
       menu:
         - text: "Chicago HIV Prevalence"
           href: mapping1-ChiHIV.html
+        - text: "Illinois Income Distribution"
+          href: mapping2-ILInc.html
 output:
   html_document:
     theme: cosmo

@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <br><br>
 
-This project was one of three assignments from the "Introduction to GIS and Spatial Analysis for Social Scientists" course taught by Dr. Marynia Kolak. It was to design a map using data from [Chicago Health Atlas](https://www.chicagohealthatlas.org/). Among several health indicators, "HIV Prevalence Rate" was chosen for this project. While the HIV data was downloaded from Chicago Health Atlas, the shapefile of Chicago with community area boundaries was from the [City of Chicago Data Portal](https://data.cityofchicago.org/). Originally, I used GeoDa for mapping, but as I found out that mapping with R could give me more fine-tuned maps, I decided to redo this project with R.
+This project was one of three assignments from the "Introduction to GIS and Spatial Analysis for Social Scientists" course taught by Dr. Marynia Kolak. This mapping project was an effort to present the distribution of income level accross the State of Illinois. Income data, a subset of American Community Survey, were collected from the American FactFinder, which is the data portal of the United States Census Bureau. The purpose of this project was to create multifaceted maps to compare maps from different levels of analysis, so I used two different folders for two levels of analysis, county-level and tract-level.
 
 <br><br>
 
@@ -21,8 +21,8 @@ This project was one of three assignments from the "Introduction to GIS and Spat
 <br>
 
 ### **Set the current working directory**
-```{r, results=FALSE, warning=FALSE}
-setwd("../../2018.3 Summer/Intro to GIS/Assignment 1")
+```{r, results=TRUE, warning=FALSE}
+setwd("../../2018.3 Summer/Intro to GIS/Assignment 2")
 ```
 
 
@@ -41,11 +41,29 @@ library(RColorBrewer)
 
 <br>
 
-### **Load the HIV data**
-```{r, results=TRUE, warning=FALSE}
-Census.Data <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 1/HIV_prevalence.csv")
+### **Load the Income data by different levels of analysis**
+```{r, results=FALSE, warning=FALSE}
+Census.DataCount <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 2/county-level/ACS_15_5YR_DP03_with_ann.csv")
+Census.DataTract <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 2/tract-level/ACS_15_5YR_DP03_with_ann.csv")
 
-head(Census.Data)
+head(Census.DataCount)
+head(Census.DataTract)
+```
+
+
+
+<br>
+
+### **Subset the Income data sets** ###
+Looking up the head part of each data set, I found out that there were too many variable fields. Looking carefully at the description of each variable field, I noticed that the "HC01_VC85" field represents the median income, and the "HC01_VC86" field represents the average income and made the subset by selecting these two columns as well as the unique ID numbers. After making subsets of those two variables, I renamed those two variables by their actual contents.
+```{r, results=TRUE, warning=FALSE}
+var <- c("GEO.id2","HC01_VC85", "HC01_VC86")
+
+Census.SubsetCount <- (Census.DataCount[var])
+Census.SubsetTract <- (Census.DataTract[var])
+
+names(Census.SubsetCount)[2:3]<- c("MedInc15", "AgInc15")
+names(Census.SubsetTract)[2:3]<- c("MedInc15", "AgInc15")
 ```
 
 
@@ -53,10 +71,15 @@ head(Census.Data)
 <br>
 
 ### **Load the shapefile**
+Before I loaded the shapefiles, I found out that there were two tracts in the tract-level shapefile which actually represented part of Michigan Lake. Therefore, I used GeoDa to tear this part off from tract-level map. There was 3123 elements in the original shapefile, but after tearing off those two tracts, it became 3123 elements.
 ```{r, results=TRUE, warning=FALSE}
-Output.Areas <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 1/Boundaries - Community Areas (current)", "geo_export_33b739f8-cd83-43f1-a0a4-17c16a5a9d46")
+Output.AreasCount <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 2/county-level", "IL_Counties")
+Output.AreasTract <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 2/tract-level", "IL_tracts")
+Output.AreasTractOrg <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 2/tract-level", "tl_2015_17_tract")
 
-head(Output.Areas)
+head(Output.AreasCount)
+head(Output.AreasTract)
+head(Output.AreasTractOrg)
 ```
 
 
@@ -69,26 +92,40 @@ head(Output.Areas)
 
 ### **Merge Data with Shapefile**
 
-By looking up the head part of both files, I noticed that the community area numbers were written in the "area_numbe" column in the shapefile and in the "Geo_ID" column in the HIV data. I merged these two data sets by using these column names.
-```{r}
-ChiCommArea <- merge(Output.Areas, Census.Data, by.x="area_numbe", by.y="Geo_ID")
+By looking up the head part of both files, I noticed that the area ID numbers were written in the "GEO.id2" column in the shapefiles and in the "GEOID" column in the income data. I merged these two data sets by using these column names.
+```{r, results=TRUE, warning-FALSE}
+ILCounty <- merge(Output.AreasCount, Census.SubsetCount, by.x="GEOID", by.y="GEO.id2")
+ILTract <- merge(Output.AreasTract, Census.SubsetTract, by.x="GEOID", by.y="GEO.id2")
 
-head(ChiCommArea)
+head(ILCounty)
+head(ILTract)
 ```
 
 
 <br>
 
-In this merged data set, the HIV prevalence rate was written in the "Crude_Rate" column. Before mapping, I checked if the data were numeric values or not. 
+Before mapping, I checked if the median-income and average-income data were numeric values or not. 
 
-```{r}
-str(ChiCommArea$Crude_Rate)
+```{r, results=TRUE, warning=FALSE}
+str(ILCounty$MedInc15)
+str(ILCounty$AgInc15)
+str(ILTract$MedInc15)
+str(ILTract$AgInc15)
 ```
 
 
 <br>
 
-The raw data was actually factor-type values, but while doing this project initially through GeoDa, I had already converted the data into numeric values. If it had been the same as the raw data, I should have needed to use as.numeric(as.character()) code.
+I found out that they are factor-type values, so I needed to convert them into numeric values.
+
+```{r, results=TRUE, warning=FALSE}
+ILCounty$MedInc15 <- as.numeric(as.character(ILCounty$MedInc15))
+ILTract$MedInc15 <- as.numeric(as.character(ILTract$MedInc15))
+
+ILCounty$AgInc15 <- as.numeric(as.character(ILCounty$AgInc15))
+ILTract$AgInc15 <- as.numeric(as.character(ILTract$AgInc15))
+```
+
 
 
 <br><br><br>
@@ -97,60 +134,160 @@ The raw data was actually factor-type values, but while doing this project initi
 
 First, I Created a map for quick overview.
 
-```{r}
-qtm(ChiCommArea, fill="Crude_Rate")
+```{r, results=TRUE, warning=FALSE}
+qtm(ILCounty, fill="MedInc15")
+qtm(ILTract, fill="MedInc15")
+
+qtm(ILCounty, fill="AgInc15")
+qtm(ILTract, fill="AgInc15")
 ```
 
 
 <br>
 
-From this quick overview, I realized that the variables were concentrated in the lower two intervals. With curiosity about how the variables were naturally clustered, I created another map using natural breaks rather than quantile. I also wanted to change the palette to shape this map aesthetically better.
+From this quick overview, I realized that while the county-level map seemed to be okay, the tract-level maps showed the variables were concentrated in the intervals between 0 and 100,000. With curiosity about how the variables were naturally clustered, I created another map using natural breaks. I also wanted to change the palette to shape this map aesthetically better. I added border settings since I felt the thick borders disturbed the representation of the northeastern part of Illinois, which was top-right part of the maps.
 
-```{r}
-tm_shape(ChiCommArea) + 
-  tm_fill("Crude_Rate", palette = "BuPu", style = "jenks")
+```{r, results=TRUE, warning=FALSE}
+tm_shape(ILCounty) + 
+  tm_fill("MedInc15", palette = "BuPu", style = "jenks") + tm_borders(lwd = 0.01, alpha = .4)
+tm_shape(ILTract) + 
+  tm_fill("MedInc15", palette = "BuPu", style = "jenks") + tm_borders(lwd = 0.01, alpha = .4)
+
+tm_shape(ILCounty) + 
+  tm_fill("AgInc15", palette = "BuPu", style = "jenks") + tm_borders(lwd = 0.01, alpha = .4)
+tm_shape(ILTract) + 
+  tm_fill("AgInc15", palette = "BuPu", style = "jenks") + tm_borders(lwd = 0.01, alpha = .4)
 ```
 
 
 <br>
 
-From the two maps above, I felt something special heppened in the northeastern side, so created another map with standard deviation.
+As we see the geographical "distribution" of income-level, I chose the natural break map to see how those variables were geographically clustered. I could see three clusters at top-right, center, and bottom-left part of the map. (I did not specify the number of bins for the assignment.) Then, I changed the title of legend and added a title, a legend, a compass, a scale-bar, and a source credit to each map. 
 
-```{r}
-tm_shape(ChiCommArea) + 
-  tm_fill("Crude_Rate", palette = "BuPu", style = "sd")
-```
-
-
-<br>
-
-While the standard deviation map clearly showed the outliers located in the northeastern side of Chicago, I chose the natural break map to see how those variables were geographically clustered as I could see twe clusters forming contours in addition to the cluster of outliers. (I used 6 bins for the assignment, but I find out that using 6 bins is better to distinguish regions by intervals.) Then, I changed the title of legend and added borders.
-
-```{r}
-tm_shape(ChiCommArea) + 
-  tm_fill("Crude_Rate", palette = "BuPu", style = "jenks", title = "HIV Prevalence Rate\n     (per 100,000 people)") + 
-  tm_borders(alpha = .4)
-```
-
-
-
-<br>
-
-Then, I added a title, a legend, a compass, a scale-bar, and a source credit to this map. This was the final map of HIV Prevalence Rate in the City of Chicago.
-
-```{r}
-tm_shape(ChiCommArea) + 
-  tm_fill("Crude_Rate", palette = "BuPu", style = "jenks", title = "HIV Prevalence Rate\n     (per 100,000 people)") + 
+```{r, results=TRUE, warning=FALSE}
+tm_shape(ILCounty) + 
+  tm_fill("MedInc15", palette = "BuPu", style = "jenks", title = "Median Income ($)") + 
   tm_borders(alpha = .4) +
-  tm_compass(position = c("right", "top")) + 
-  tm_scale_bar(width = 0.15, position = c("right", "top")) + 
-  tm_credits("Source: Chicago Health Atlas \nChicago enhanced HIV/AIDS Reporting System(eHARS))", align = "left", size = 0.7, position = c("left", "bottom")) +
+  tm_compass(position = c("left", "top")) + 
+  tm_scale_bar(width = 0.15, position = c("left", "top")) + 
+  tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) +
   tm_layout(
     outer.margins = 0,
     panel.show = TRUE,
-    panel.labels = "Chicago HIV Prevalence Rate (2015)", 
-    panel.label.size = 1.35,
+    panel.labels = "County-level Income Distribution (2015)", 
+    panel.label.size = 1.15,
     panel.label.bg.color = "white",
-    legend.position = c("left", "center"), 
+    legend.position = c("left", "bottom"), 
     frame = FALSE)
+tm_shape(ILTract) + 
+  tm_fill("MedInc15", palette = "BuPu", style = "jenks", title = "Median Income ($)") + 
+  tm_borders(lwd = .01, alpha = .4) + 
+  tm_compass(position = c("left", "top")) + 
+  tm_scale_bar(width = 0.15, position = c("left", "top")) + 
+  tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "Tract-level Income Distribution (2015)", 
+    panel.label.size = 1.15,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "bottom"), 
+    frame = FALSE)
+
+tm_shape(ILCounty) + 
+  tm_fill("AgInc15", palette = "BuPu", style = "jenks", title = "Average Income ($)") + 
+  tm_borders(alpha = .4) + 
+  tm_compass(position = c("left", "top")) + 
+  tm_scale_bar(width = 0.15, position = c("left", "top")) + 
+  tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) + 
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "County-level Income Distribution (2015)", 
+    panel.label.size = 1.15,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "bottom"), 
+    frame = FALSE)
+tm_shape(ILTract) + 
+  tm_fill("AgInc15", palette = "BuPu", style = "jenks", title = "Average Income ($)") + 
+  tm_borders(lwd = .01, alpha = .4) + 
+  tm_compass(position = c("left", "top")) +
+  tm_scale_bar(width = 0.15, position = c("left", "top")) + 
+  tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) + 
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "Tract-level Income Distribution (2015)", 
+    panel.label.bg.color = "white",
+    panel.label.size = 1.15,
+    legend.position = c("left", "bottom"), 
+    frame = FALSE)
+```
+
+
+
+<br>
+
+To make multifacteted maps, I assigned a name to each mapping code and then used those names to arrange the maps. The outcomes of these codes were the final result of this assignment. 
+
+```{r}
+MedIncCount <- tm_shape(ILCounty) + 
+  tm_fill("MedInc15", palette = "BuPu", style = "jenks", title = "Median Income ($)") + 
+  tm_borders(alpha = .4) +
+  tm_compass(position = c("left", "top")) + 
+  tm_scale_bar(width = 0.15, position = c("left", "top")) + 
+  tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) +
+  tm_layout(
+    outer.margins = 0,
+    panel.show = TRUE,
+    panel.labels = "County-level Income Distribution (2015)", 
+    panel.label.size = 1.15,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "bottom"), 
+    frame = FALSE)
+
+MedIncTract <- tm_shape(ILTract) + 
+  tm_fill("MedInc15", palette = "BuPu", style = "jenks", title = "Median Income ($)") + 
+  tm_borders(lwd = 0.01, alpha = .4) + 
+  tm_compass(position = c("left", "top")) + 
+  tm_scale_bar(width = 0.15, position = c("left", "top")) + 
+  tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "Tract-level Income Distribution (2015)", 
+    panel.label.size = 1.15,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "bottom"), 
+    frame = FALSE)
+
+current.mode <- tmap_mode("plot") 
+tmap_arrange(MedIncCount, MedIncTract)
+
+
+AgIncCoun <- tm_shape(ILCounty) + 
+  tm_fill("AgInc15", palette = "BuPu", style = "jenks", title = "Average Income ($)") + 
+  tm_borders(alpha = .4) + 
+  tm_compass(position = c("left", "top")) + 
+  tm_scale_bar(width = 0.15, position = c("left", "top")) + 
+  tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) + 
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "County-level Income Distribution (2015)", 
+    panel.label.size = 1.15,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "bottom"), 
+    frame = FALSE)
+
+AgIncTrac <- tm_shape(ILTract) + 
+  tm_fill("AgInc15", palette = "BuPu", style = "jenks", title = "Average Income ($)") + 
+  tm_borders(lwd = .01, alpha = .4) + 
+  tm_compass(position = c("left", "top")) +
+  tm_scale_bar(width = 0.15, position = c("left", "top")) + 
+  tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) + 
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "Tract-level Income Distribution (2015)", 
+    panel.label.bg.color = "white",
+    panel.label.size = 1.15,
+    legend.position = c("left", "bottom"), 
+    frame = FALSE)
+
+tmap_arrange(AgIncCoun, AgIncTrac) 
 ```
