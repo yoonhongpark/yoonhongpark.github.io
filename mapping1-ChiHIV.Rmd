@@ -1,0 +1,156 @@
+---
+title: "Chicago HIV Prevalence Mapping"
+author: "Yoon Hong Park"
+date: "July 6, 2018"
+runtime: shiny
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<br><br>
+
+This project was one of three assignments from the "Introduction to GIS and Spatial Analysis for Social Scientists" course taught by Dr. Marynia Kolak. It was to design a map using data from [Chicago Health Atlas](https://www.chicagohealthatlas.org/). Among several health indicators, "HIV Prevalence Rate" was chosen for this project. While the HIV data was downloaded from Chicago Health Atlas, the shapefile of Chicago with community area boundaries was from the [City of Chicago Data Portal](https://data.cityofchicago.org/). Originally, I used GeoDa for mapping, but as I found out that mapping with R could give me more fine-tuned maps, I decided to redo this project with R.
+
+<br><br>
+
+## Basic Setup
+
+<br>
+
+### Set the current working directory
+```{r, results=FALSE, warning=FALSE}
+setwd("../../2018.3 Summer/Intro to GIS/Assignment 1")
+```
+
+
+<br>
+
+### Load Libraries
+```{r, results=FALSE, warning=FALSE}
+library(rgdal)
+library(rgeos)
+library(tmap)
+library(leaflet)
+library(RColorBrewer)
+```
+
+
+
+<br>
+
+### Load the HIV data
+```{r, results=TRUE, warning=FALSE}
+Census.Data <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 1/HIV_prevalence.csv")
+
+head(Census.Data)
+```
+
+
+
+<br>
+
+### Load the shapefile
+```{r, results=TRUE, warning=FALSE}
+Output.Areas <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 1/Boundaries - Community Areas (current)", "geo_export_33b739f8-cd83-43f1-a0a4-17c16a5a9d46")
+
+head(Output.Areas)
+```
+
+
+
+<br><br><br>
+
+## Data Merging/Cleaning
+
+<br>
+
+### Merge Data with Shapefile
+
+By looking up the head part of both files, I noticed that the community area numbers were written in the "area_numbe" column in the shapefile and in the "Geo_ID" column in the HIV data. I merged these two data sets by using these column names.
+```{r}
+ChiCommArea <- merge(Output.Areas, Census.Data, by.x="area_numbe", by.y="Geo_ID")
+
+head(ChiCommArea)
+```
+
+
+<br>
+
+In this merged data set, the HIV prevalence rate was written in the "Crude_Rate" column. Before mapping, I checked if the data were numeric values or not. 
+
+```{r}
+str(ChiCommArea$Crude_Rate)
+```
+
+
+<br>
+
+The raw data was actually factor-type values, but while doing this project initially through GeoDa, I had already converted the data into numeric values. If it had been the same as the raw data, I should have needed to use as.numeric(as.character()) code.
+
+
+<br><br><br>
+
+## Mapping
+
+First, I Created a map for quick overview.
+
+```{r}
+qtm(ChiCommArea, fill="Crude_Rate")
+```
+
+
+<br>
+
+From this quick overview, I realized that the variables were concentrated in the lower two intervals. With curiosity about how the variables were naturally clustered, I created another map using natural breaks rather than quantile. I also wanted to change the palette to shape this map aesthetically better.
+
+```{r}
+tm_shape(ChiCommArea) + 
+  tm_fill("Crude_Rate", palette = "BuPu", style = "jenks")
+```
+
+
+<br>
+
+From the two maps above, I felt something special heppened in the northeastern side, so created another map with standard deviation.
+
+```{r}
+tm_shape(ChiCommArea) + 
+  tm_fill("Crude_Rate", palette = "BuPu", style = "sd")
+```
+
+
+<br>
+
+While the standard deviation map clearly showed the outliers located in the northeastern side of Chicago, I chose the natural break map to see how those variables were geographically clustered as I could see twe clusters forming contours in addition to the cluster of outliers. (I used 6 bins for the assignment, but I find out that using 6 bins is better to distinguish regions by intervals.) Then, I changed the title of legend and added borders.
+
+```{r}
+tm_shape(ChiCommArea) + 
+  tm_fill("Crude_Rate", palette = "BuPu", style = "jenks", title = "HIV Prevalence Rate\n     (per 100,000 people)") + 
+  tm_borders(alpha = .4)
+```
+
+
+
+<br>
+
+Then, I added a title, a legend, a compass, a scale-bar, and a source credit to this map. This was the final map of HIV Prevalence Rate in the City of Chicago.
+
+```{r}
+tm_shape(ChiCommArea) + 
+  tm_fill("Crude_Rate", palette = "BuPu", style = "jenks", title = "HIV Prevalence Rate\n     (per 100,000 people)") + 
+  tm_borders(alpha = .4) +
+  tm_compass(position = c("right", "top")) + 
+  tm_scale_bar(width = 0.15, position = c("right", "top")) + 
+  tm_credits("Source: Chicago Health Atlas \nChicago enhanced HIV/AIDS Reporting System(eHARS))", align = "left", size = 0.7, position = c("left", "bottom")) +
+  tm_layout(
+    outer.margins = 0,
+    panel.show = TRUE,
+    panel.labels = "Chicago HIV Prevalence Rate (2015)", 
+    panel.label.size = 1.35,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "center"), 
+    frame = FALSE)
+```

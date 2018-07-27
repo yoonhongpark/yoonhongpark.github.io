@@ -1,0 +1,16 @@
+name: "yoons-archive"
+navbar:
+  title: "Yoon's Archive"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About me"
+      href: about.html
+    - text: "Mapping"
+      menu:
+        - text: "Chicago HIV Prevalence"
+          href: mapping1-ChiHIV.html
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
