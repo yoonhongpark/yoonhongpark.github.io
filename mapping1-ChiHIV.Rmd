@@ -16,11 +16,11 @@ This project was one of three assignments from the "Introduction to GIS and Spat
 
 <br><br>
 
-## Basic Setup
+## **Basic Setup**
 
 <br>
 
-### Set the current working directory
+### **Set the current working directory**
 ```{r, results=FALSE, warning=FALSE}
 setwd("../../2018.3 Summer/Intro to GIS/Assignment 1")
 ```
@@ -28,7 +28,7 @@ setwd("../../2018.3 Summer/Intro to GIS/Assignment 1")
 
 <br>
 
-### Load Libraries
+### **Load Libraries**
 ```{r, results=FALSE, warning=FALSE}
 library(rgdal)
 library(rgeos)
@@ -41,7 +41,7 @@ library(RColorBrewer)
 
 <br>
 
-### Load the HIV data
+### **Load the HIV data**
 ```{r, results=TRUE, warning=FALSE}
 Census.Data <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 1/HIV_prevalence.csv")
 
@@ -52,7 +52,7 @@ head(Census.Data)
 
 <br>
 
-### Load the shapefile
+### **Load the shapefile**
 ```{r, results=TRUE, warning=FALSE}
 Output.Areas <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 1/Boundaries - Community Areas (current)", "geo_export_33b739f8-cd83-43f1-a0a4-17c16a5a9d46")
 
@@ -63,11 +63,11 @@ head(Output.Areas)
 
 <br><br><br>
 
-## Data Merging/Cleaning
+## **Data Merging/Cleaning**
 
 <br>
 
-### Merge Data with Shapefile
+### **Merge Data with Shapefile**
 
 By looking up the head part of both files, I noticed that the community area numbers were written in the "area_numbe" column in the shapefile and in the "Geo_ID" column in the HIV data. I merged these two data sets by using these column names.
 ```{r}
@@ -93,7 +93,7 @@ The raw data was actually factor-type values, but while doing this project initi
 
 <br><br><br>
 
-## Mapping
+## **Mapping**
 
 First, I Created a map for quick overview.
 

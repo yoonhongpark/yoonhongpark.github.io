@@ -222,15 +222,15 @@ $(document).ready(function () {
 <p>This project was one of three assignments from the “Introduction to GIS and Spatial Analysis for Social Scientists” course taught by Dr. Marynia Kolak. It was to design a map using data from <a href="https://www.chicagohealthatlas.org/">Chicago Health Atlas</a>. Among several health indicators, “HIV Prevalence Rate” was chosen for this project. While the HIV data was downloaded from Chicago Health Atlas, the shapefile of Chicago with community area boundaries was from the <a href="https://data.cityofchicago.org/">City of Chicago Data Portal</a>. Originally, I used GeoDa for mapping, but as I found out that mapping with R could give me more fine-tuned maps, I decided to redo this project with R.</p>
 <p><br><br></p>
 <div id="section-basic-setup" class="section level2">
-<h2>Basic Setup</h2>
+<h2><strong>Basic Setup</strong></h2>
 <p><br></p>
 <div id="section-set-the-current-working-directory" class="section level3">
-<h3>Set the current working directory</h3>
+<h3><strong>Set the current working directory</strong></h3>
 <pre class="r"><code>setwd(&quot;../../2018.3 Summer/Intro to GIS/Assignment 1&quot;)</code></pre>
 <p><br></p>
 </div>
 <div id="section-load-libraries" class="section level3">
-<h3>Load Libraries</h3>
+<h3><strong>Load Libraries</strong></h3>
 <pre class="r"><code>library(rgdal)</code></pre>
 <pre><code>## Loading required package: sp</code></pre>
 <pre><code>## rgdal: version: 1.3-2, (SVN revision 755)
@@ -252,7 +252,7 @@ library(RColorBrewer)</code></pre>
 <p><br></p>
 </div>
 <div id="section-load-the-hiv-data" class="section level3">
-<h3>Load the HIV data</h3>
+<h3><strong>Load the HIV data</strong></h3>
 <pre class="r"><code>Census.Data &lt;- read.csv(&quot;../../2018.3 Summer/Intro to GIS/Assignment 1/HIV_prevalence.csv&quot;)
 
 head(Census.Data)</code></pre>
@@ -301,7 +301,7 @@ head(Census.Data)</code></pre>
 <p><br></p>
 </div>
 <div id="section-load-the-shapefile" class="section level3">
-<h3>Load the shapefile</h3>
+<h3><strong>Load the shapefile</strong></h3>
 <pre class="r"><code>Output.Areas &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 1/Boundaries - Community Areas (current)&quot;, &quot;geo_export_33b739f8-cd83-43f1-a0a4-17c16a5a9d46&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
 ## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 1\Boundaries - Community Areas (current)&quot;, layer: &quot;geo_export_33b739f8-cd83-43f1-a0a4-17c16a5a9d46&quot;
@@ -320,10 +320,10 @@ head(Census.Data)</code></pre>
 </div>
 </div>
 <div id="section-data-mergingcleaning" class="section level2">
-<h2>Data Merging/Cleaning</h2>
+<h2><strong>Data Merging/Cleaning</strong></h2>
 <p><br></p>
 <div id="section-merge-data-with-shapefile" class="section level3">
-<h3>Merge Data with Shapefile</h3>
+<h3><strong>Merge Data with Shapefile</strong></h3>
 <p>By looking up the head part of both files, I noticed that the community area numbers were written in the “area_numbe” column in the shapefile and in the “Geo_ID” column in the HIV data. I merged these two data sets by using these column names.</p>
 <pre class="r"><code>ChiCommArea &lt;- merge(Output.Areas, Census.Data, by.x=&quot;area_numbe&quot;, by.y=&quot;Geo_ID&quot;)
 
@@ -346,7 +346,7 @@ head(ChiCommArea)</code></pre>
 </div>
 </div>
 <div id="section-mapping" class="section level2">
-<h2>Mapping</h2>
+<h2><strong>Mapping</strong></h2>
 <p>First, I Created a map for quick overview.</p>
 <pre class="r"><code>qtm(ChiCommArea, fill=&quot;Crude_Rate&quot;)</code></pre>
 <p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
