@@ -1,0 +1,357 @@
+---
+title: "Chicago Trauma Center Service Areas"
+author: "Yoon Hong Park"
+date: "July 2, 2018"
+runtime: shiny
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<br><br>
+
+This project was tha last assignment from the "Introduction to GIS and Spatial Analysis for Social Scientists" course taught by Dr. Marynia Kolak. This project was to create a marketing report for a specific community area in terms of one specific industry. I chose health industry, especially in term of trauma centers, and created three different sets of maps, each of which represented service areas of existing trauma centers, those service areas on the crime/accident injuries maps, and the service areas on the poverty/poverty rate maps. Buffers and Points-in-Polygon methods were used. 
+
+<br><br>
+
+## **Basic Setup**
+
+<br>
+
+### **Set the current working directory**
+```{r, eval=FALSE, results=FALSE, warning=FALSE}
+setwd("../../2018.3 Summer/Intro to GIS/Assignment 3")
+```
+
+
+<br>
+
+### **Load Libraries**
+This is an effort to replicate what I have done for the assignment. Everytime I coded, I always put all the libraries that were used at the very beginning part of the code.
+
+```{r, results=TRUE, warning=FALSE}
+library(sp)
+library(sf)
+library("rgdal")
+library("rgeos")
+library("tmap")
+library(leaflet)
+library(raster)
+library(adehabitatHR)
+library(data.table)
+library(maptools)
+```
+
+
+
+<br>
+
+### **Load the boundary shapefile**
+To unify the coordinate system, I chose EPSG 4326 system.
+```{r, results=TRUE, warning=FALSE}
+ComArea.Areas <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3/Boundaries - Community Areas (current)", "geo_export_7572d77c-9922-44f5-ba1b-d9dd6bc3fa86")
+
+head(ComArea.Areas)
+crs(ComArea.Areas)
+CRS.new <- CRS("+init=EPSG:4326")
+ComArea.Transform <- spTransform(ComArea.Areas, CRS.new)
+```
+
+
+<br><br><br>
+
+## **Data Merging/Cleaning & Analysis**
+
+<br>
+
+### **Trauma Center Service areas**
+Since there was no official data set that has the exact coordinates in both EPSG 4326 system and EPSG 3529 system, I made my own data file by looking up the list from the [Department of Public Health of the State of Illinois](http://www.dph.illinois.gov/topics-services/emergency-preparedness-response/ems/trauma-program/centersByReg), searching them on Google Map, getting the EPSG  4326 coordinates and turning them into EPSG 3529 coordinates at the "[EPSG.io](https://epsg.io/transform#s_srs=4326&t_srs=3529)" website. As the number of trauma centers was 7 at most, including the two trauma centers which are technically located outside of Chicago, I did this manually and saved as both csv files and shapefiles. If there were too many, I might code a repetitive process of getting coordiantes through Google API. I made two different csv files, of which one covered only truama centers in the City of Chicago while the other covered two more trauma centers outside of Chicago that also served some parts of the city. 
+```{r, results=TRUE, warning-FALSE}
+traumacenter <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Trauma Centers")
+traumacenter.Transform <- spTransform(traumacenter, CRS.new)
+
+traumacenterupd <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Trauma Centers (update)")
+traumacenterupd.Transform <- spTransform(traumacenterupd, CRS.new)
+
+crs(traumacenter) # no_defs
+crs(traumacenterupd) # no_defs
+```
+
+
+<br>
+
+Since those seem to not have specific coordinate system, I transformed their coordinate systems into EPSG 4326 and checked if the transformation worked well.
+
+```{r, results=TRUE, warning=FALSE}
+CRS.new <- CRS("+init=EPSG:4326")
+
+traumacenter.Transform <- spTransform(traumacenter, CRS.new)
+traumacenterupd.Transform <- spTransform(traumacenterupd, CRS.new)
+
+tm_shape(ComArea.Transform) + tm_borders() + 
+  tm_shape(traumacenter.Transform) + tm_dots(col = "red")
+tm_shape(ComArea.Transform) + tm_borders() + 
+  tm_shape(traumacenterupd.Transform) + tm_dots(col = "red") 
+```
+
+
+<br>
+
+It seems both worked well, so then I switched my focus on creating buffers to abstractly show the service area that each trauma center covered. From the literature reviews, the largest distance from a trauma center to a trauma incident that would make patients survive with high possibility was 5~10 miles, so I made a buffer of 10 miles from each trauma center. Since the buffer system used meter-system, I put equivalent meter-values to 10 miles.To make buffer areas, I needed to open those csv files instead of shapefiles.
+
+```{r, results=TRUE, warning=FALSE}
+traumacenterUTM <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 3/Trauma Centers.csv")
+tcenter.points <- SpatialPointsDataFrame(traumacenterUTM[,7:8], traumacenterUTM, proj4string = CRS("+init=EPSG:3529"))
+tcenter_buffers <- gBuffer(tcenter.points, width = 8046.72*2, byid = TRUE)
+
+traumacenterUTMupd <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 3/Trauma Centers (update).csv")
+tcenterupd.points <- SpatialPointsDataFrame(traumacenterUTMupd[,7:8], traumacenterUTMupd, proj4string = CRS("+init=EPSG:3529"))
+tcenter_buffers.upd <- gBuffer(tcenterupd.points, width = 8046.72*2, byid = TRUE)
+```
+
+
+
+<br>
+
+Then, I checked whether the buffers were well constructed.
+```{r, results=TRUE, warning=FALSE}
+tm_shape(ComArea.Transform) + tm_borders() + 
+  tm_shape(tcenter_buffers) + tm_fill(col = "slategray") + tm_borders(col = "blue") +
+  tm_shape(traumacenter.Transform) + tm_dots(col = "red") 
+
+tm_shape(ComArea.Transform) + tm_borders() + 
+  tm_shape(tcenter_buffers.upd) + tm_fill(col = "slategray") + tm_borders(col = "blue") +
+  tm_shape(traumacenterupd.Transform) + tm_dots(col = "red") 
+```
+
+
+
+<br>
+
+To beautify the overlapped areas, I merged those buffers, which are the final results for creating service areas.
+```{r, results=TRUE, warning=FALSE}
+union.buffers <- gUnaryUnion(tcenter_buffers)
+union.buffersupd <- gUnaryUnion(tcenter_buffers.upd)
+```
+
+
+
+<br>
+
+### **Crime Data (PIP Method)**
+The crime data was available from the [City of Chicago Data Portal](https://data.cityofchicago.org/). First, I loaded the crime data and subsetted by serioucs crimes, including "HOMICIDE", "BATTERY", "CRIM SEXUAL ASSAULT", "ASSAULT", "WEAPONS VIOLATION."
+```{r results=FALSE, warning=FALSE}
+Crime18.Data <- fread("../../2018.3 Summer/Intro to GIS/Assignment 3/Crimes_-_2018.csv", header = T)
+
+CrimeList <- c("HOMICIDE", "BATTERY", "CRIM SEXUAL ASSAULT", "ASSAULT", "WEAPONS VIOLATION")
+Crime18.Subset <- Crime18.Data[Crime18.Data$'Primary Type' == CrimeList, ]
+Crime18.SubSubset <- Crime18.Subset[!grep("POSS", Crime18.Subset$Description), ]
+Crime18.SubSubset <- Crime18.SubSubset[!grep("SALE", Crime18.SubSubset$Description), ]
+Crime18.SubSubset <- Crime18.SubSubset[!grep("RECKLESS", Crime18.SubSubset$Description), ]
+Crime18.SubSubset <- Crime18.SubSubset[!grep("DEFACE", Crime18.SubSubset$Description), ]
+
+#write.csv(Crime18.SubSubset,"Crimes_-_2018(subset).csv")
+```
+
+
+
+<br>
+With those subset of the data, I used GeoDa to create a shapefile and reloaded the shapefile for points-in-polygon method, which required me to transform the shapefile into EPSG 4326 coordinate system.
+```{r, results=TRUE, warning=FALSE}
+ChiCrimes <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Crimes_-_2018(subset)")
+ChiCrimes.Transform <- spTransform(ChiCrimes, CRS.new)
+```
+
+
+
+<br>
+Now, I did PiP to count those crimes per community area. This was the final result of PIP.
+```{r, results=TRUE, warning=FALSE}
+Crimepip <- over(ChiCrimes.Transform, ComArea.Transform)
+ChiCrimes@data <- cbind(ChiCrimes.Transform@data, Crimepip)
+ChiCrimesDF <- as.data.frame(ChiCrimes.Transform)
+ChiCrimeByCom <- as.data.frame(table(ChiCrimesDF$ComArea))
+names(ChiCrimeByCom) <- c("area_numbe","CrimeCt")
+
+ComArea.Transform@data <- merge(ComArea.Transform@data, ChiCrimeByCom, by = "area_numbe", all.x = TRUE)
+crs(ComArea.Transform)
+```
+
+
+
+<br>
+
+### **Accident Data (PIP Method)**
+The accident data came from the [National Highway Traffic Safety Administration](https://www-fars.nhtsa.dot.gov//QueryTool/QuerySection/SelectYear.aspx). I downloaded the most recent data, which covered the whole year of 2016 and subsetted the data by the severe injuries, which were represented as more than or equal to 3 in the "injury severity" column that would lead to trauma centers. For convenience, I subsetted the data by using Excel and saved it also as a shapefile by using GeoDa. I also reloaded the boundary shapefile just to avoid merging the data wrongly.
+```{r, results=TRUE, warning=FALSE}
+ComAreas <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3/Boundaries - Community Areas (current)", "geo_export_7572d77c-9922-44f5-ba1b-d9dd6bc3fa86")
+ChiAccidents <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Accidents_-_2016")
+
+crs(ComAreas)
+crs(ChiAccidents)
+```
+
+
+
+<br>
+Then, I turned them into the EPSG 4326 coordinate system.
+```{r, results=TRUE, warning=FALSE}
+ComAreaAcc.Transform <- spTransform(ComAreas, CRS.new)
+ChiAcc.Transform <- spTransform(ComAreas, CRS.new)
+```
+
+
+
+<br>
+Now, I did the PIP process to count accidents in each community area. This was the final result of PIP.
+```{r, results=TRUE, warning=FALSE}
+Accidentpip <- over(ChiAcc.Transform, ComAreaAcc.Transform)
+ChiAccidentByCom <- as.data.frame(table(Accidentpip$area_numbe))
+names(ChiAccidentByCom) <- c("area_numbe","AccidentCt")
+
+ComAreaAcc.Transform@data <- merge(ComAreaAcc.Transform@data, ChiAccidentByCom, by = "area_numbe", all.x = TRUE)
+crs(ComAreaAcc.Transform)
+```
+
+
+
+<br>
+### **Poverty Data**
+To provide more complementary evidence, I chose both household and individual poverty rates as poverty indicators. The data were available from [Chicago Health Atlas](https://www.chicagohealthatlas.org/). For convenience, I used GeoDa to merge the poverty data into the community area shapefile because there was nothing to subset for these indicators. The values were numeric data, so I did not need to turn them into numeric values. These were ready for mapping.
+```{r, results=TRUE, warning=FALSE}
+IndivPov <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Individual_poverty")
+str(IndivPov@data)
+
+HousePov <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Household_poverty")
+str(HousePov@data)
+```
+
+
+
+
+<br><br><br>
+
+## **Mapping**
+
+<br>
+
+### **Trauma Center Service Areas Map**
+I created two different maps that showed my effort to consider trauma centers outside of the City of Chicago as well. I made those maps into one bi-faceted map.
+```{r, results=TRUE, warning=FALSE}
+TCenterChi <- tm_shape(ComArea.Transform) + tm_borders() +
+  tm_shape(union.buffers) + tm_fill(col = "slategray", alpha = .4) + tm_borders(col = "blue") +
+  tm_shape(traumacenter) + 
+    tm_dots(col = "red", size = 0.5) + 
+    tm_text("Name", size = .75, just = "right", xmod= -.5, bg.color = "white", bg.alpha = .25, shadow = TRUE, fontface = 2) +
+  tm_compass(position = c("right", "top")) + 
+  tm_scale_bar(width = 0.1, position = c("right", "top")) + 
+  tm_credits("Source: Illinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "Adult Trauma Centers in Chicago(2018)", 
+    panel.label.size = 1.5,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "center"), 
+    frame = FALSE) 
+
+TCenterChiSub <- tm_shape(ComArea.Transform) + tm_borders() +
+  tm_shape(union.buffersupd) + tm_fill("slategray", alpha = .4) + tm_borders(col = "blue") +
+  tm_shape(traumacenterupd) + 
+  tm_dots(col = "red", size = 0.5) + 
+  tm_text("Name", size = .75, just = "right", xmod= -.5, bg.color = "white", bg.alpha = .25, shadow = TRUE, fontface = 2) +
+  tm_compass(position = c("right", "top")) + 
+  tm_scale_bar(width = 0.1, position = c("right", "top")) + 
+  tm_credits("Source: Illinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "Adult Trauma Centers Including Suburbs (2018)", 
+    panel.label.size = 1.5,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "center"), 
+    frame = FALSE) 
+
+current.mode <- tmap_mode("plot") 
+tmap_arrange(TCenterChi, TCenterChiSub) 
+```
+
+
+<br>
+
+### **Crime/Accident PIP Map**
+For these maps, I overlayed the second service area map on each PIP map.
+```{r, results=TRUE, warning=FALSE}
+CrimeMap <- tm_shape(ComArea.Transform) + tm_borders() + 
+  tm_fill(col = "CrimeCt", palette = "OrRd", style = "jenks", title = "Crimes with volence") +
+  tm_shape(union.buffersupd) + tm_fill("slategray", alpha = .4) + tm_borders(col = "blue") +
+  tm_shape(traumacenterupd) + tm_dots(col = "red", size = 0.5) + 
+  tm_compass(position = c("right", "top")) + 
+  tm_scale_bar(width = 0.1, position = c("right", "top")) + 
+  tm_credits("Source: \nCity of Chicago Data Portal (Crimes - 2018) \nIllinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "Number of Crimes (w/ violence) (2018)", 
+    panel.label.size = 1.5,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "center"), 
+    frame = FALSE) 
+
+AccidentMap <- tm_shape(ComAreaAcc.Transform) + tm_borders() + 
+  tm_fill(col = "AccidentCt", palette = "OrRd", style = "jenks", title = "Severe injuries from accidents") +
+  tm_shape(union.buffersupd) + tm_fill("slategray", alpha = .4) + tm_borders(col = "blue") +
+  tm_shape(traumacenterupd) + tm_dots(col = "red", size = 0.5) + 
+  tm_compass(position = c("right", "top")) + 
+  tm_scale_bar(width = 0.1, position = c("right", "top")) + 
+  tm_credits("Source: \nNational Highway Traffic Safety Administration (Accidents - 2016) \nIllinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "Number of Severe accident injuries (2016)", 
+    panel.label.size = 1.5,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "center"), 
+    frame = FALSE) 
+
+tmap_arrange(CrimeMap, AccidentMap) 
+```
+
+
+<br>
+
+### **Poverty Map**
+Like above, I overlayed the second service area map on each poverty map.
+
+```{r, results=TRUE, warning=FALSE}
+
+IndivPovRtMap <- tm_shape(IndivPov) + tm_borders() + 
+  tm_fill(col = "Percent", style = "jenks", title = "Individual Poverty Rates(%)") +
+  tm_shape(union.buffersupd) + tm_fill("slategray", alpha = .4) + tm_borders(col = "blue") +
+  tm_shape(traumacenterupd) + tm_dots(col = "red", size = 0.5) + 
+  tm_compass(position = c("right", "top")) + 
+  tm_scale_bar(width = 0.1, position = c("right", "top")) + 
+  tm_credits("Source: \nChicago Health Atlas (Individual Poverty 2011-2015) \nIllinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "Individual Poverty (2011-2015)", 
+    panel.label.size = 1.5,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "center"), 
+    frame = FALSE) 
+
+HousePovRtMap <- tm_shape(HousePov) + tm_borders() + 
+  tm_fill(col = "Percent", style = "jenks", title = "Household Poverty Rates(%)") +
+  tm_shape(union.buffersupd) + tm_fill("slategray", alpha = .4) + tm_borders(col = "blue") +
+  tm_shape(traumacenterupd) + tm_dots(col = "red", size = 0.5) + 
+  tm_compass(position = c("right", "top")) + 
+  tm_scale_bar(width = 0.1, position = c("right", "top")) + 
+  tm_credits("Source: \nChicago Health Atlas (Household Poverty 2011-2015) \nIllinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = "Household Poverty (2011-2015)", 
+    panel.label.size = 1.5,
+    panel.label.bg.color = "white",
+    legend.position = c("left", "center"), 
+    frame = FALSE) 
+
+tmap_arrange(IndivPovRtMap, HousePovRtMap) 
+```

@@ -21,7 +21,7 @@ This project was one of three assignments from the "Introduction to GIS and Spat
 <br>
 
 ### **Set the current working directory**
-```{r, results=FALSE, warning=FALSE}
+```{r, eval=FALSE, results=FALSE, warning=FALSE}
 setwd("../../2018.3 Summer/Intro to GIS/Assignment 1")
 ```
 

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yoon Hong Park" />
+
+
+<title>Chicago Trauma Center Service Areas</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Yoon's Archive</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Mapping
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapping1-ChiHIV.html">Chicago HIV Prevalence</a>
+    </li>
+    <li>
+      <a href="mapping2-ILInc.html">Illinois Income Distribution</a>
+    </li>
+    <li>
+      <a href="mapping3-ChiTrauma.html">Chicago Trauma Center Service Area</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown-header">Policy Analysis</li>
+<li class="dropdown-header">Study Replications</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="section-header">
+
+
+
+<h1 class="title toc-ignore">Chicago Trauma Center Service Areas</h1>
+<h4 class="author"><em>Yoon Hong Park</em></h4>
+<h4 class="date"><em>July 2, 2018</em></h4>
+
+</div>
+
+
+<p><br><br></p>
+<p>This project was tha last assignment from the “Introduction to GIS and Spatial Analysis for Social Scientists” course taught by Dr. Marynia Kolak. This project was to create a marketing report for a specific community area in terms of one specific industry. I chose health industry, especially in term of trauma centers, and created three different sets of maps, each of which represented service areas of existing trauma centers, those service areas on the crime/accident injuries maps, and the service areas on the poverty/poverty rate maps. Buffers and Points-in-Polygon methods were used.</p>
+<p><br><br></p>
+<div id="section-basic-setup" class="section level2">
+<h2><strong>Basic Setup</strong></h2>
+<p><br></p>
+<div id="section-set-the-current-working-directory" class="section level3">
+<h3><strong>Set the current working directory</strong></h3>
+<pre class="r"><code>setwd(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3&quot;)</code></pre>
+<p><br></p>
+</div>
+<div id="section-load-libraries" class="section level3">
+<h3><strong>Load Libraries</strong></h3>
+<p>This is an effort to replicate what I have done for the assignment. Everytime I coded, I always put all the libraries that were used at the very beginning part of the code.</p>
+<pre class="r"><code>library(sp)
+library(sf)
+library(&quot;rgdal&quot;)
+library(&quot;rgeos&quot;)
+library(&quot;tmap&quot;)
+library(leaflet)
+library(raster)
+library(adehabitatHR)</code></pre>
+<pre><code>## Loading required package: deldir</code></pre>
+<pre><code>## deldir 0.1-15</code></pre>
+<pre><code>## Loading required package: ade4</code></pre>
+<pre><code>## Loading required package: adehabitatMA</code></pre>
+<pre><code>## 
+## Attaching package: &#39;adehabitatMA&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:raster&#39;:
+## 
+##     buffer</code></pre>
+<pre><code>## Loading required package: adehabitatLT</code></pre>
+<pre><code>## Loading required package: CircStats</code></pre>
+<pre><code>## Loading required package: MASS</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:raster&#39;:
+## 
+##     area, select</code></pre>
+<pre><code>## Loading required package: boot</code></pre>
+<pre class="r"><code>library(data.table)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:raster&#39;:
+## 
+##     shift</code></pre>
+<pre class="r"><code>library(maptools)</code></pre>
+<pre><code>## Checking rgeos availability: TRUE</code></pre>
+<p><br></p>
+</div>
+<div id="section-load-the-boundary-shapefile" class="section level3">
+<h3><strong>Load the boundary shapefile</strong></h3>
+<p>To unify the coordinate system, I chose EPSG 4326 system.</p>
+<pre class="r"><code>ComArea.Areas &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3/Boundaries - Community Areas (current)&quot;, &quot;geo_export_7572d77c-9922-44f5-ba1b-d9dd6bc3fa86&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 3\Boundaries - Community Areas (current)&quot;, layer: &quot;geo_export_7572d77c-9922-44f5-ba1b-d9dd6bc3fa86&quot;
+## with 77 features
+## It has 26 fields
+## Integer64 fields read as strings:  Geo_ID Number</code></pre>
+<pre class="r"><code>head(ComArea.Areas)</code></pre>
+<pre><code>##   perimeter       community shape_len shape_area area comarea area_numbe
+## 0         0         DOUGLAS  31027.05   46004621    0       0         35
+## 1         0         OAKLAND  19565.51   16913961    0       0         36
+## 2         0     FULLER PARK  25339.09   19916705    0       0         37
+## 3         0 GRAND BOULEVARD  28196.84   48492503    0       0         38
+## 4         0         KENWOOD  23325.17   29071742    0       0         39
+## 5         0  LINCOLN SQUARE  36624.60   71352328    0       0          4
+##   area_num_1 comarea_id                    Category SubCat
+## 0         35          0 Social and Economic Factors Income
+## 1         36          0 Social and Economic Factors Income
+## 2         37          0 Social and Economic Factors Income
+## 3         38          0 Social and Economic Factors Income
+## 4         39          0 Social and Economic Factors Income
+## 5          4          0 Social and Economic Factors Income
+##            Indicator      Year      Geography          Geo_Group Geo_ID
+## 0 Individual poverty 2011-2015 Community Area         35-Douglas     35
+## 1 Individual poverty 2011-2015 Community Area         36-Oakland     36
+## 2 Individual poverty 2011-2015 Community Area     37-Fuller Park     37
+## 3 Individual poverty 2011-2015 Community Area 38-Grand Boulevard     38
+## 4 Individual poverty 2011-2015 Community Area         39-Kenwood     39
+## 5 Individual poverty 2011-2015 Community Area   4-Lincoln Square      4
+##   Number Percent   Map_Key Flag field_12 field_13 field_14 field_15
+## 0   7040    39.5 quintiles    G     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;
+## 1   2131    33.3 quintiles    G     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;
+## 2    814    33.4 quintiles    G     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;
+## 3   7957    35.5 quintiles    G     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;
+## 4   3891    22.3 quintiles    G     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;
+## 5   4797    11.9 quintiles    G     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;     &lt;NA&gt;
+##   field_16 field_17
+## 0     &lt;NA&gt;     &lt;NA&gt;
+## 1     &lt;NA&gt;     &lt;NA&gt;
+## 2     &lt;NA&gt;     &lt;NA&gt;
+## 3     &lt;NA&gt;     &lt;NA&gt;
+## 4     &lt;NA&gt;     &lt;NA&gt;
+## 5     &lt;NA&gt;     &lt;NA&gt;</code></pre>
+<pre class="r"><code>crs(ComArea.Areas)</code></pre>
+<pre><code>## CRS arguments: +proj=longlat +ellps=WGS84 +no_defs</code></pre>
+<pre class="r"><code>CRS.new &lt;- CRS(&quot;+init=EPSG:4326&quot;)
+ComArea.Transform &lt;- spTransform(ComArea.Areas, CRS.new)</code></pre>
+<p><br><br><br></p>
+</div>
+</div>
+<div id="section-data-mergingcleaning-analysis" class="section level2">
+<h2><strong>Data Merging/Cleaning &amp; Analysis</strong></h2>
+<p><br></p>
+<div id="section-trauma-center-service-areas" class="section level3">
+<h3><strong>Trauma Center Service areas</strong></h3>
+<p>Since there was no official data set that has the exact coordinates in both EPSG 4326 system and EPSG 3529 system, I made my own data file by looking up the list from the <a href="http://www.dph.illinois.gov/topics-services/emergency-preparedness-response/ems/trauma-program/centersByReg">Department of Public Health of the State of Illinois</a>, searching them on Google Map, getting the EPSG 4326 coordinates and turning them into EPSG 3529 coordinates at the “<a href="https://epsg.io/transform#s_srs=4326&amp;t_srs=3529">EPSG.io</a>” website. As the number of trauma centers was 7 at most, including the two trauma centers which are technically located outside of Chicago, I did this manually and saved as both csv files and shapefiles. If there were too many, I might code a repetitive process of getting coordiantes through Google API. I made two different csv files, of which one covered only truama centers in the City of Chicago while the other covered two more trauma centers outside of Chicago that also served some parts of the city.</p>
+<pre class="r"><code>traumacenter &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3&quot;, &quot;Trauma Centers&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 3&quot;, layer: &quot;Trauma Centers&quot;
+## with 5 features
+## It has 4 fields</code></pre>
+<pre class="r"><code>traumacenter.Transform &lt;- spTransform(traumacenter, CRS.new)
+
+traumacenterupd &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3&quot;, &quot;Trauma Centers (update)&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 3&quot;, layer: &quot;Trauma Centers (update)&quot;
+## with 7 features
+## It has 9 fields
+## Integer64 fields read as strings:  Level</code></pre>
+<pre class="r"><code>traumacenterupd.Transform &lt;- spTransform(traumacenterupd, CRS.new)
+
+crs(traumacenter) # no_defs</code></pre>
+<pre><code>## CRS arguments: +proj=longlat +ellps=WGS84 +no_defs</code></pre>
+<pre class="r"><code>crs(traumacenterupd) # no_defs</code></pre>
+<pre><code>## CRS arguments: +proj=longlat +ellps=WGS84 +no_defs</code></pre>
+<p><br></p>
+<p>Since those seem to not have specific coordinate system, I transformed their coordinate systems into EPSG 4326 and checked if the transformation worked well.</p>
+<pre class="r"><code>CRS.new &lt;- CRS(&quot;+init=EPSG:4326&quot;)
+
+traumacenter.Transform &lt;- spTransform(traumacenter, CRS.new)
+traumacenterupd.Transform &lt;- spTransform(traumacenterupd, CRS.new)
+
+tm_shape(ComArea.Transform) + tm_borders() + 
+  tm_shape(traumacenter.Transform) + tm_dots(col = &quot;red&quot;)</code></pre>
+<p><img src="mapping3-ChiTrauma_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>tm_shape(ComArea.Transform) + tm_borders() + 
+  tm_shape(traumacenterupd.Transform) + tm_dots(col = &quot;red&quot;) </code></pre>
+<p><img src="mapping3-ChiTrauma_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<p><br></p>
+<p>It seems both worked well, so then I switched my focus on creating buffers to abstractly show the service area that each trauma center covered. From the literature reviews, the largest distance from a trauma center to a trauma incident that would make patients survive with high possibility was 5~10 miles, so I made a buffer of 10 miles from each trauma center. Since the buffer system used meter-system, I put equivalent meter-values to 10 miles.To make buffer areas, I needed to open those csv files instead of shapefiles.</p>
+<pre class="r"><code>traumacenterUTM &lt;- read.csv(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3/Trauma Centers.csv&quot;)
+tcenter.points &lt;- SpatialPointsDataFrame(traumacenterUTM[,7:8], traumacenterUTM, proj4string = CRS(&quot;+init=EPSG:3529&quot;))
+tcenter_buffers &lt;- gBuffer(tcenter.points, width = 8046.72*2, byid = TRUE)
+
+traumacenterUTMupd &lt;- read.csv(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3/Trauma Centers (update).csv&quot;)
+tcenterupd.points &lt;- SpatialPointsDataFrame(traumacenterUTMupd[,7:8], traumacenterUTMupd, proj4string = CRS(&quot;+init=EPSG:3529&quot;))
+tcenter_buffers.upd &lt;- gBuffer(tcenterupd.points, width = 8046.72*2, byid = TRUE)</code></pre>
+<p><br></p>
+<p>Then, I checked whether the buffers were well constructed.</p>
+<pre class="r"><code>tm_shape(ComArea.Transform) + tm_borders() + 
+  tm_shape(tcenter_buffers) + tm_fill(col = &quot;slategray&quot;) + tm_borders(col = &quot;blue&quot;) +
+  tm_shape(traumacenter.Transform) + tm_dots(col = &quot;red&quot;) </code></pre>
+<p><img src="mapping3-ChiTrauma_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>tm_shape(ComArea.Transform) + tm_borders() + 
+  tm_shape(tcenter_buffers.upd) + tm_fill(col = &quot;slategray&quot;) + tm_borders(col = &quot;blue&quot;) +
+  tm_shape(traumacenterupd.Transform) + tm_dots(col = &quot;red&quot;) </code></pre>
+<p><img src="mapping3-ChiTrauma_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<p><br></p>
+<p>To beautify the overlapped areas, I merged those buffers, which are the final results for creating service areas.</p>
+<pre class="r"><code>union.buffers &lt;- gUnaryUnion(tcenter_buffers)
+union.buffersupd &lt;- gUnaryUnion(tcenter_buffers.upd)</code></pre>
+<p><br></p>
+</div>
+<div id="section-crime-data-pip-method" class="section level3">
+<h3><strong>Crime Data (PIP Method)</strong></h3>
+<p>The crime data was available from the <a href="https://data.cityofchicago.org/">City of Chicago Data Portal</a>. First, I loaded the crime data and subsetted by serioucs crimes, including “HOMICIDE”, “BATTERY”, “CRIM SEXUAL ASSAULT”, “ASSAULT”, “WEAPONS VIOLATION.”</p>
+<pre class="r"><code>Crime18.Data &lt;- fread(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3/Crimes_-_2018.csv&quot;, header = T)
+
+CrimeList &lt;- c(&quot;HOMICIDE&quot;, &quot;BATTERY&quot;, &quot;CRIM SEXUAL ASSAULT&quot;, &quot;ASSAULT&quot;, &quot;WEAPONS VIOLATION&quot;)
+Crime18.Subset &lt;- Crime18.Data[Crime18.Data$&#39;Primary Type&#39; == CrimeList, ]
+Crime18.SubSubset &lt;- Crime18.Subset[!grep(&quot;POSS&quot;, Crime18.Subset$Description), ]
+Crime18.SubSubset &lt;- Crime18.SubSubset[!grep(&quot;SALE&quot;, Crime18.SubSubset$Description), ]
+Crime18.SubSubset &lt;- Crime18.SubSubset[!grep(&quot;RECKLESS&quot;, Crime18.SubSubset$Description), ]
+Crime18.SubSubset &lt;- Crime18.SubSubset[!grep(&quot;DEFACE&quot;, Crime18.SubSubset$Description), ]
+
+#write.csv(Crime18.SubSubset,&quot;Crimes_-_2018(subset).csv&quot;)</code></pre>
+<p><br> With those subset of the data, I used GeoDa to create a shapefile and reloaded the shapefile for points-in-polygon method, which required me to transform the shapefile into EPSG 4326 coordinate system.</p>
+<pre class="r"><code>ChiCrimes &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3&quot;, &quot;Crimes_-_2018(subset)&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 3&quot;, layer: &quot;Crimes_-_2018(subset)&quot;
+## with 7322 features
+## It has 23 fields
+## Integer64 fields read as strings:  field_1 Prima_Type Descript LocDescrpt Arrest Beat District Ward</code></pre>
+<pre class="r"><code>ChiCrimes.Transform &lt;- spTransform(ChiCrimes, CRS.new)</code></pre>
+<p><br> Now, I did PiP to count those crimes per community area. This was the final result of PIP.</p>
+<pre class="r"><code>Crimepip &lt;- over(ChiCrimes.Transform, ComArea.Transform)
+ChiCrimes@data &lt;- cbind(ChiCrimes.Transform@data, Crimepip)
+ChiCrimesDF &lt;- as.data.frame(ChiCrimes.Transform)
+ChiCrimeByCom &lt;- as.data.frame(table(ChiCrimesDF$ComArea))
+names(ChiCrimeByCom) &lt;- c(&quot;area_numbe&quot;,&quot;CrimeCt&quot;)
+
+ComArea.Transform@data &lt;- merge(ComArea.Transform@data, ChiCrimeByCom, by = &quot;area_numbe&quot;, all.x = TRUE)
+crs(ComArea.Transform)</code></pre>
+<pre><code>## CRS arguments:
+##  +init=EPSG:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84
+## +towgs84=0,0,0</code></pre>
+<p><br></p>
+</div>
+<div id="section-accident-data-pip-method" class="section level3">
+<h3><strong>Accident Data (PIP Method)</strong></h3>
+<p>The accident data came from the <a href="https://www-fars.nhtsa.dot.gov//QueryTool/QuerySection/SelectYear.aspx">National Highway Traffic Safety Administration</a>. I downloaded the most recent data, which covered the whole year of 2016 and subsetted the data by the severe injuries, which were represented as more than or equal to 3 in the “injury severity” column that would lead to trauma centers. For convenience, I subsetted the data by using Excel and saved it also as a shapefile by using GeoDa. I also reloaded the boundary shapefile just to avoid merging the data wrongly.</p>
+<pre class="r"><code>ComAreas &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3/Boundaries - Community Areas (current)&quot;, &quot;geo_export_7572d77c-9922-44f5-ba1b-d9dd6bc3fa86&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 3\Boundaries - Community Areas (current)&quot;, layer: &quot;geo_export_7572d77c-9922-44f5-ba1b-d9dd6bc3fa86&quot;
+## with 77 features
+## It has 26 fields
+## Integer64 fields read as strings:  Geo_ID Number</code></pre>
+<pre class="r"><code>ChiAccidents &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3&quot;, &quot;Accidents_-_2016&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 3&quot;, layer: &quot;Accidents_-_2016&quot;
+## with 1417 features
+## It has 97 fields
+## Integer64 fields read as strings:  statenum casenum vnumber pnumber arrhr arrmin arrtime atmcond atmcond2 city county accdate accday acchr accmin accmon arf1 arf2 arf3 acctime caseyear dayofweek drive_owsy hosphr hospmin hosptime fhevent funcsystem holiday landuse heavytruck latdeg latmin lightcond londeg lonmin manncol milepnt nhs nothr notmin nottime numfatal nmforms pforms vforms ownership rxing reljunc relju_nter relrdwy rtesign schlbus spejur speeding inter_type conszone age alcres alcsts alctst deathdate dthday dthhr dthmin dthmon deathtime dthyr diedscene drugres1 drugres2 drugres3 drugsts drugtst1 drugtst2 drugtst3 injurwrk hispanic injury methalc methdrug prf1 prf2 prf3 ptype druginv alcinvol race sex lagtime takehosp</code></pre>
+<pre class="r"><code>crs(ComAreas)</code></pre>
+<pre><code>## CRS arguments: +proj=longlat +ellps=WGS84 +no_defs</code></pre>
+<pre class="r"><code>crs(ChiAccidents)</code></pre>
+<pre><code>## CRS arguments: +proj=longlat +ellps=WGS84 +no_defs</code></pre>
+<p><br> Then, I turned them into the EPSG 4326 coordinate system.</p>
+<pre class="r"><code>ComAreaAcc.Transform &lt;- spTransform(ComAreas, CRS.new)
+ChiAcc.Transform &lt;- spTransform(ComAreas, CRS.new)</code></pre>
+<p><br> Now, I did the PIP process to count accidents in each community area. This was the final result of PIP.</p>
+<pre class="r"><code>Accidentpip &lt;- over(ChiAcc.Transform, ComAreaAcc.Transform)
+ChiAccidentByCom &lt;- as.data.frame(table(Accidentpip$area_numbe))
+names(ChiAccidentByCom) &lt;- c(&quot;area_numbe&quot;,&quot;AccidentCt&quot;)
+
+ComAreaAcc.Transform@data &lt;- merge(ComAreaAcc.Transform@data, ChiAccidentByCom, by = &quot;area_numbe&quot;, all.x = TRUE)
+crs(ComAreaAcc.Transform)</code></pre>
+<pre><code>## CRS arguments:
+##  +init=EPSG:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84
+## +towgs84=0,0,0</code></pre>
+<p><br> ### <strong>Poverty Data</strong> To provide more complementary evidence, I chose both household and individual poverty rates as poverty indicators. The data were available from <a href="https://www.chicagohealthatlas.org/">Chicago Health Atlas</a>. For convenience, I used GeoDa to merge the poverty data into the community area shapefile because there was nothing to subset for these indicators. The values were numeric data, so I did not need to turn them into numeric values. These were ready for mapping.</p>
+<pre class="r"><code>IndivPov &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3&quot;, &quot;Individual_poverty&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 3&quot;, layer: &quot;Individual_poverty&quot;
+## with 77 features
+## It has 26 fields
+## Integer64 fields read as strings:  Geo_ID Number</code></pre>
+<pre class="r"><code>str(IndivPov@data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    77 obs. of  26 variables:
+##  $ perimeter : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ community : Factor w/ 77 levels &quot;ALBANY PARK&quot;,..: 18 56 26 29 37 40 69 34 77 61 ...
+##  $ shape_len : num  31027 19566 25339 28197 23325 ...
+##  $ shape_area: num  46004621 16913961 19916705 48492503 29071742 ...
+##  $ area      : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ comarea   : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ area_numbe: Factor w/ 77 levels &quot;1&quot;,&quot;10&quot;,&quot;11&quot;,..: 29 30 31 32 33 34 35 36 37 1 ...
+##  $ area_num_1: Factor w/ 77 levels &quot;1&quot;,&quot;10&quot;,&quot;11&quot;,..: 29 30 31 32 33 34 35 36 37 1 ...
+##  $ comarea_id: num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Category  : Factor w/ 1 level &quot;Social and Economic Factors&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ SubCat    : Factor w/ 1 level &quot;Income&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Indicator : Factor w/ 1 level &quot;Individual poverty&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Year      : Factor w/ 1 level &quot;2011-2015&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Geography : Factor w/ 1 level &quot;Community Area&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Geo_Group : Factor w/ 77 levels &quot;1-Rogers Park&quot;,..: 29 30 31 32 33 34 35 36 37 1 ...
+##  $ Geo_ID    : Factor w/ 77 levels &quot;1&quot;,&quot;10&quot;,&quot;11&quot;,..: 29 30 31 32 33 34 35 36 37 1 ...
+##  $ Number    : Factor w/ 77 levels &quot;10034&quot;,&quot;10062&quot;,..: 59 29 64 63 41 48 57 54 2 14 ...
+##  $ Percent   : num  39.5 33.3 33.4 35.5 22.3 11.9 48.8 21.6 40.1 26.3 ...
+##  $ Map_Key   : Factor w/ 1 level &quot;quintiles&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Flag      : Factor w/ 1 level &quot;G&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ field_12  : Factor w/ 0 levels: NA NA NA NA NA NA NA NA NA NA ...
+##  $ field_13  : Factor w/ 0 levels: NA NA NA NA NA NA NA NA NA NA ...
+##  $ field_14  : Factor w/ 0 levels: NA NA NA NA NA NA NA NA NA NA ...
+##  $ field_15  : Factor w/ 0 levels: NA NA NA NA NA NA NA NA NA NA ...
+##  $ field_16  : Factor w/ 0 levels: NA NA NA NA NA NA NA NA NA NA ...
+##  $ field_17  : Factor w/ 0 levels: NA NA NA NA NA NA NA NA NA NA ...</code></pre>
+<pre class="r"><code>HousePov &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 3&quot;, &quot;Household_poverty&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 3&quot;, layer: &quot;Household_poverty&quot;
+## with 77 features
+## It has 20 fields
+## Integer64 fields read as strings:  Geo_ID Number</code></pre>
+<pre class="r"><code>str(HousePov@data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    77 obs. of  20 variables:
+##  $ perimeter : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ community : Factor w/ 77 levels &quot;ALBANY PARK&quot;,..: 18 56 26 29 37 40 69 34 77 61 ...
+##  $ shape_len : num  31027 19566 25339 28197 23325 ...
+##  $ shape_area: num  46004621 16913961 19916705 48492503 29071742 ...
+##  $ area      : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ comarea   : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ area_numbe: Factor w/ 77 levels &quot;1&quot;,&quot;10&quot;,&quot;11&quot;,..: 29 30 31 32 33 34 35 36 37 1 ...
+##  $ area_num_1: Factor w/ 77 levels &quot;1&quot;,&quot;10&quot;,&quot;11&quot;,..: 29 30 31 32 33 34 35 36 37 1 ...
+##  $ comarea_id: num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Category  : Factor w/ 1 level &quot;Social and Economic Factors&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ SubCat    : Factor w/ 1 level &quot;Income&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Indicator : Factor w/ 1 level &quot;Household poverty&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Year      : Factor w/ 1 level &quot;2011-2015&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Geography : Factor w/ 1 level &quot;Community Area&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Geo_Group : Factor w/ 77 levels &quot;1-Rogers Park&quot;,..: 29 30 31 32 33 34 35 36 37 1 ...
+##  $ Geo_ID    : Factor w/ 77 levels &quot;1&quot;,&quot;10&quot;,&quot;11&quot;,..: 29 30 31 32 33 34 35 36 37 1 ...
+##  $ Number    : Factor w/ 77 levels &quot;1011&quot;,&quot;1080&quot;,..: 36 1 47 37 17 21 18 26 44 60 ...
+##  $ Percent   : num  34 36.2 38.7 33 21.1 12.2 44.6 20.9 35.5 23.4 ...
+##  $ Map_Key   : Factor w/ 1 level &quot;quintiles&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Flag      : Factor w/ 1 level &quot;G&quot;: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<p><br><br><br></p>
+</div>
+</div>
+<div id="section-mapping" class="section level2">
+<h2><strong>Mapping</strong></h2>
+<p><br></p>
+<div id="section-trauma-center-service-areas-map" class="section level3">
+<h3><strong>Trauma Center Service Areas Map</strong></h3>
+<p>I created two different maps that showed my effort to consider trauma centers outside of the City of Chicago as well. I made those maps into one bi-faceted map.</p>
+<pre class="r"><code>TCenterChi &lt;- tm_shape(ComArea.Transform) + tm_borders() +
+  tm_shape(union.buffers) + tm_fill(col = &quot;slategray&quot;, alpha = .4) + tm_borders(col = &quot;blue&quot;) +
+  tm_shape(traumacenter) + 
+    tm_dots(col = &quot;red&quot;, size = 0.5) + 
+    tm_text(&quot;Name&quot;, size = .75, just = &quot;right&quot;, xmod= -.5, bg.color = &quot;white&quot;, bg.alpha = .25, shadow = TRUE, fontface = 2) +
+  tm_compass(position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_scale_bar(width = 0.1, position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_credits(&quot;Source: Illinois Department of Public Health (Trauma Centers)&quot;, align = &quot;left&quot;, size = 0.7, position = c(&quot;left&quot;, &quot;bottom&quot;)) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = &quot;Adult Trauma Centers in Chicago(2018)&quot;, 
+    panel.label.size = 1.5,
+    panel.label.bg.color = &quot;white&quot;,
+    legend.position = c(&quot;left&quot;, &quot;center&quot;), 
+    frame = FALSE) 
+
+TCenterChiSub &lt;- tm_shape(ComArea.Transform) + tm_borders() +
+  tm_shape(union.buffersupd) + tm_fill(&quot;slategray&quot;, alpha = .4) + tm_borders(col = &quot;blue&quot;) +
+  tm_shape(traumacenterupd) + 
+  tm_dots(col = &quot;red&quot;, size = 0.5) + 
+  tm_text(&quot;Name&quot;, size = .75, just = &quot;right&quot;, xmod= -.5, bg.color = &quot;white&quot;, bg.alpha = .25, shadow = TRUE, fontface = 2) +
+  tm_compass(position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_scale_bar(width = 0.1, position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_credits(&quot;Source: Illinois Department of Public Health (Trauma Centers)&quot;, align = &quot;left&quot;, size = 0.7, position = c(&quot;left&quot;, &quot;bottom&quot;)) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = &quot;Adult Trauma Centers Including Suburbs (2018)&quot;, 
+    panel.label.size = 1.5,
+    panel.label.bg.color = &quot;white&quot;,
+    legend.position = c(&quot;left&quot;, &quot;center&quot;), 
+    frame = FALSE) 
+
+current.mode &lt;- tmap_mode(&quot;plot&quot;) </code></pre>
+<pre><code>## tmap mode set to plotting</code></pre>
+<pre class="r"><code>tmap_arrange(TCenterChi, TCenterChiSub) </code></pre>
+<p><img src="mapping3-ChiTrauma_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><br></p>
+</div>
+<div id="section-crimeaccident-pip-map" class="section level3">
+<h3><strong>Crime/Accident PIP Map</strong></h3>
+<p>For these maps, I overlayed the second service area map on each PIP map.</p>
+<pre class="r"><code>CrimeMap &lt;- tm_shape(ComArea.Transform) + tm_borders() + 
+  tm_fill(col = &quot;CrimeCt&quot;, palette = &quot;OrRd&quot;, style = &quot;jenks&quot;, title = &quot;Crimes with volence&quot;) +
+  tm_shape(union.buffersupd) + tm_fill(&quot;slategray&quot;, alpha = .4) + tm_borders(col = &quot;blue&quot;) +
+  tm_shape(traumacenterupd) + tm_dots(col = &quot;red&quot;, size = 0.5) + 
+  tm_compass(position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_scale_bar(width = 0.1, position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_credits(&quot;Source: \nCity of Chicago Data Portal (Crimes - 2018) \nIllinois Department of Public Health (Trauma Centers)&quot;, align = &quot;left&quot;, size = 0.7, position = c(&quot;left&quot;, &quot;bottom&quot;)) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = &quot;Number of Crimes (w/ violence) (2018)&quot;, 
+    panel.label.size = 1.5,
+    panel.label.bg.color = &quot;white&quot;,
+    legend.position = c(&quot;left&quot;, &quot;center&quot;), 
+    frame = FALSE) 
+
+AccidentMap &lt;- tm_shape(ComAreaAcc.Transform) + tm_borders() + 
+  tm_fill(col = &quot;AccidentCt&quot;, palette = &quot;OrRd&quot;, style = &quot;jenks&quot;, title = &quot;Severe injuries from accidents&quot;) +
+  tm_shape(union.buffersupd) + tm_fill(&quot;slategray&quot;, alpha = .4) + tm_borders(col = &quot;blue&quot;) +
+  tm_shape(traumacenterupd) + tm_dots(col = &quot;red&quot;, size = 0.5) + 
+  tm_compass(position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_scale_bar(width = 0.1, position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_credits(&quot;Source: \nNational Highway Traffic Safety Administration (Accidents - 2016) \nIllinois Department of Public Health (Trauma Centers)&quot;, align = &quot;left&quot;, size = 0.7, position = c(&quot;left&quot;, &quot;bottom&quot;)) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = &quot;Number of Severe accident injuries (2016)&quot;, 
+    panel.label.size = 1.5,
+    panel.label.bg.color = &quot;white&quot;,
+    legend.position = c(&quot;left&quot;, &quot;center&quot;), 
+    frame = FALSE) 
+
+tmap_arrange(CrimeMap, AccidentMap) </code></pre>
+<p><img src="mapping3-ChiTrauma_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><br></p>
+</div>
+<div id="section-poverty-map" class="section level3">
+<h3><strong>Poverty Map</strong></h3>
+<p>Like above, I overlayed the second service area map on each poverty map.</p>
+<pre class="r"><code>IndivPovRtMap &lt;- tm_shape(IndivPov) + tm_borders() + 
+  tm_fill(col = &quot;Percent&quot;, style = &quot;jenks&quot;, title = &quot;Individual Poverty Rates(%)&quot;) +
+  tm_shape(union.buffersupd) + tm_fill(&quot;slategray&quot;, alpha = .4) + tm_borders(col = &quot;blue&quot;) +
+  tm_shape(traumacenterupd) + tm_dots(col = &quot;red&quot;, size = 0.5) + 
+  tm_compass(position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_scale_bar(width = 0.1, position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_credits(&quot;Source: \nChicago Health Atlas (Individual Poverty 2011-2015) \nIllinois Department of Public Health (Trauma Centers)&quot;, align = &quot;left&quot;, size = 0.7, position = c(&quot;left&quot;, &quot;bottom&quot;)) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = &quot;Individual Poverty (2011-2015)&quot;, 
+    panel.label.size = 1.5,
+    panel.label.bg.color = &quot;white&quot;,
+    legend.position = c(&quot;left&quot;, &quot;center&quot;), 
+    frame = FALSE) 
+
+HousePovRtMap &lt;- tm_shape(HousePov) + tm_borders() + 
+  tm_fill(col = &quot;Percent&quot;, style = &quot;jenks&quot;, title = &quot;Household Poverty Rates(%)&quot;) +
+  tm_shape(union.buffersupd) + tm_fill(&quot;slategray&quot;, alpha = .4) + tm_borders(col = &quot;blue&quot;) +
+  tm_shape(traumacenterupd) + tm_dots(col = &quot;red&quot;, size = 0.5) + 
+  tm_compass(position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_scale_bar(width = 0.1, position = c(&quot;right&quot;, &quot;top&quot;)) + 
+  tm_credits(&quot;Source: \nChicago Health Atlas (Household Poverty 2011-2015) \nIllinois Department of Public Health (Trauma Centers)&quot;, align = &quot;left&quot;, size = 0.7, position = c(&quot;left&quot;, &quot;bottom&quot;)) +
+  tm_layout(
+    panel.show = TRUE,
+    panel.labels = &quot;Household Poverty (2011-2015)&quot;, 
+    panel.label.size = 1.5,
+    panel.label.bg.color = &quot;white&quot;,
+    legend.position = c(&quot;left&quot;, &quot;center&quot;), 
+    frame = FALSE) 
+
+tmap_arrange(IndivPovRtMap, HousePovRtMap) </code></pre>
+<p><img src="mapping3-ChiTrauma_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -12,6 +12,10 @@ navbar:
           href: mapping1-ChiHIV.html
         - text: "Illinois Income Distribution"
           href: mapping2-ILInc.html
+        - text: "Chicago Trauma Center Service Area"
+          href: mapping3-ChiTrauma.html
+    - text: "Policy Analysis"
+    - text: "Study Replications"
 output:
   html_document:
     theme: cosmo
