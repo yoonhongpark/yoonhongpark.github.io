@@ -1,0 +1,189 @@
+---
+title: "30531 Problem Set 2"
+author: "Yoon Hong Park"
+date: "10/14/2018"
+runtime: shiny
+output:
+  html_document
+---
+**Front matter**
+
+This submission is my work alone and complies with the 30531 integrity policy.
+  
+  Add your initials to indicate your agreement: **YHP**
+
+
+```{r message=FALSE, warning=FALSE}
+# LOAD LIBRARIES HERE
+library(tidyverse)
+```
+
+<br><br>
+
+# Public Sector Application: Flight Data
+
+ *{An international trade organization is hosting a two-day convention in Chicago in 2019. The mayor’s tourism office has asked for some planning help based on historical data from 2016.}*
+
+<br><br>
+
+## Download BTS data
+
+* Download files for the 2016 calendar year data here: https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236
+    + Warning: The whole file is huge, so this task will be faster and more manageable if you download just the columns and rows that you need. Limit the sample to Illinois and download only the columns that are relevant to the problem set. You will use this data in problem set 3 as well. It might be worth looking over the requirements in ps3.
+    + Warning: The BTS site is representative of government data websites in that it is quite finicky. It seems to work best if you wait for one month of data to download completely before starting the next month.
+
+* Read it into R using `chi.flights <- read_csv("data.csv")` and use the bind_rows command to stitch together the monthly files into a yearlong file.
+    + Note: Rmd files will look for data in the same folder as the file. You likely downloaded data into your Downloads directory. You can point R to look in downloads e.g. (for Mac and Linux) `chi.flights <- read_csv("~/Downloads/data.csv")` or move the files to your current working directory.
+    + Warning: `setwd()` does not work inside of Rmd chunks. See <**this post**>[link](http://pbahr.github.io/tips/2016/04/16/fix_rmarkdown_working_directory_issue) for an alternative solution.
+    
+```{r, results=FALSE, warning=FALSE, message=FALSE}
+# Import data (Cited from https://stackoverflow.com/questions/45783120/assocating-excel-file-name-with-dplyrbind-rows-id)
+# knitr::opts_knit$set(root.dir = "../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark")
+file_list <- list.files(path = "../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark", pattern = ".csv", recursive=TRUE)
+df_list <- lapply(paste("../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark", "/", file_list, sep = ""), read_csv)
+chi.flights <- bind_rows(df_list)
+summary(chi.flights)
+```
+
+<br>
+
+
+## Data Description
+
+1. What is the unique identifier for each flight in the dataset?
+
+```{r}
+# Wrangling with the data
+head(chi.flights)
+
+# For instance
+filter(chi.flights, MONTH == 2, FL_DATE == as.Date("2016-02-01"), OP_CARRIER_AIRLINE_ID == 19805, TAIL_NUM == "N3LKAA", OP_CARRIER_FL_NUM == 197, ORIGIN_AIRPORT_ID == 10721)
+```
+
+**Answer:** No single variable is the unique identifier for each "flight" represented by each row, although the unique "airline" can be represented by OP_CARRIER_AIRLINE_ID. Maybe the combination of the identifier variables would represent the unique flight. (MONTH, FL_DATE, OP_CARRIER_AIRLINE_ID, TAIL_NUM, OP_CARRIER_FL_NUM, ORIGIN_AIRPORT_ID)
+
+<br>
+
+
+2. R has six description methods: `print`, `head`, `str`, `glimpse`, `View`, `summary`. Apply them to `chi_flights`
+  i) Are any of the methods redundant, in the sense that you don’t learn anything about the data from these commands that you didn’t already know from the prior methods? Make a list of the non-redundant methods (giving preference to the command with prettier output).
+
+
+```{r}
+# CODE GOES HERE
+print(chi.flights)
+head(chi.flights)
+str(chi.flights)
+glimpse(chi.flights)
+View(chi.flights)
+summary(chi.flights)
+```
+
+**Answer:** `print()` and `head()` share overlapped functions. `str()` and `glimpse()` also share overlapped functions. `View()` simply opens the data. `summary()` returns some useful summary statistics.
+
+I would pick `print()`, `str()`, and `summary()` as non-redundant, based on their visualization as well as the contents.
+
+<br>
+
+  ii) Of the non-redundant methods, write a note (max 2 lines per command) that will quickly help someone (perhaps future you!) recall how each command is useful.
+
+**Answer:**
+
+`print()` shows the dimension of the data, the names of variables, the variable types, and preview of the first few lines.
+
+`head()` shows the same things as `print()` except for the dimension of the data.
+
+`str()` shows the same things as `print()`, but additionally with the classes of the data. 
+
+`glimpse ()` shows the same things as `str()`, except for the classes of the data.
+
+`View()` simply opens the data in R.
+
+`summary()` returns minimum, maximum, mean values, and quartiles of each variable.
+
+<br><br>
+
+
+## Data Validation
+
+1. You should have 675822 rows when you downloaded data for Illinois. Load the package `testthat` and then test that you have this many rows using the command `test_that("we have the right number of rows",expect_equal(nrow(data),675822))`
+
+```{r}
+# CODE GOES HERE
+library(testthat)
+test_that("we have the right number of rows", expect_equal(nrow(chi.flights),675822))
+```
+
+<br>
+
+
+2. Because of the conditions you put into the webform, all flights should be to or from Illinois airports. Let’s check this.
+
+```{r}
+# Filter those flights from and to cities outside of Chicago.
+filter(chi.flights, ORIGIN_STATE_NM != "Illinois" & DEST_STATE_NM != "Illinois")
+```
+
+**Answer:** All flights are from or to Illinois.
+
+<br>
+
+
+3. Drop flights to Midway and O’Hare. How many flights are left?
+
+```{r}
+# CODE GOES HERE
+airports <- c("MDW", "ORD")
+chi.flights.out <- chi.flights[!(chi.flights$DEST %in% airports | chi.flights$ORIGIN  %in% airports),]
+nrow(chi.flights.out)
+```
+
+**Answer:** 12,240 flights are left.
+
+<br>
+
+
+4. Among flights whose origin or destination is not Midway or O’Hare, what are the five most common origins? What are the five most common destinations? Where are these cities? Are these origins and destinations inside or outside Illinois? Can you explain why these are the most common origins and destinations?
+
+```{r}
+# 
+head(arrange(count(chi.flights.out, ORIGIN), desc(n)), 5)
+head(arrange(count(chi.flights.out, ORIGIN_CITY_NAME), desc(n)), 5)
+head(arrange(count(chi.flights.out, DEST), desc(n)), 5)
+head(arrange(count(chi.flights.out, DEST_CITY_NAME), desc(n)), 5)
+```
+
+**Answer:** The five most common origins are the same as the five most common destinations, which are ATL in Atlanta, GA, PIA in Peoria, IL, MLI in Moline, IL, BMI in Bloomington/Normal, IL, and DTW in Detroit, MI. Except for ATL and DTW that are located outside of Illinois, the other three are located in Illinois. Except for BMI, all the other airports are "international". Bloomington-Normal is the twin cities having a large population. These facts might be a part of reason for their being the most common origins and destinations.
+
+<br>
+
+
+5. Next, limit the sample to flights to or from Midway and O’Hare. How many rows do you think the dataset *should* have, approximately? Find at least two websites that estimate the number of flights into each airport. Do these estimates agree with what is in the BTS dataset? Do these estimates agree with each other? If they disagree, why do you think they disagree?
+
+
+```{r}
+# CODE GOES HERE
+chi.flights.in <- subset(chi.flights, DEST %in% airports | ORIGIN %in% airports)
+nrow(chi.flights.in)
+```
+
+**Answer:** 663.582 flights are from or to MDW or ORD. From the Chicago Department of Aviation, the number of domestic air-carrier flights operated in either ORD or MDW in the year of 2016 is 773,079, which is 594,733 + 178,346. According to the Federal Aviation Administration, the number of domestic air-carrier flights operated in either ORD or MDW in the year of 2016 is 779,890, which is 593,198 + 186,692. Both seem to disagree with the number of flights, all of which report higher numbers probably due to missing reports, different categorization, or neglect of minor airlines in the BTS data.
+
+<br>
+
+
+6. Google to figure out the three highest-volume airlines at O’Hare and the three highest-volume airlines out of Midway. Does this agree with what you find in the BTS data? If they disagree, why do you think they disagree?
+
+```{r}
+# CODE GOES HERE
+chi.flights.MDW <- subset(chi.flights.in, DEST == "MDW" | ORIGIN == "MDW")
+chi.flights.ORD <- subset(chi.flights.in, DEST == "ORD" | ORIGIN == "ORD")
+head(arrange(count(chi.flights.MDW, OP_CARRIER), desc(n)), 4)
+head(arrange(count(chi.flights.ORD, OP_CARRIER), desc(n)), 3)
+```
+
+**Answer:** Though the year of the data is not exactly 2016, according to the results of Google search, three highest-volumes at MDW are Southwest Airlines, AirTran Airlines, and Delta Air Lines, and three at ORD are United Airlines, American Airlines, and Skywest Airlines. Information about ORD confirms the BTS data, while information about MDW seems to disagree with the BTS data. However, since the information is outdated (2014 article), which did not consider AirTran Airlines merged into Southwest, the article might be partially aligned with the BTS data. Since the enplanements at Midway are small, the third highest-volumen airlines at Midway is changed easily, which might be a part of the reason why this article seems to disagree with the data.
+
+source: 
+https://www.anna.aero/2014/08/06/chicago-midway-southwest-airlines-biggest-base-64-destinations-served-summer/
+https://en.wikipedia.org/wiki/O%27Hare_International_Airport

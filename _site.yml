@@ -8,13 +8,17 @@ navbar:
       href: about.html
     - text: "Mapping"
       menu:
-        - text: "Chicago HIV Prevalence"
-          href: mapping1-ChiHIV.html
-        - text: "Illinois Income Distribution"
-          href: mapping2-ILInc.html
         - text: "Chicago Trauma Center Service Area"
           href: mapping3-ChiTrauma.html
-    - text: "Policy Analysis"
+        - text: "Illinois Income Distribution"
+          href: mapping2-ILInc.html
+        - text: "Chicago HIV Prevalence"
+          href: mapping1-ChiHIV.html
+    - text: "Policy Analysis with R"
+      menu:
+        - text: "Flight Data"
+          href: Rps2.html
+    - text: "Python Coding"
     - text: "Study Replications"
 output:
   html_document:

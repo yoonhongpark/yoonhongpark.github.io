@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yoon Hong Park" />
+
+<meta name="date" content="2018-10-14" />
+
+<title>30531 Problem Set 2</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Yoon's Archive</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Mapping
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapping3-ChiTrauma.html">Chicago Trauma Center Service Area</a>
+    </li>
+    <li>
+      <a href="mapping2-ILInc.html">Illinois Income Distribution</a>
+    </li>
+    <li>
+      <a href="mapping1-ChiHIV.html">Chicago HIV Prevalence</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Policy Analysis with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Rps2.html">Flight Data</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown-header">Python Coding</li>
+<li class="dropdown-header">Study Replications</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="section-header">
+
+
+
+<h1 class="title toc-ignore">30531 Problem Set 2</h1>
+<h4 class="author"><em>Yoon Hong Park</em></h4>
+<h4 class="date"><em>10/14/2018</em></h4>
+
+</div>
+
+
+<p><strong>Front matter</strong></p>
+<p>This submission is my work alone and complies with the 30531 integrity policy.</p>
+<p>Add your initials to indicate your agreement: <strong>YHP</strong></p>
+<pre class="r"><code># LOAD LIBRARIES HERE
+library(tidyverse)</code></pre>
+<p><br><br></p>
+<div id="section-public-sector-application-flight-data" class="section level1">
+<h1>Public Sector Application: Flight Data</h1>
+<p><em>{An international trade organization is hosting a two-day convention in Chicago in 2019. The mayor’s tourism office has asked for some planning help based on historical data from 2016.}</em></p>
+<p><br><br></p>
+<div id="section-download-bts-data" class="section level2">
+<h2>Download BTS data</h2>
+<ul>
+<li>Download files for the 2016 calendar year data here: <a href="https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236" class="uri">https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236</a>
+<ul>
+<li>Warning: The whole file is huge, so this task will be faster and more manageable if you download just the columns and rows that you need. Limit the sample to Illinois and download only the columns that are relevant to the problem set. You will use this data in problem set 3 as well. It might be worth looking over the requirements in ps3.</li>
+<li>Warning: The BTS site is representative of government data websites in that it is quite finicky. It seems to work best if you wait for one month of data to download completely before starting the next month.</li>
+</ul></li>
+<li>Read it into R using <code>chi.flights &lt;- read_csv(&quot;data.csv&quot;)</code> and use the bind_rows command to stitch together the monthly files into a yearlong file.
+<ul>
+<li>Note: Rmd files will look for data in the same folder as the file. You likely downloaded data into your Downloads directory. You can point R to look in downloads e.g. (for Mac and Linux) <code>chi.flights &lt;- read_csv(&quot;~/Downloads/data.csv&quot;)</code> or move the files to your current working directory.</li>
+<li>Warning: <code>setwd()</code> does not work inside of Rmd chunks. See &lt;<strong>this post</strong>&gt;<a href="http://pbahr.github.io/tips/2016/04/16/fix_rmarkdown_working_directory_issue">link</a> for an alternative solution.</li>
+</ul></li>
+</ul>
+<pre class="r"><code># Import data (Cited from https://stackoverflow.com/questions/45783120/assocating-excel-file-name-with-dplyrbind-rows-id)
+# knitr::opts_knit$set(root.dir = &quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark&quot;)
+file_list &lt;- list.files(path = &quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark&quot;, pattern = &quot;.csv&quot;, recursive=TRUE)
+df_list &lt;- lapply(paste(&quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark&quot;, &quot;/&quot;, file_list, sep = &quot;&quot;), read_csv)
+chi.flights &lt;- bind_rows(df_list)
+summary(chi.flights)</code></pre>
+<p><br></p>
+</div>
+<div id="section-data-description" class="section level2">
+<h2>Data Description</h2>
+<ol style="list-style-type: decimal">
+<li>What is the unique identifier for each flight in the dataset?</li>
+</ol>
+<pre class="r"><code># Wrangling with the data
+head(chi.flights)</code></pre>
+<pre><code>## # A tibble: 6 x 27
+##    YEAR MONTH FL_DATE    OP_UNIQUE_CARRI~ OP_CARRIER_AIRL~ OP_CARRIER
+##   &lt;int&gt; &lt;int&gt; &lt;date&gt;     &lt;chr&gt;                       &lt;int&gt; &lt;chr&gt;     
+## 1  2016     2 2016-02-01 AA                          19805 AA        
+## 2  2016     2 2016-02-02 AA                          19805 AA        
+## 3  2016     2 2016-02-03 AA                          19805 AA        
+## 4  2016     2 2016-02-04 AA                          19805 AA        
+## 5  2016     2 2016-02-05 AA                          19805 AA        
+## 6  2016     2 2016-02-06 AA                          19805 AA        
+## # ... with 21 more variables: TAIL_NUM &lt;chr&gt;, OP_CARRIER_FL_NUM &lt;int&gt;,
+## #   ORIGIN_AIRPORT_ID &lt;int&gt;, ORIGIN_AIRPORT_SEQ_ID &lt;int&gt;,
+## #   ORIGIN_CITY_MARKET_ID &lt;int&gt;, ORIGIN &lt;chr&gt;, ORIGIN_CITY_NAME &lt;chr&gt;,
+## #   ORIGIN_STATE_NM &lt;chr&gt;, DEST_AIRPORT_ID &lt;int&gt;,
+## #   DEST_AIRPORT_SEQ_ID &lt;int&gt;, DEST_CITY_MARKET_ID &lt;int&gt;, DEST &lt;chr&gt;,
+## #   DEST_CITY_NAME &lt;chr&gt;, DEST_STATE_NM &lt;chr&gt;, DEP_TIME &lt;chr&gt;,
+## #   DEP_DELAY &lt;dbl&gt;, ARR_TIME &lt;chr&gt;, ARR_DELAY &lt;dbl&gt;, AIR_TIME &lt;dbl&gt;,
+## #   DISTANCE &lt;dbl&gt;, X27 &lt;chr&gt;</code></pre>
+<pre class="r"><code># For instance
+filter(chi.flights, MONTH == 2, FL_DATE == as.Date(&quot;2016-02-01&quot;), OP_CARRIER_AIRLINE_ID == 19805, TAIL_NUM == &quot;N3LKAA&quot;, OP_CARRIER_FL_NUM == 197, ORIGIN_AIRPORT_ID == 10721)</code></pre>
+<pre><code>## # A tibble: 1 x 27
+##    YEAR MONTH FL_DATE    OP_UNIQUE_CARRI~ OP_CARRIER_AIRL~ OP_CARRIER
+##   &lt;int&gt; &lt;int&gt; &lt;date&gt;     &lt;chr&gt;                       &lt;int&gt; &lt;chr&gt;     
+## 1  2016     2 2016-02-01 AA                          19805 AA        
+## # ... with 21 more variables: TAIL_NUM &lt;chr&gt;, OP_CARRIER_FL_NUM &lt;int&gt;,
+## #   ORIGIN_AIRPORT_ID &lt;int&gt;, ORIGIN_AIRPORT_SEQ_ID &lt;int&gt;,
+## #   ORIGIN_CITY_MARKET_ID &lt;int&gt;, ORIGIN &lt;chr&gt;, ORIGIN_CITY_NAME &lt;chr&gt;,
+## #   ORIGIN_STATE_NM &lt;chr&gt;, DEST_AIRPORT_ID &lt;int&gt;,
+## #   DEST_AIRPORT_SEQ_ID &lt;int&gt;, DEST_CITY_MARKET_ID &lt;int&gt;, DEST &lt;chr&gt;,
+## #   DEST_CITY_NAME &lt;chr&gt;, DEST_STATE_NM &lt;chr&gt;, DEP_TIME &lt;chr&gt;,
+## #   DEP_DELAY &lt;dbl&gt;, ARR_TIME &lt;chr&gt;, ARR_DELAY &lt;dbl&gt;, AIR_TIME &lt;dbl&gt;,
+## #   DISTANCE &lt;dbl&gt;, X27 &lt;chr&gt;</code></pre>
+<p><strong>Answer:</strong> No single variable is the unique identifier for each “flight” represented by each row, although the unique “airline” can be represented by OP_CARRIER_AIRLINE_ID. Maybe the combination of the identifier variables would represent the unique flight. (MONTH, FL_DATE, OP_CARRIER_AIRLINE_ID, TAIL_NUM, OP_CARRIER_FL_NUM, ORIGIN_AIRPORT_ID)</p>
+<p><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li>R has six description methods: <code>print</code>, <code>head</code>, <code>str</code>, <code>glimpse</code>, <code>View</code>, <code>summary</code>. Apply them to <code>chi_flights</code></li>
+</ol>
+<ol style="list-style-type: lower-roman">
+<li>Are any of the methods redundant, in the sense that you don’t learn anything about the data from these commands that you didn’t already know from the prior methods? Make a list of the non-redundant methods (giving preference to the command with prettier output).</li>
+</ol>
+<pre class="r"><code># CODE GOES HERE
+print(chi.flights)</code></pre>
+<pre><code>## # A tibble: 675,822 x 27
+##     YEAR MONTH FL_DATE    OP_UNIQUE_CARRI~ OP_CARRIER_AIRL~ OP_CARRIER
+##    &lt;int&gt; &lt;int&gt; &lt;date&gt;     &lt;chr&gt;                       &lt;int&gt; &lt;chr&gt;     
+##  1  2016     2 2016-02-01 AA                          19805 AA        
+##  2  2016     2 2016-02-02 AA                          19805 AA        
+##  3  2016     2 2016-02-03 AA                          19805 AA        
+##  4  2016     2 2016-02-04 AA                          19805 AA        
+##  5  2016     2 2016-02-05 AA                          19805 AA        
+##  6  2016     2 2016-02-06 AA                          19805 AA        
+##  7  2016     2 2016-02-07 AA                          19805 AA        
+##  8  2016     2 2016-02-08 AA                          19805 AA        
+##  9  2016     2 2016-02-09 AA                          19805 AA        
+## 10  2016     2 2016-02-10 AA                          19805 AA        
+## # ... with 675,812 more rows, and 21 more variables: TAIL_NUM &lt;chr&gt;,
+## #   OP_CARRIER_FL_NUM &lt;int&gt;, ORIGIN_AIRPORT_ID &lt;int&gt;,
+## #   ORIGIN_AIRPORT_SEQ_ID &lt;int&gt;, ORIGIN_CITY_MARKET_ID &lt;int&gt;,
+## #   ORIGIN &lt;chr&gt;, ORIGIN_CITY_NAME &lt;chr&gt;, ORIGIN_STATE_NM &lt;chr&gt;,
+## #   DEST_AIRPORT_ID &lt;int&gt;, DEST_AIRPORT_SEQ_ID &lt;int&gt;,
+## #   DEST_CITY_MARKET_ID &lt;int&gt;, DEST &lt;chr&gt;, DEST_CITY_NAME &lt;chr&gt;,
+## #   DEST_STATE_NM &lt;chr&gt;, DEP_TIME &lt;chr&gt;, DEP_DELAY &lt;dbl&gt;, ARR_TIME &lt;chr&gt;,
+## #   ARR_DELAY &lt;dbl&gt;, AIR_TIME &lt;dbl&gt;, DISTANCE &lt;dbl&gt;, X27 &lt;chr&gt;</code></pre>
+<pre class="r"><code>head(chi.flights)</code></pre>
+<pre><code>## # A tibble: 6 x 27
+##    YEAR MONTH FL_DATE    OP_UNIQUE_CARRI~ OP_CARRIER_AIRL~ OP_CARRIER
+##   &lt;int&gt; &lt;int&gt; &lt;date&gt;     &lt;chr&gt;                       &lt;int&gt; &lt;chr&gt;     
+## 1  2016     2 2016-02-01 AA                          19805 AA        
+## 2  2016     2 2016-02-02 AA                          19805 AA        
+## 3  2016     2 2016-02-03 AA                          19805 AA        
+## 4  2016     2 2016-02-04 AA                          19805 AA        
+## 5  2016     2 2016-02-05 AA                          19805 AA        
+## 6  2016     2 2016-02-06 AA                          19805 AA        
+## # ... with 21 more variables: TAIL_NUM &lt;chr&gt;, OP_CARRIER_FL_NUM &lt;int&gt;,
+## #   ORIGIN_AIRPORT_ID &lt;int&gt;, ORIGIN_AIRPORT_SEQ_ID &lt;int&gt;,
+## #   ORIGIN_CITY_MARKET_ID &lt;int&gt;, ORIGIN &lt;chr&gt;, ORIGIN_CITY_NAME &lt;chr&gt;,
+## #   ORIGIN_STATE_NM &lt;chr&gt;, DEST_AIRPORT_ID &lt;int&gt;,
+## #   DEST_AIRPORT_SEQ_ID &lt;int&gt;, DEST_CITY_MARKET_ID &lt;int&gt;, DEST &lt;chr&gt;,
+## #   DEST_CITY_NAME &lt;chr&gt;, DEST_STATE_NM &lt;chr&gt;, DEP_TIME &lt;chr&gt;,
+## #   DEP_DELAY &lt;dbl&gt;, ARR_TIME &lt;chr&gt;, ARR_DELAY &lt;dbl&gt;, AIR_TIME &lt;dbl&gt;,
+## #   DISTANCE &lt;dbl&gt;, X27 &lt;chr&gt;</code></pre>
+<pre class="r"><code>str(chi.flights)</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    675822 obs. of  27 variables:
+##  $ YEAR                 : int  2016 2016 2016 2016 2016 2016 2016 2016 2016 2016 ...
+##  $ MONTH                : int  2 2 2 2 2 2 2 2 2 2 ...
+##  $ FL_DATE              : Date, format: &quot;2016-02-01&quot; &quot;2016-02-02&quot; ...
+##  $ OP_UNIQUE_CARRIER    : chr  &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; ...
+##  $ OP_CARRIER_AIRLINE_ID: int  19805 19805 19805 19805 19805 19805 19805 19805 19805 19805 ...
+##  $ OP_CARRIER           : chr  &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; &quot;AA&quot; ...
+##  $ TAIL_NUM             : chr  &quot;N3MDAA&quot; &quot;N3LNAA&quot; &quot;N3LJAA&quot; &quot;N3LRAA&quot; ...
+##  $ OP_CARRIER_FL_NUM    : int  47 47 47 47 47 47 47 47 47 47 ...
+##  $ ORIGIN_AIRPORT_ID    : int  13930 13930 13930 13930 13930 13930 13930 13930 13930 13930 ...
+##  $ ORIGIN_AIRPORT_SEQ_ID: int  1393004 1393004 1393004 1393004 1393004 1393004 1393004 1393004 1393004 1393004 ...
+##  $ ORIGIN_CITY_MARKET_ID: int  30977 30977 30977 30977 30977 30977 30977 30977 30977 30977 ...
+##  $ ORIGIN               : chr  &quot;ORD&quot; &quot;ORD&quot; &quot;ORD&quot; &quot;ORD&quot; ...
+##  $ ORIGIN_CITY_NAME     : chr  &quot;Chicago, IL&quot; &quot;Chicago, IL&quot; &quot;Chicago, IL&quot; &quot;Chicago, IL&quot; ...
+##  $ ORIGIN_STATE_NM      : chr  &quot;Illinois&quot; &quot;Illinois&quot; &quot;Illinois&quot; &quot;Illinois&quot; ...
+##  $ DEST_AIRPORT_ID      : int  14831 14831 14831 14831 14831 14831 14831 14831 14831 14831 ...
+##  $ DEST_AIRPORT_SEQ_ID  : int  1483103 1483103 1483103 1483103 1483103 1483103 1483103 1483103 1483103 1483103 ...
+##  $ DEST_CITY_MARKET_ID  : int  32457 32457 32457 32457 32457 32457 32457 32457 32457 32457 ...
+##  $ DEST                 : chr  &quot;SJC&quot; &quot;SJC&quot; &quot;SJC&quot; &quot;SJC&quot; ...
+##  $ DEST_CITY_NAME       : chr  &quot;San Jose, CA&quot; &quot;San Jose, CA&quot; &quot;San Jose, CA&quot; &quot;San Jose, CA&quot; ...
+##  $ DEST_STATE_NM        : chr  &quot;California&quot; &quot;California&quot; &quot;California&quot; &quot;California&quot; ...
+##  $ DEP_TIME             : chr  &quot;1808&quot; &quot;1806&quot; &quot;1833&quot; &quot;1815&quot; ...
+##  $ DEP_DELAY            : num  -7 -9 18 0 -4 2 12 75 23 -6 ...
+##  $ ARR_TIME             : chr  &quot;2040&quot; &quot;2041&quot; &quot;2053&quot; &quot;2033&quot; ...
+##  $ ARR_DELAY            : num  -15 -14 -2 -22 -33 -17 -10 58 -2 -5 ...
+##  $ AIR_TIME             : num  259 242 242 243 234 249 239 246 240 254 ...
+##  $ DISTANCE             : num  1829 1829 1829 1829 1829 ...
+##  $ X27                  : chr  NA NA NA NA ...</code></pre>
+<pre class="r"><code>glimpse(chi.flights)</code></pre>
+<pre><code>## Observations: 675,822
+## Variables: 27
+## $ YEAR                  &lt;int&gt; 2016, 2016, 2016, 2016, 2016, 2016, 2016...
+## $ MONTH                 &lt;int&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2...
+## $ FL_DATE               &lt;date&gt; 2016-02-01, 2016-02-02, 2016-02-03, 201...
+## $ OP_UNIQUE_CARRIER     &lt;chr&gt; &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;...
+## $ OP_CARRIER_AIRLINE_ID &lt;int&gt; 19805, 19805, 19805, 19805, 19805, 19805...
+## $ OP_CARRIER            &lt;chr&gt; &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;...
+## $ TAIL_NUM              &lt;chr&gt; &quot;N3MDAA&quot;, &quot;N3LNAA&quot;, &quot;N3LJAA&quot;, &quot;N3LRAA&quot;, ...
+## $ OP_CARRIER_FL_NUM     &lt;int&gt; 47, 47, 47, 47, 47, 47, 47, 47, 47, 47, ...
+## $ ORIGIN_AIRPORT_ID     &lt;int&gt; 13930, 13930, 13930, 13930, 13930, 13930...
+## $ ORIGIN_AIRPORT_SEQ_ID &lt;int&gt; 1393004, 1393004, 1393004, 1393004, 1393...
+## $ ORIGIN_CITY_MARKET_ID &lt;int&gt; 30977, 30977, 30977, 30977, 30977, 30977...
+## $ ORIGIN                &lt;chr&gt; &quot;ORD&quot;, &quot;ORD&quot;, &quot;ORD&quot;, &quot;ORD&quot;, &quot;ORD&quot;, &quot;ORD&quot;...
+## $ ORIGIN_CITY_NAME      &lt;chr&gt; &quot;Chicago, IL&quot;, &quot;Chicago, IL&quot;, &quot;Chicago, ...
+## $ ORIGIN_STATE_NM       &lt;chr&gt; &quot;Illinois&quot;, &quot;Illinois&quot;, &quot;Illinois&quot;, &quot;Ill...
+## $ DEST_AIRPORT_ID       &lt;int&gt; 14831, 14831, 14831, 14831, 14831, 14831...
+## $ DEST_AIRPORT_SEQ_ID   &lt;int&gt; 1483103, 1483103, 1483103, 1483103, 1483...
+## $ DEST_CITY_MARKET_ID   &lt;int&gt; 32457, 32457, 32457, 32457, 32457, 32457...
+## $ DEST                  &lt;chr&gt; &quot;SJC&quot;, &quot;SJC&quot;, &quot;SJC&quot;, &quot;SJC&quot;, &quot;SJC&quot;, &quot;SJC&quot;...
+## $ DEST_CITY_NAME        &lt;chr&gt; &quot;San Jose, CA&quot;, &quot;San Jose, CA&quot;, &quot;San Jos...
+## $ DEST_STATE_NM         &lt;chr&gt; &quot;California&quot;, &quot;California&quot;, &quot;California&quot;...
+## $ DEP_TIME              &lt;chr&gt; &quot;1808&quot;, &quot;1806&quot;, &quot;1833&quot;, &quot;1815&quot;, &quot;1811&quot;, ...
+## $ DEP_DELAY             &lt;dbl&gt; -7, -9, 18, 0, -4, 2, 12, 75, 23, -6, 39...
+## $ ARR_TIME              &lt;chr&gt; &quot;2040&quot;, &quot;2041&quot;, &quot;2053&quot;, &quot;2033&quot;, &quot;2022&quot;, ...
+## $ ARR_DELAY             &lt;dbl&gt; -15, -14, -2, -22, -33, -17, -10, 58, -2...
+## $ AIR_TIME              &lt;dbl&gt; 259, 242, 242, 243, 234, 249, 239, 246, ...
+## $ DISTANCE              &lt;dbl&gt; 1829, 1829, 1829, 1829, 1829, 1829, 1829...
+## $ X27                   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...</code></pre>
+<pre class="r"><code>View(chi.flights)
+summary(chi.flights)</code></pre>
+<pre><code>##       YEAR          MONTH           FL_DATE           OP_UNIQUE_CARRIER 
+##  Min.   :2016   Min.   : 1.000   Min.   :2016-01-01   Length:675822     
+##  1st Qu.:2016   1st Qu.: 4.000   1st Qu.:2016-04-08   Class :character  
+##  Median :2016   Median : 7.000   Median :2016-07-05   Mode  :character  
+##  Mean   :2016   Mean   : 6.575   Mean   :2016-07-03                     
+##  3rd Qu.:2016   3rd Qu.: 9.000   3rd Qu.:2016-09-29                     
+##  Max.   :2016   Max.   :12.000   Max.   :2016-12-31                     
+##                                                                         
+##  OP_CARRIER_AIRLINE_ID  OP_CARRIER          TAIL_NUM        
+##  Min.   :19393         Length:675822      Length:675822     
+##  1st Qu.:19790         Class :character   Class :character  
+##  Median :19977         Mode  :character   Mode  :character  
+##  Mean   :19919                                              
+##  3rd Qu.:20304                                              
+##  Max.   :21171                                              
+##                                                             
+##  OP_CARRIER_FL_NUM ORIGIN_AIRPORT_ID ORIGIN_AIRPORT_SEQ_ID
+##  Min.   :   1      Min.   :10135     Min.   :1013503      
+##  1st Qu.: 734      1st Qu.:12889     1st Qu.:1288903      
+##  Median :1717      Median :13930     Median :1393004      
+##  Mean   :2286      Mean   :13194     Mean   :1319434      
+##  3rd Qu.:3828      3rd Qu.:13930     3rd Qu.:1393004      
+##  Max.   :6899      Max.   :15919     Max.   :1591902      
+##                                                           
+##  ORIGIN_CITY_MARKET_ID    ORIGIN          ORIGIN_CITY_NAME  
+##  Min.   :30135         Length:675822      Length:675822     
+##  1st Qu.:30977         Class :character   Class :character  
+##  Median :30977         Mode  :character   Mode  :character  
+##  Mean   :31427                                              
+##  3rd Qu.:31650                                              
+##  Max.   :35497                                              
+##                                                             
+##  ORIGIN_STATE_NM    DEST_AIRPORT_ID DEST_AIRPORT_SEQ_ID
+##  Length:675822      Min.   :10135   Min.   :1013503    
+##  Class :character   1st Qu.:12889   1st Qu.:1288903    
+##  Mode  :character   Median :13930   Median :1393004    
+##                     Mean   :13192   Mean   :1319240    
+##                     3rd Qu.:13930   3rd Qu.:1393004    
+##                     Max.   :15919   Max.   :1591902    
+##                                                        
+##  DEST_CITY_MARKET_ID     DEST           DEST_CITY_NAME    
+##  Min.   :30135       Length:675822      Length:675822     
+##  1st Qu.:30977       Class :character   Class :character  
+##  Median :30977       Mode  :character   Mode  :character  
+##  Mean   :31426                                            
+##  3rd Qu.:31650                                            
+##  Max.   :35497                                            
+##                                                           
+##  DEST_STATE_NM        DEP_TIME           DEP_DELAY      
+##  Length:675822      Length:675822      Min.   : -58.00  
+##  Class :character   Class :character   1st Qu.:  -5.00  
+##  Mode  :character   Mode  :character   Median :  -2.00  
+##                                        Mean   :  10.73  
+##                                        3rd Qu.:   8.00  
+##                                        Max.   :1964.00  
+##                                        NA&#39;s   :11072    
+##    ARR_TIME           ARR_DELAY           AIR_TIME        DISTANCE     
+##  Length:675822      Min.   : -77.000   Min.   : 13.0   Min.   :  67.0  
+##  Class :character   1st Qu.: -15.000   1st Qu.: 68.0   1st Qu.: 413.0  
+##  Mode  :character   Median :  -6.000   Median :101.0   Median : 717.0  
+##                     Mean   :   4.967   Mean   :113.4   Mean   : 814.2  
+##                     3rd Qu.:   8.000   3rd Qu.:143.0   3rd Qu.:1012.0  
+##                     Max.   :1971.000   Max.   :574.0   Max.   :4243.0  
+##                     NA&#39;s   :13272      NA&#39;s   :13272                   
+##      X27           
+##  Length:675822     
+##  Class :character  
+##  Mode  :character  
+##                    
+##                    
+##                    
+## </code></pre>
+<p><strong>Answer:</strong> <code>print()</code> and <code>head()</code> share overlapped functions. <code>str()</code> and <code>glimpse()</code> also share overlapped functions. <code>View()</code> simply opens the data. <code>summary()</code> returns some useful summary statistics.</p>
+<p>I would pick <code>print()</code>, <code>str()</code>, and <code>summary()</code> as non-redundant, based on their visualization as well as the contents.</p>
+<p><br></p>
+<ol start="2" style="list-style-type: lower-roman">
+<li>Of the non-redundant methods, write a note (max 2 lines per command) that will quickly help someone (perhaps future you!) recall how each command is useful.</li>
+</ol>
+<p><strong>Answer:</strong></p>
+<p><code>print()</code> shows the dimension of the data, the names of variables, the variable types, and preview of the first few lines.</p>
+<p><code>head()</code> shows the same things as <code>print()</code> except for the dimension of the data.</p>
+<p><code>str()</code> shows the same things as <code>print()</code>, but additionally with the classes of the data.</p>
+<p><code>glimpse ()</code> shows the same things as <code>str()</code>, except for the classes of the data.</p>
+<p><code>View()</code> simply opens the data in R.</p>
+<p><code>summary()</code> returns minimum, maximum, mean values, and quartiles of each variable.</p>
+<p><br><br></p>
+</div>
+<div id="section-data-validation" class="section level2">
+<h2>Data Validation</h2>
+<ol style="list-style-type: decimal">
+<li>You should have 675822 rows when you downloaded data for Illinois. Load the package <code>testthat</code> and then test that you have this many rows using the command <code>test_that(&quot;we have the right number of rows&quot;,expect_equal(nrow(data),675822))</code></li>
+</ol>
+<pre class="r"><code># CODE GOES HERE
+library(testthat)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;testthat&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     matches</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     is_null</code></pre>
+<pre class="r"><code>test_that(&quot;we have the right number of rows&quot;, expect_equal(nrow(chi.flights),675822))</code></pre>
+<p><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Because of the conditions you put into the webform, all flights should be to or from Illinois airports. Let’s check this.</li>
+</ol>
+<pre class="r"><code># Filter those flights from and to cities outside of Chicago.
+filter(chi.flights, ORIGIN_STATE_NM != &quot;Illinois&quot; &amp; DEST_STATE_NM != &quot;Illinois&quot;)</code></pre>
+<pre><code>## # A tibble: 0 x 27
+## # ... with 27 variables: YEAR &lt;int&gt;, MONTH &lt;int&gt;, FL_DATE &lt;date&gt;,
+## #   OP_UNIQUE_CARRIER &lt;chr&gt;, OP_CARRIER_AIRLINE_ID &lt;int&gt;,
+## #   OP_CARRIER &lt;chr&gt;, TAIL_NUM &lt;chr&gt;, OP_CARRIER_FL_NUM &lt;int&gt;,
+## #   ORIGIN_AIRPORT_ID &lt;int&gt;, ORIGIN_AIRPORT_SEQ_ID &lt;int&gt;,
+## #   ORIGIN_CITY_MARKET_ID &lt;int&gt;, ORIGIN &lt;chr&gt;, ORIGIN_CITY_NAME &lt;chr&gt;,
+## #   ORIGIN_STATE_NM &lt;chr&gt;, DEST_AIRPORT_ID &lt;int&gt;,
+## #   DEST_AIRPORT_SEQ_ID &lt;int&gt;, DEST_CITY_MARKET_ID &lt;int&gt;, DEST &lt;chr&gt;,
+## #   DEST_CITY_NAME &lt;chr&gt;, DEST_STATE_NM &lt;chr&gt;, DEP_TIME &lt;chr&gt;,
+## #   DEP_DELAY &lt;dbl&gt;, ARR_TIME &lt;chr&gt;, ARR_DELAY &lt;dbl&gt;, AIR_TIME &lt;dbl&gt;,
+## #   DISTANCE &lt;dbl&gt;, X27 &lt;chr&gt;</code></pre>
+<p><strong>Answer:</strong> All flights are from or to Illinois.</p>
+<p><br></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Drop flights to Midway and O’Hare. How many flights are left?</li>
+</ol>
+<pre class="r"><code># CODE GOES HERE
+airports &lt;- c(&quot;MDW&quot;, &quot;ORD&quot;)
+chi.flights.out &lt;- chi.flights[!(chi.flights$DEST %in% airports | chi.flights$ORIGIN  %in% airports),]
+nrow(chi.flights.out)</code></pre>
+<pre><code>## [1] 12240</code></pre>
+<p><strong>Answer:</strong> 12,240 flights are left.</p>
+<p><br></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Among flights whose origin or destination is not Midway or O’Hare, what are the five most common origins? What are the five most common destinations? Where are these cities? Are these origins and destinations inside or outside Illinois? Can you explain why these are the most common origins and destinations?</li>
+</ol>
+<pre class="r"><code># 
+head(arrange(count(chi.flights.out, ORIGIN), desc(n)), 5)</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   ORIGIN     n
+##   &lt;chr&gt;  &lt;int&gt;
+## 1 ATL     2966
+## 2 PIA     2001
+## 3 MLI     1984
+## 4 BMI     1517
+## 5 DTW     1233</code></pre>
+<pre class="r"><code>head(arrange(count(chi.flights.out, ORIGIN_CITY_NAME), desc(n)), 5)</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   ORIGIN_CITY_NAME           n
+##   &lt;chr&gt;                  &lt;int&gt;
+## 1 Atlanta, GA             2966
+## 2 Peoria, IL              2001
+## 3 Moline, IL              1984
+## 4 Bloomington/Normal, IL  1517
+## 5 Detroit, MI             1233</code></pre>
+<pre class="r"><code>head(arrange(count(chi.flights.out, DEST), desc(n)), 5)</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   DEST      n
+##   &lt;chr&gt; &lt;int&gt;
+## 1 ATL    2968
+## 2 PIA    1999
+## 3 MLI    1926
+## 4 BMI    1517
+## 5 DTW    1228</code></pre>
+<pre class="r"><code>head(arrange(count(chi.flights.out, DEST_CITY_NAME), desc(n)), 5)</code></pre>
+<pre><code>## # A tibble: 5 x 2
+##   DEST_CITY_NAME             n
+##   &lt;chr&gt;                  &lt;int&gt;
+## 1 Atlanta, GA             2968
+## 2 Peoria, IL              1999
+## 3 Moline, IL              1926
+## 4 Bloomington/Normal, IL  1517
+## 5 Detroit, MI             1228</code></pre>
+<p><strong>Answer:</strong> The five most common origins are the same as the five most common destinations, which are ATL in Atlanta, GA, PIA in Peoria, IL, MLI in Moline, IL, BMI in Bloomington/Normal, IL, and DTW in Detroit, MI. Except for ATL and DTW that are located outside of Illinois, the other three are located in Illinois. Except for BMI, all the other airports are “international”. Bloomington-Normal is the twin cities having a large population. These facts might be a part of reason for their being the most common origins and destinations.</p>
+<p><br></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Next, limit the sample to flights to or from Midway and O’Hare. How many rows do you think the dataset <em>should</em> have, approximately? Find at least two websites that estimate the number of flights into each airport. Do these estimates agree with what is in the BTS dataset? Do these estimates agree with each other? If they disagree, why do you think they disagree?</li>
+</ol>
+<pre class="r"><code># CODE GOES HERE
+chi.flights.in &lt;- subset(chi.flights, DEST %in% airports | ORIGIN %in% airports)
+nrow(chi.flights.in)</code></pre>
+<pre><code>## [1] 663582</code></pre>
+<p><strong>Answer:</strong> 663.582 flights are from or to MDW or ORD. From the Chicago Department of Aviation, the number of domestic air-carrier flights operated in either ORD or MDW in the year of 2016 is 773,079, which is 594,733 + 178,346. According to the Federal Aviation Administration, the number of domestic air-carrier flights operated in either ORD or MDW in the year of 2016 is 779,890, which is 593,198 + 186,692. Both seem to disagree with the number of flights, all of which report higher numbers probably due to missing reports, different categorization, or neglect of minor airlines in the BTS data.</p>
+<p><br></p>
+<ol start="6" style="list-style-type: decimal">
+<li>Google to figure out the three highest-volume airlines at O’Hare and the three highest-volume airlines out of Midway. Does this agree with what you find in the BTS data? If they disagree, why do you think they disagree?</li>
+</ol>
+<pre class="r"><code># CODE GOES HERE
+chi.flights.MDW &lt;- subset(chi.flights.in, DEST == &quot;MDW&quot; | ORIGIN == &quot;MDW&quot;)
+chi.flights.ORD &lt;- subset(chi.flights.in, DEST == &quot;ORD&quot; | ORIGIN == &quot;ORD&quot;)
+head(arrange(count(chi.flights.MDW, OP_CARRIER), desc(n)), 4)</code></pre>
+<pre><code>## # A tibble: 4 x 2
+##   OP_CARRIER      n
+##   &lt;chr&gt;       &lt;int&gt;
+## 1 WN         167239
+## 2 DL           5166
+## 3 EV           1944
+## 4 OO           1262</code></pre>
+<pre class="r"><code>head(arrange(count(chi.flights.ORD, OP_CARRIER), desc(n)), 3)</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   OP_CARRIER      n
+##   &lt;chr&gt;       &lt;int&gt;
+## 1 UA         141500
+## 2 AA         123990
+## 3 OO          83359</code></pre>
+<p><strong>Answer:</strong> Though the year of the data is not exactly 2016, according to the results of Google search, three highest-volumes at MDW are Southwest Airlines, AirTran Airlines, and Delta Air Lines, and three at ORD are United Airlines, American Airlines, and Skywest Airlines. Information about ORD confirms the BTS data, while information about MDW seems to disagree with the BTS data. However, since the information is outdated (2014 article), which did not consider AirTran Airlines merged into Southwest, the article might be partially aligned with the BTS data. Since the enplanements at Midway are small, the third highest-volumen airlines at Midway is changed easily, which might be a part of the reason why this article seems to disagree with the data.</p>
+<p>source: <a href="https://www.anna.aero/2014/08/06/chicago-midway-southwest-airlines-biggest-base-64-destinations-served-summer/" class="uri">https://www.anna.aero/2014/08/06/chicago-midway-southwest-airlines-biggest-base-64-destinations-served-summer/</a> <a href="https://en.wikipedia.org/wiki/O%27Hare_International_Airport">https://en.wikipedia.org/wiki/O%27Hare_International_Airport</a></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
