@@ -245,12 +245,12 @@ $(document).ready(function () {
 <pre class="r"><code># LOAD LIBRARIES HERE
 library(tidyverse)</code></pre>
 <p><br><br></p>
-<div id="section-public-sector-application-flight-data" class="section level1">
-<h1>Public Sector Application: Flight Data</h1>
+<div id="section-public-sector-application-flight-data" class="section level2">
+<h2><strong>Public Sector Application: Flight Data</strong></h2>
 <p><em>{An international trade organization is hosting a two-day convention in Chicago in 2019. The mayor’s tourism office has asked for some planning help based on historical data from 2016.}</em></p>
 <p><br><br></p>
-<div id="section-download-bts-data" class="section level2">
-<h2>Download BTS data</h2>
+<div id="section-download-bts-data" class="section level3">
+<h3><strong>Download BTS data</strong></h3>
 <ul>
 <li>Download files for the 2016 calendar year data here: <a href="https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236" class="uri">https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236</a>
 <ul>
@@ -271,8 +271,8 @@ chi.flights &lt;- bind_rows(df_list)
 summary(chi.flights)</code></pre>
 <p><br></p>
 </div>
-<div id="section-data-description" class="section level2">
-<h2>Data Description</h2>
+<div id="section-data-description" class="section level3">
+<h3><strong>Data Description</strong></h3>
 <ol style="list-style-type: decimal">
 <li>What is the unique identifier for each flight in the dataset?</li>
 </ol>
@@ -506,8 +506,8 @@ summary(chi.flights)</code></pre>
 <p><code>summary()</code> returns minimum, maximum, mean values, and quartiles of each variable.</p>
 <p><br><br></p>
 </div>
-<div id="section-data-validation" class="section level2">
-<h2>Data Validation</h2>
+<div id="section-data-validation" class="section level3">
+<h3><strong>Data Validation</strong></h3>
 <ol style="list-style-type: decimal">
 <li>You should have 675822 rows when you downloaded data for Illinois. Load the package <code>testthat</code> and then test that you have this many rows using the command <code>test_that(&quot;we have the right number of rows&quot;,expect_equal(nrow(data),675822))</code></li>
 </ol>

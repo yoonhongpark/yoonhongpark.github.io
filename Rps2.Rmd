@@ -20,13 +20,13 @@ library(tidyverse)
 
 <br><br>
 
-# Public Sector Application: Flight Data
+## **Public Sector Application: Flight Data**
 
  *{An international trade organization is hosting a two-day convention in Chicago in 2019. The mayor’s tourism office has asked for some planning help based on historical data from 2016.}*
 
 <br><br>
 
-## Download BTS data
+### **Download BTS data**
 
 * Download files for the 2016 calendar year data here: https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236
     + Warning: The whole file is huge, so this task will be faster and more manageable if you download just the columns and rows that you need. Limit the sample to Illinois and download only the columns that are relevant to the problem set. You will use this data in problem set 3 as well. It might be worth looking over the requirements in ps3.
@@ -48,7 +48,7 @@ summary(chi.flights)
 <br>
 
 
-## Data Description
+### **Data Description**
 
 1. What is the unique identifier for each flight in the dataset?
 
@@ -104,7 +104,7 @@ I would pick `print()`, `str()`, and `summary()` as non-redundant, based on thei
 <br><br>
 
 
-## Data Validation
+### **Data Validation**
 
 1. You should have 675822 rows when you downloaded data for Illinois. Load the package `testthat` and then test that you have this many rows using the command `test_that("we have the right number of rows",expect_equal(nrow(data),675822))`
 
