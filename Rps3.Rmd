@@ -1,0 +1,278 @@
+---
+title: "ps3"
+author: "Yoon Hong Park, Zhuyan Zhang"
+date: "10/15/2018"
+runtime: shiny
+output:
+  html_document
+---
+**Front matter**
+
+This submission is my work alone and complies with the 30531 integrity policy.
+  
+  Add your initials to indicate your agreement: **YHP ZZ**
+
+<br><br>
+
+```{r message=FALSE, warning=FALSE}
+# LOAD LIBRARIES HERE
+library(tidyverse)
+```
+
+<br><br>
+    
+## **Public Sector Application: When should they Mayor’s tourism office host their convention?**
+
+*An international trade organization is hosting a two-day convention in Chicago in 2019. The mayor’s tourism office has asked for some planning help based on historical data from 2016. Use the same data which you analyzed for PS2. Limit the sample to flights to Midway and O’Hare.*
+
+*For each question, please follow the four-part approach laid out in lecture. I have given you the question (step 1). You should write out your query (step 2), show the plot from this query (step 3), and write out the answer to the question in a sentence (step 4).*
+
+```{r, message=FALSE}
+# Load the data
+
+file_list <- 
+  list.files(
+    path = "../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps3-fall-2018-2-2", 
+    pattern = ".csv", 
+    recursive = TRUE
+  )
+
+
+df_list <- 
+  lapply(
+    paste("../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps3-fall-2018-2-2", "/", file_list, sep = ""), 
+    read_csv
+  )
+
+chi.flights <- bind_rows(df_list)
+
+
+# Subset to MDW and ORD
+chi.flights <- 
+  chi.flights %>%
+  filter(DEST == "MDW" | DEST == "ORD")
+```
+
+<br><br>
+
+### **Choose a month**
+
+1. When are average arrival delays into Chicago (measured using the arrival delay variable) the lowest? When are at least 80% of flights on-time? Make a single plot that answers both questions and write a sentence (or two) that answers these questions.
+
+
+```{r}
+## The average delay was calculated based on non-negative values.
+month_arr_delay <- 
+  chi.flights %>%
+  group_by(MONTH) %>%
+  summarize(
+    month_avg_delay = mean(ARR_DELAY, na.rm = TRUE),
+    prop_on_time    = mean(ARR_DELAY <= 0, na.rm = TRUE),
+    on_time         = factor(prop_on_time >= 0.8, levels = c(FALSE, TRUE))
+  )
+
+non_negative_arr_delay <- 
+  chi.flights %>%
+  mutate(ARR_DELAY = ifelse(ARR_DELAY <= 0, 0, ARR_DELAY)) %>%
+  group_by(MONTH) %>%
+  summarise(
+    month_avg_delay = mean(ARR_DELAY, na.rm = TRUE),
+    prop_on_time    = mean(ARR_DELAY == 0, na.rm = TRUE),
+    on_time         = factor(prop_on_time >= 0.8, levels = c(FALSE, TRUE))
+  )
+
+
+ggplot(month_arr_delay) + 
+  geom_col(aes(x    = as.factor(as.numeric(MONTH)), 
+               y    = month_avg_delay,
+               fill = on_time)) + 
+  labs(x    = "Month", 
+       y    = "Average Arrival Delay (mins)", 
+       fill = "On-time flight propotion") +
+  scale_fill_manual(labels = c("At least 80%", "Below 80%"), 
+                    values = c("#fbb4ae", "#b3cde3"), 
+                    drop   = FALSE) 
+
+
+ggplot(non_negative_arr_delay) + 
+  geom_col(aes(x    = as.factor(as.numeric(MONTH)),
+               y    = month_avg_delay,
+               fill = on_time)) + 
+  labs(x    = "Month", 
+       y    = "Average Arrival Delay (mins)", 
+       fill = "On-time flight propotion") +
+  scale_fill_manual(labels = c("At least 80%", "Below 80%"), 
+                    values = c("#fbb4ae", "#b3cde3"), 
+                    drop   = FALSE)
+
+```
+
+**Answer:** If we count negative delays, November has the lowest average delay, and every month has less than 80% of flights on-time. If we only count non-negative delays, October has the lowest average delay, and every month has less than 80% of flights on-time.
+
+
+<br>
+
+2. When are flights to Chicago most common? Make a plot to support your answer and write a sentence to answer the question.
+
+```{r}
+ggplot(chi.flights) + 
+  geom_bar(aes(x = as.factor(as.numeric(MONTH))))
+```
+
+<br>
+
+**Answer:** July has the most common flights to Chicago.
+
+
+<br>
+
+3. What month do you recommend they have the convention and why? Consider both the number of flights to Chicago and that the tourism board would like attendees to arrive in Chicago on-time. Write a few sentences.
+
+  i) In lecture, we covered the idea of “basic” plots and “sophisticated” plots. Make a “basic” plot which provides the minimal amount of information needed to support your written recommendation.
+
+```{r}
+chi.flights %>%
+  mutate(on_time = ifelse(ARR_DELAY <= 0, "on-time", "delayed")) %>%
+  ggplot() + 
+    geom_bar(aes(x     = as.factor(as.numeric(MONTH)),
+                 y     = ..count..,
+                 fill  = on_time,
+                 group = on_time)) +
+    labs(x    = "Month",
+         y    = "Number of Flights",
+         fill = "Flight Status") +
+    scale_fill_manual(labels   = c("Delayed", "On-Time", "Missing"),
+                      values   = c("#fbb4ae", "#b3cde3"),
+                      na.value = "grey50")
+```
+
+**Answer:** We would recommend that they have the convention in October because while October has a relatively high number of flights as well as the high on-time ratio, as shown in the graph above. To be specific, all months that have higher number of flights have lower on-time rate while all months less than October seem to have similar or lower on=time rates. Therefore, October seems to be the best month to satisfy both the international trade organization and attendees.
+
+<br>
+
+  ii) Make a “sophisticated” plot that contains more information about flight delays. What are the sub-messages in the “sophisticated” plots that are not in the “basic” plot? If you could submit only one of the two plots to the mayor’s office, which would you submit and why?
+  
+```{r}
+chi.flights %>%
+  group_by(MONTH) %>%
+  mutate(
+    non_neg_arr_delay = ifelse(ARR_DELAY <= 0, 0, ARR_DELAY),
+    on_time = ifelse(ARR_DELAY <= 0, "on-time", "delayed")
+  ) %>%
+  summarise(
+    rate_cancelled = sum(is.na(DEP_DELAY)) / n(),
+    avg_arr_delay = mean(non_neg_arr_delay, na.rm = TRUE)
+  ) %>%
+  ggplot(aes(x     = rate_cancelled,
+             y     = avg_arr_delay,
+             shape = as.factor(as.numeric(MONTH)))) + 
+    geom_point() +
+    labs(x     = "Cancellation Rate",
+         y     = "Average Arrival Delay",
+         shape = "Month") +
+    scale_shape_manual(values = 1:12) 
+```
+
+
+**Answer:** The plot above generates the specific details of the number of flights.
+
+<br>
+
+iii) You have (hopefully) reached the frontier of what you can do to answer this question with the data that you have. If you wanted to push the frontier further of figuring out when the convention should be, what are two other public datasets that would be useful in making a decision? Include links to the datasets and the names of the variables you would analyze. We do not expect you to actually analyze these other datasets.
+
+**Answer:** For further information to choose the optimal date for the convention, it is also necessary to analyze the weather variables such as the "Average Temperature," "Precipitation," etc. (The data set is available at National Weather Service Forecast Office (https://w2.weather.gov/climate/xmacis.php?wfo=lot). Also, for the security issue, it would be also beneficial to consider the number of crimes near the convention place by subsetting the data with "Date," "Primary Type," and "Community Area." The crime dataset is available at the City of Chicago Data Portal(https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2). 
+
+
+<br><br>
+
+### **Pick an airline**
+
+1. Now that you’ve decided on a date, recommend an airline to take in order to arrive on time. The attendees are not price-sensitive, so you don’t need to worry about cost. Make a “basic” plot and a “sophisiticated” plot to support your recommendation. Which plot do you prefer and why?
+
+```{r}
+# Simple Plot (On-time rate by airline)
+chi.flights %>%
+  filter(MONTH == 10) %>%
+  group_by(OP_UNIQUE_CARRIER) %>%
+  summarise(prop_on_time = sum(ARR_DELAY <= 0, na.rm = TRUE) / n()) %>%
+  ggplot() +
+    geom_col(aes(x = OP_UNIQUE_CARRIER,
+                 y = prop_on_time)) +
+    labs(x = "Airline",
+         y = "Proportion of On-time") 
+
+
+## Sophisticated Plot (Yoon: I would like to go with the last one.)
+chi.flights %>%
+  filter(MONTH == 10) %>%
+  mutate(non_neg_arr_delay = ifelse(ARR_DELAY <= 0, 0, ARR_DELAY)) %>%
+  group_by(OP_UNIQUE_CARRIER) %>%
+  summarise(
+    avg_arr_delay = mean(non_neg_arr_delay, na.rm = TRUE),
+    prop_on_time  = sum(ARR_DELAY <= 0, na.rm = TRUE) / n()
+  ) %>%
+  ggplot(aes(x = avg_arr_delay,
+             y = prop_on_time)) +
+    geom_point(aes(shape = OP_UNIQUE_CARRIER)) +
+    geom_smooth(method = "lm")  + 
+    scale_shape_manual(values=1:11) 
+
+chi.flights %>%
+  filter(MONTH == 10) %>%
+  mutate(non_neg_arr_delay = ifelse(ARR_DELAY <= 0, 0, ARR_DELAY)) %>%
+  group_by(OP_UNIQUE_CARRIER) %>%
+  ggplot(aes(x = ARR_DELAY,
+             y = AIR_TIME)) +
+    geom_point(aes(color = OP_UNIQUE_CARRIER)) +
+    geom_smooth() +
+    facet_wrap(vars(OP_UNIQUE_CARRIER))
+
+chi.flights %>%
+  filter(MONTH == 10) %>%
+  mutate(non_neg_arr_delay = ifelse(ARR_DELAY <= 0, 0, ARR_DELAY)) %>%
+  group_by(OP_UNIQUE_CARRIER) %>%
+  summarise(
+    avg_arr_delay = mean(non_neg_arr_delay, na.rm = TRUE),
+    rate_cancelled = sum(is.na(DEP_DELAY)) / n(),
+    prop_on_time = sum(ARR_DELAY <= 0, na.rm = TRUE) / n()
+  ) %>%
+  ggplot(aes(x = rate_cancelled,
+             y = avg_arr_delay)) +
+    geom_point(aes(shape = OP_UNIQUE_CARRIER)) +
+    geom_smooth(method = "lm")  + 
+    scale_shape_manual(values = 1:11) +
+    labs(x     = "Cancellation Rate",
+         y     = "Average Arrival Delay",
+         shape = "Airlines")
+
+```
+
+**Answer:** Based on our earlier recommendation for the month of convention, which is October, Delta Airline is recommended. First of all, Delta has the highest on-time rate among all carriers, as shown in the basic plot. Also, the sophisticated plot confirms that Delta has the lowest cancellation rate as well as relativley lower average arrival delays than other carriers. Though Alaska Airlines shows slighlty lower arrival delays, such a difference is negligible. Also, the on-time rate is slightly more important than average delays.(If you are more likely to be on time, then you would not need to care about the amount of delays.) Therefore, Delta Airline is recommended.
+
+<br><br>
+
+### **Reconsider the date?**
+1. The trade organization sends an update. Some of its most important members are in Greer, South Carolina. Does that change your recommendation of when to host the convention? Make a plot that supports your new recommendation and shows why it is superior to your old recommendation.
+
+```{r}
+chi.flights %>%
+  filter(MONTH == 10, ORIGIN == "GSP") %>%
+  mutate(non_neg_arr_delay = ifelse(ARR_DELAY <= 0, 0, ARR_DELAY)) %>%
+  group_by(OP_UNIQUE_CARRIER) %>%
+  summarise(
+    avg_arr_delay = mean(non_neg_arr_delay, na.rm = TRUE),
+    rate_cancelled = sum(is.na(DEP_DELAY)) / n(),
+    prop_on_time = sum(ARR_DELAY <= 0, na.rm = TRUE) / n()
+  ) %>%
+  ggplot(aes(x = prop_on_time,
+             y = avg_arr_delay)) +
+    geom_point(aes(shape = OP_UNIQUE_CARRIER)) +
+    geom_smooth(method = "lm")  + 
+    scale_shape_manual(values = 1:11) 
+
+unique(chi.flights[chi.flights$ORIGIN == "GSP",]$OP_UNIQUE_CARRIER)
+unique(chi.flights[chi.flights$OP_UNIQUE_CARRIER == "WN" & chi.flights$ORIGIN =="GSP",]$MONTH)
+
+```
+
+**Answer:** Yes, our recommendation is changed. Those important figures should use Greenville-Spartanburg International Airport where only three carriers are operated between this airport and Chicago. However, only two out of the three carriers operate in October, Skywest and ExpressJet. Between the two having almost same on-time rates, ExpressJet shows less avg_arr_delay than Skywest, but to consider the overall quality of airlines shown in 2.2.1. even ExpressJet cannot be recommended for all the other attendees. The carrier not operating in October is Southwest, which seems to be relatively less operates only from January to April. Based on the graphs from 1.2.3. a) and b), April seems to have the lowest cancellation rate, relatively higher on-time rate, and smaller average arrival delays among those four months, so April will be recommended.

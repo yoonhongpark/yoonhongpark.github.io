@@ -1,0 +1,13 @@
+
+==========================================================================
+                                                                          
+          extreme  adjusted extreme extreme paired adjusted extreme paired
+            (1)          (2)             (3)                 (4)          
+--------------------------------------------------------------------------
+treatment -0.0134      -0.0129        -0.0142**           -0.0138**       
+          (0.0073)     (0.0074)        (0.0047)           (0.0048)        
+                                                                          
+--------------------------------------------------------------------------
+Notes:    ***Significant at the 0.1 percent level.                        
+          **Significant at the 1 percent level.                           
+          *Significant at the 5 percent level.                            

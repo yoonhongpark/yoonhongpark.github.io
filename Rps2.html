@@ -190,7 +190,19 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Mapping
+    Program Evaluation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pePS1.html">Mexican Universal Health Insurance</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    GIS and Spatial Analysis
      
     <span class="caret"></span>
   </a>
@@ -214,12 +226,17 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="Rps2.html">Flight Data</a>
+      <a href="Rps4.html">Health Care Data</a>
+    </li>
+    <li>
+      <a href="Rps3.html">Flight Data 2</a>
+    </li>
+    <li>
+      <a href="Rps2.html">Flight Data 1</a>
     </li>
   </ul>
 </li>
 <li class="dropdown-header">Python Coding</li>
-<li class="dropdown-header">Study Replications</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -247,8 +264,8 @@ library(tidyverse)</code></pre>
 <p><br><br></p>
 <div id="section-public-sector-application-flight-data" class="section level2">
 <h2><strong>Public Sector Application: Flight Data</strong></h2>
-<p><em>{An international trade organization is hosting a two-day convention in Chicago in 2019. The mayor’s tourism office has asked for some planning help based on historical data from 2016.}</em></p>
-<p><br><br></p>
+<p><em>An international trade organization is hosting a two-day convention in Chicago in 2019. The mayor’s tourism office has asked for some planning help based on historical data from 2016.</em></p>
+<p><br></p>
 <div id="section-download-bts-data" class="section level3">
 <h3><strong>Download BTS data</strong></h3>
 <ul>
@@ -260,7 +277,7 @@ library(tidyverse)</code></pre>
 <li>Read it into R using <code>chi.flights &lt;- read_csv(&quot;data.csv&quot;)</code> and use the bind_rows command to stitch together the monthly files into a yearlong file.
 <ul>
 <li>Note: Rmd files will look for data in the same folder as the file. You likely downloaded data into your Downloads directory. You can point R to look in downloads e.g. (for Mac and Linux) <code>chi.flights &lt;- read_csv(&quot;~/Downloads/data.csv&quot;)</code> or move the files to your current working directory.</li>
-<li>Warning: <code>setwd()</code> does not work inside of Rmd chunks. See &lt;<strong>this post</strong>&gt;<a href="http://pbahr.github.io/tips/2016/04/16/fix_rmarkdown_working_directory_issue">link</a> for an alternative solution.</li>
+<li>Warning: <code>setwd()</code> does not work inside of Rmd chunks. See <a href="http://pbahr.github.io/tips/2016/04/16/fix_rmarkdown_working_directory_issue"><strong>this post</strong></a> for an alternative solution.</li>
 </ul></li>
 </ul>
 <pre class="r"><code># Import data (Cited from https://stackoverflow.com/questions/45783120/assocating-excel-file-name-with-dplyrbind-rows-id)

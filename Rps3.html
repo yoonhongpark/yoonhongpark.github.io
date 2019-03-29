@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yoon Hong Park, Zhuyan Zhang" />
+
+<meta name="date" content="2018-10-15" />
+
+<title>ps3</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Yoon's Archive</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Program Evaluation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pePS1.html">Mexican Universal Health Insurance</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    GIS and Spatial Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapping3-ChiTrauma.html">Chicago Trauma Center Service Area</a>
+    </li>
+    <li>
+      <a href="mapping2-ILInc.html">Illinois Income Distribution</a>
+    </li>
+    <li>
+      <a href="mapping1-ChiHIV.html">Chicago HIV Prevalence</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Policy Analysis with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Rps4.html">Health Care Data</a>
+    </li>
+    <li>
+      <a href="Rps3.html">Flight Data 2</a>
+    </li>
+    <li>
+      <a href="Rps2.html">Flight Data 1</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown-header">Python Coding</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="section-header">
+
+
+
+<h1 class="title toc-ignore">ps3</h1>
+<h4 class="author"><em>Yoon Hong Park, Zhuyan Zhang</em></h4>
+<h4 class="date"><em>10/15/2018</em></h4>
+
+</div>
+
+
+<p><strong>Front matter</strong></p>
+<p>This submission is my work alone and complies with the 30531 integrity policy.</p>
+<p>Add your initials to indicate your agreement: <strong>YHP ZZ</strong></p>
+<p><br><br></p>
+<pre class="r"><code># LOAD LIBRARIES HERE
+library(tidyverse)</code></pre>
+<p><br><br></p>
+<div id="section-public-sector-application-when-should-they-mayors-tourism-office-host-their-convention" class="section level2">
+<h2><strong>Public Sector Application: When should they Mayor’s tourism office host their convention?</strong></h2>
+<p><em>An international trade organization is hosting a two-day convention in Chicago in 2019. The mayor’s tourism office has asked for some planning help based on historical data from 2016. Use the same data which you analyzed for PS2. Limit the sample to flights to Midway and O’Hare.</em></p>
+<p><em>For each question, please follow the four-part approach laid out in lecture. I have given you the question (step 1). You should write out your query (step 2), show the plot from this query (step 3), and write out the answer to the question in a sentence (step 4).</em></p>
+<pre class="r"><code># Load the data
+
+file_list &lt;- 
+  list.files(
+    path = &quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps3-fall-2018-2-2&quot;, 
+    pattern = &quot;.csv&quot;, 
+    recursive = TRUE
+  )
+
+
+df_list &lt;- 
+  lapply(
+    paste(&quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps3-fall-2018-2-2&quot;, &quot;/&quot;, file_list, sep = &quot;&quot;), 
+    read_csv
+  )</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]
+
+## Warning: Missing column names filled in: &#39;X26&#39; [26]</code></pre>
+<pre class="r"><code>chi.flights &lt;- bind_rows(df_list)
+
+
+# Subset to MDW and ORD
+chi.flights &lt;- 
+  chi.flights %&gt;%
+  filter(DEST == &quot;MDW&quot; | DEST == &quot;ORD&quot;)</code></pre>
+<p><br><br></p>
+<div id="section-choose-a-month" class="section level3">
+<h3><strong>Choose a month</strong></h3>
+<ol style="list-style-type: decimal">
+<li>When are average arrival delays into Chicago (measured using the arrival delay variable) the lowest? When are at least 80% of flights on-time? Make a single plot that answers both questions and write a sentence (or two) that answers these questions.</li>
+</ol>
+<pre class="r"><code>## The average delay was calculated based on non-negative values.
+month_arr_delay &lt;- 
+  chi.flights %&gt;%
+  group_by(MONTH) %&gt;%
+  summarize(
+    month_avg_delay = mean(ARR_DELAY, na.rm = TRUE),
+    prop_on_time    = mean(ARR_DELAY &lt;= 0, na.rm = TRUE),
+    on_time         = factor(prop_on_time &gt;= 0.8, levels = c(FALSE, TRUE))
+  )
+
+non_negative_arr_delay &lt;- 
+  chi.flights %&gt;%
+  mutate(ARR_DELAY = ifelse(ARR_DELAY &lt;= 0, 0, ARR_DELAY)) %&gt;%
+  group_by(MONTH) %&gt;%
+  summarise(
+    month_avg_delay = mean(ARR_DELAY, na.rm = TRUE),
+    prop_on_time    = mean(ARR_DELAY == 0, na.rm = TRUE),
+    on_time         = factor(prop_on_time &gt;= 0.8, levels = c(FALSE, TRUE))
+  )
+
+
+ggplot(month_arr_delay) + 
+  geom_col(aes(x    = as.factor(as.numeric(MONTH)), 
+               y    = month_avg_delay,
+               fill = on_time)) + 
+  labs(x    = &quot;Month&quot;, 
+       y    = &quot;Average Arrival Delay (mins)&quot;, 
+       fill = &quot;On-time flight propotion&quot;) +
+  scale_fill_manual(labels = c(&quot;At least 80%&quot;, &quot;Below 80%&quot;), 
+                    values = c(&quot;#fbb4ae&quot;, &quot;#b3cde3&quot;), 
+                    drop   = FALSE) </code></pre>
+<p><img src="Rps3_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(non_negative_arr_delay) + 
+  geom_col(aes(x    = as.factor(as.numeric(MONTH)),
+               y    = month_avg_delay,
+               fill = on_time)) + 
+  labs(x    = &quot;Month&quot;, 
+       y    = &quot;Average Arrival Delay (mins)&quot;, 
+       fill = &quot;On-time flight propotion&quot;) +
+  scale_fill_manual(labels = c(&quot;At least 80%&quot;, &quot;Below 80%&quot;), 
+                    values = c(&quot;#fbb4ae&quot;, &quot;#b3cde3&quot;), 
+                    drop   = FALSE)</code></pre>
+<p><img src="Rps3_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<p><strong>Answer:</strong> If we count negative delays, November has the lowest average delay, and every month has less than 80% of flights on-time. If we only count non-negative delays, October has the lowest average delay, and every month has less than 80% of flights on-time.</p>
+<p><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li>When are flights to Chicago most common? Make a plot to support your answer and write a sentence to answer the question.</li>
+</ol>
+<pre class="r"><code>ggplot(chi.flights) + 
+  geom_bar(aes(x = as.factor(as.numeric(MONTH))))</code></pre>
+<p><img src="Rps3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><br></p>
+<p><strong>Answer:</strong> July has the most common flights to Chicago.</p>
+<p><br></p>
+<ol start="3" style="list-style-type: decimal">
+<li>What month do you recommend they have the convention and why? Consider both the number of flights to Chicago and that the tourism board would like attendees to arrive in Chicago on-time. Write a few sentences.</li>
+</ol>
+<ol style="list-style-type: lower-roman">
+<li>In lecture, we covered the idea of “basic” plots and “sophisticated” plots. Make a “basic” plot which provides the minimal amount of information needed to support your written recommendation.</li>
+</ol>
+<pre class="r"><code>chi.flights %&gt;%
+  mutate(on_time = ifelse(ARR_DELAY &lt;= 0, &quot;on-time&quot;, &quot;delayed&quot;)) %&gt;%
+  ggplot() + 
+    geom_bar(aes(x     = as.factor(as.numeric(MONTH)),
+                 y     = ..count..,
+                 fill  = on_time,
+                 group = on_time)) +
+    labs(x    = &quot;Month&quot;,
+         y    = &quot;Number of Flights&quot;,
+         fill = &quot;Flight Status&quot;) +
+    scale_fill_manual(labels   = c(&quot;Delayed&quot;, &quot;On-Time&quot;, &quot;Missing&quot;),
+                      values   = c(&quot;#fbb4ae&quot;, &quot;#b3cde3&quot;),
+                      na.value = &quot;grey50&quot;)</code></pre>
+<p><img src="Rps3_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><strong>Answer:</strong> We would recommend that they have the convention in October because while October has a relatively high number of flights as well as the high on-time ratio, as shown in the graph above. To be specific, all months that have higher number of flights have lower on-time rate while all months less than October seem to have similar or lower on=time rates. Therefore, October seems to be the best month to satisfy both the international trade organization and attendees.</p>
+<p><br></p>
+<ol start="2" style="list-style-type: lower-roman">
+<li>Make a “sophisticated” plot that contains more information about flight delays. What are the sub-messages in the “sophisticated” plots that are not in the “basic” plot? If you could submit only one of the two plots to the mayor’s office, which would you submit and why?</li>
+</ol>
+<pre class="r"><code>chi.flights %&gt;%
+  group_by(MONTH) %&gt;%
+  mutate(
+    non_neg_arr_delay = ifelse(ARR_DELAY &lt;= 0, 0, ARR_DELAY),
+    on_time = ifelse(ARR_DELAY &lt;= 0, &quot;on-time&quot;, &quot;delayed&quot;)
+  ) %&gt;%
+  summarise(
+    rate_cancelled = sum(is.na(DEP_DELAY)) / n(),
+    avg_arr_delay = mean(non_neg_arr_delay, na.rm = TRUE)
+  ) %&gt;%
+  ggplot(aes(x     = rate_cancelled,
+             y     = avg_arr_delay,
+             shape = as.factor(as.numeric(MONTH)))) + 
+    geom_point() +
+    labs(x     = &quot;Cancellation Rate&quot;,
+         y     = &quot;Average Arrival Delay&quot;,
+         shape = &quot;Month&quot;) +
+    scale_shape_manual(values = 1:12) </code></pre>
+<p><img src="Rps3_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><strong>Answer:</strong> The plot above generates the specific details of the number of flights.</p>
+<p><br></p>
+<ol start="3" style="list-style-type: lower-roman">
+<li>You have (hopefully) reached the frontier of what you can do to answer this question with the data that you have. If you wanted to push the frontier further of figuring out when the convention should be, what are two other public datasets that would be useful in making a decision? Include links to the datasets and the names of the variables you would analyze. We do not expect you to actually analyze these other datasets.</li>
+</ol>
+<p><strong>Answer:</strong> For further information to choose the optimal date for the convention, it is also necessary to analyze the weather variables such as the “Average Temperature,” “Precipitation,” etc. (The data set is available at National Weather Service Forecast Office (<a href="https://w2.weather.gov/climate/xmacis.php?wfo=lot" class="uri">https://w2.weather.gov/climate/xmacis.php?wfo=lot</a>). Also, for the security issue, it would be also beneficial to consider the number of crimes near the convention place by subsetting the data with “Date,” “Primary Type,” and “Community Area.” The crime dataset is available at the City of Chicago Data Portal(<a href="https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2" class="uri">https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2</a>).</p>
+<p><br><br></p>
+</div>
+<div id="section-pick-an-airline" class="section level3">
+<h3><strong>Pick an airline</strong></h3>
+<ol style="list-style-type: decimal">
+<li>Now that you’ve decided on a date, recommend an airline to take in order to arrive on time. The attendees are not price-sensitive, so you don’t need to worry about cost. Make a “basic” plot and a “sophisiticated” plot to support your recommendation. Which plot do you prefer and why?</li>
+</ol>
+<pre class="r"><code># Simple Plot (On-time rate by airline)
+chi.flights %&gt;%
+  filter(MONTH == 10) %&gt;%
+  group_by(OP_UNIQUE_CARRIER) %&gt;%
+  summarise(prop_on_time = sum(ARR_DELAY &lt;= 0, na.rm = TRUE) / n()) %&gt;%
+  ggplot() +
+    geom_col(aes(x = OP_UNIQUE_CARRIER,
+                 y = prop_on_time)) +
+    labs(x = &quot;Airline&quot;,
+         y = &quot;Proportion of On-time&quot;) </code></pre>
+<p><img src="Rps3_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>## Sophisticated Plot (Yoon: I would like to go with the last one.)
+chi.flights %&gt;%
+  filter(MONTH == 10) %&gt;%
+  mutate(non_neg_arr_delay = ifelse(ARR_DELAY &lt;= 0, 0, ARR_DELAY)) %&gt;%
+  group_by(OP_UNIQUE_CARRIER) %&gt;%
+  summarise(
+    avg_arr_delay = mean(non_neg_arr_delay, na.rm = TRUE),
+    prop_on_time  = sum(ARR_DELAY &lt;= 0, na.rm = TRUE) / n()
+  ) %&gt;%
+  ggplot(aes(x = avg_arr_delay,
+             y = prop_on_time)) +
+    geom_point(aes(shape = OP_UNIQUE_CARRIER)) +
+    geom_smooth(method = &quot;lm&quot;)  + 
+    scale_shape_manual(values=1:11) </code></pre>
+<p><img src="Rps3_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<pre class="r"><code>chi.flights %&gt;%
+  filter(MONTH == 10) %&gt;%
+  mutate(non_neg_arr_delay = ifelse(ARR_DELAY &lt;= 0, 0, ARR_DELAY)) %&gt;%
+  group_by(OP_UNIQUE_CARRIER) %&gt;%
+  ggplot(aes(x = ARR_DELAY,
+             y = AIR_TIME)) +
+    geom_point(aes(color = OP_UNIQUE_CARRIER)) +
+    geom_smooth() +
+    facet_wrap(vars(OP_UNIQUE_CARRIER))</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<pre><code>## Warning: Removed 181 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 181 rows containing missing values (geom_point).</code></pre>
+<p><img src="Rps3_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
+<pre class="r"><code>chi.flights %&gt;%
+  filter(MONTH == 10) %&gt;%
+  mutate(non_neg_arr_delay = ifelse(ARR_DELAY &lt;= 0, 0, ARR_DELAY)) %&gt;%
+  group_by(OP_UNIQUE_CARRIER) %&gt;%
+  summarise(
+    avg_arr_delay = mean(non_neg_arr_delay, na.rm = TRUE),
+    rate_cancelled = sum(is.na(DEP_DELAY)) / n(),
+    prop_on_time = sum(ARR_DELAY &lt;= 0, na.rm = TRUE) / n()
+  ) %&gt;%
+  ggplot(aes(x = rate_cancelled,
+             y = avg_arr_delay)) +
+    geom_point(aes(shape = OP_UNIQUE_CARRIER)) +
+    geom_smooth(method = &quot;lm&quot;)  + 
+    scale_shape_manual(values = 1:11) +
+    labs(x     = &quot;Cancellation Rate&quot;,
+         y     = &quot;Average Arrival Delay&quot;,
+         shape = &quot;Airlines&quot;)</code></pre>
+<p><img src="Rps3_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
+<p><strong>Answer:</strong> Based on our earlier recommendation for the month of convention, which is October, Delta Airline is recommended. First of all, Delta has the highest on-time rate among all carriers, as shown in the basic plot. Also, the sophisticated plot confirms that Delta has the lowest cancellation rate as well as relativley lower average arrival delays than other carriers. Though Alaska Airlines shows slighlty lower arrival delays, such a difference is negligible. Also, the on-time rate is slightly more important than average delays.(If you are more likely to be on time, then you would not need to care about the amount of delays.) Therefore, Delta Airline is recommended.</p>
+<p><br><br></p>
+</div>
+<div id="section-reconsider-the-date" class="section level3">
+<h3><strong>Reconsider the date?</strong></h3>
+<ol style="list-style-type: decimal">
+<li>The trade organization sends an update. Some of its most important members are in Greer, South Carolina. Does that change your recommendation of when to host the convention? Make a plot that supports your new recommendation and shows why it is superior to your old recommendation.</li>
+</ol>
+<pre class="r"><code>chi.flights %&gt;%
+  filter(MONTH == 10, ORIGIN == &quot;GSP&quot;) %&gt;%
+  mutate(non_neg_arr_delay = ifelse(ARR_DELAY &lt;= 0, 0, ARR_DELAY)) %&gt;%
+  group_by(OP_UNIQUE_CARRIER) %&gt;%
+  summarise(
+    avg_arr_delay = mean(non_neg_arr_delay, na.rm = TRUE),
+    rate_cancelled = sum(is.na(DEP_DELAY)) / n(),
+    prop_on_time = sum(ARR_DELAY &lt;= 0, na.rm = TRUE) / n()
+  ) %&gt;%
+  ggplot(aes(x = prop_on_time,
+             y = avg_arr_delay)) +
+    geom_point(aes(shape = OP_UNIQUE_CARRIER)) +
+    geom_smooth(method = &quot;lm&quot;)  + 
+    scale_shape_manual(values = 1:11) </code></pre>
+<p><img src="Rps3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>unique(chi.flights[chi.flights$ORIGIN == &quot;GSP&quot;,]$OP_UNIQUE_CARRIER)</code></pre>
+<pre><code>## [1] &quot;OO&quot; &quot;WN&quot; &quot;EV&quot;</code></pre>
+<pre class="r"><code>unique(chi.flights[chi.flights$OP_UNIQUE_CARRIER == &quot;WN&quot; &amp; chi.flights$ORIGIN ==&quot;GSP&quot;,]$MONTH)</code></pre>
+<pre><code>## [1] 2 3 4 1</code></pre>
+<p><strong>Answer:</strong> Yes, our recommendation is changed. Those important figures should use Greenville-Spartanburg International Airport where only three carriers are operated between this airport and Chicago. However, only two out of the three carriers operate in October, Skywest and ExpressJet. Between the two having almost same on-time rates, ExpressJet shows less avg_arr_delay than Skywest, but to consider the overall quality of airlines shown in 2.2.1. even ExpressJet cannot be recommended for all the other attendees. The carrier not operating in October is Southwest, which seems to be relatively less operates only from January to April. Based on the graphs from 1.2.3. a) and b), April seems to have the lowest cancellation rate, relatively higher on-time rate, and smaller average arrival delays among those four months, so April will be recommended.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

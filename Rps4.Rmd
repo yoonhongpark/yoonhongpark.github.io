@@ -1,0 +1,245 @@
+---
+title: "Problem Set 4"
+author: "Yoon Hong Park and Gonzalo Pons"
+date: "October 28, 2018"
+runtime: shiny
+output:
+  html_document
+---
+**Front matter**
+
+This submission is my work alone and complies with the 30531 integrity policy.
+  
+  Add your initials to indicate your agreement: **YHP GP**
+
+
+```{r message=FALSE, warning=FALSE}
+# LOAD LIBRARIES HERE
+library(tidyverse)
+```
+
+<br><br>
+
+## **Public Sector Application: Home Health Care Data**
+*The Department of Health and Human Services Office of the Inspector General is interested in identifying home health agency that are potentially over-billing Medicare. However, nursing homes could also be billing a lot because they have unusually sick patients. We wouldn’t want to punish nursing homes that are taking sicker patients.* <**Here**>[Link]("https://oig.hhs.gov/oei/reports/oei-05-16-00031.pdf") *is the report we will learn more about on in next Monday’s guest lecture. Please read it in advance of the guest lecture.*
+
+In several places, the problem set asks you to explain something “in your own words”. In this situation, you should not copy-paste a definition you find online. Instead, do enough reading online until you feel like you understand the concept. Then, call your mother (or your roommate or your friend who is not a Harris student) and explain each concept to her. Finally, write down the concept, as you explained it to your mother.
+
+<br>
+
+### **Data Integration**
+
+Some of the variable names in the dataset do not comply with the style guide. There is no need to change source variable names. However, if you create a new variable, that should comply with the style guide.
+
+<br>
+
+1. Find and download Medicare’s home health public use files (PUF) by provider for 2014. Open the file in Excel. What does it mean when there is a "*" listed in this file? Read the file into R. You will get some warnings when you read it in. What are the warnings? Name the data frame `provider`. Use `test_that` to check that you have 10867 rows.
+
+**Answer:**
+I sense "*" means missing values. <br>
+
+Initially I tried with `read_csv` but it didn't allow me because it was an xlsx instead of csv. Hence, following the class ppt I downloaded and used `read_xlsx`. This avoided all formatting problems.
+
+```{r}
+# Load Libraries to test and read xlsx file
+library(testthat)
+library(readxl)
+
+provider <- 
+  read_xlsx("../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/HH PUF - Provider 2014.xlsx",
+            sheet = "Provider 2014",
+            col_names = TRUE,
+            na = c("", "*"))
+
+test_that("provider has 10,867 rows",
+          expect_equal(nrow(provider), 10867))
+```
+
+<br><br>
+
+2. Find and download Medicare’s home health PUF by provider and HHRG for 2014. Read it into R and name it `provider_hhrg`. Use `test_that` to check that you have 104920 rows.
+
+```{r}
+provider_hhrg <- 
+  read_xlsx("../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/HH PUF - Provider by HHRG 2014.xlsx",
+            sheet = "Provider by HHRG 2014",
+            col_names = TRUE,
+            na = c("", "*"))
+
+test_that("provider_hhrg has 104,920 rows",
+          expect_equal(nrow(provider_hhrg), 104920))
+```
+
+<br><br>
+
+3. Download Medicare’s 2014 case-mix weights using the file here. Name the data frame `case_mix_weight`. Name the variable for 2014 weights `weights_2014`. Drop the column named “2013 HH PPS Case-Mix Weights”. Use `test_that` to check that you have 153 rows.
+```{r}
+case_mix_weight <- 
+  read_xlsx("../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/CY 2014 Final HH PPS Case-Mix Weights.xlsx",
+            sheet = "Weights1",
+            col_names = TRUE)
+
+case_mix_weight <- 
+  case_mix_weight %>%
+  transmute(
+    `Payment group`,
+    `Description`,
+    `Clinical, Functional, and Service Levels`,
+    weights_2014 = `2014 Final HH PPS Case-Mix Weights`
+  )
+
+test_that("case_mix_weight has 153 rows", 
+          expect_equal(nrow(case_mix_weight), 153))
+
+```
+
+<br><br>
+
+### **Institutional Research**
+*All administrative datasets contain acronyms and reflect concepts that will take some time to understand. As a data analyst, you will always know less about the institutions than the people who run and staff them. However, program staff have limited time to talk to you and so you need to figure out as much as you can from Google before you meet with them.*
+
+
+1. What are five examples of services that home health agencies bill Medicare for?
+
+**Answer:**
+
+From this <website>[Link](https://www.medicare.gov/coverage/home-health-services) I found that they bill for:
+
+a. Part-time or intermittent skilled nursing care
+b. Part-time or intermittent home health aide care
+c. Physical therapy
+d. Occupational therapy
+e. Speech-language pathology services
+
+<br>
+
+2. In your own words, explain what is an HHRG code.
+
+**Answer:** 
+
+"HHRG codes" are represented by "HIPPS codes" on medical claims. They are sometimes refered to as each other. HHRG stands for "home health resource group" and HIPPS stands for "home health prospective payment system". All these acronyms refer to a system used by home health agencies(HHA; providers of skilled nursing care) and medicare to determine the base payment for each type of service, adjusted for several characteristics of the beneficiary, the location, and similars. <br>
+
+HHRG codes consist of 4 letters starting with a number indicating whether the episodes are early or late followed by three alphabet letters, each of which indicates how wide a range of clinical care is provided, how well they function in terms of bathing, dressing, etc., and how often therapy visits occurred. Based on HHRG codes, the "HIPPS" codes are composed by 5 letters, having the last letter to indicate how well non-routine medical supplies are provided (or not provided). Non-routine medical supplies are used for a patient's specific illness, which are different from routine medical supplies used for the usual home visits. <br>
+
+Citation: https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/ProspMedicareFeeSvcPmtGen/Downloads/hippsusesv4.pdf http://www.mhha.org/wp-content/uploads/Committees/Regulatory/HH-Billing-Basics.pdf http://www.medpac.gov/docs/default-source/payment-basics/medpac_payment_basics_16_hha_final.pdf 
+https://www.simione.com/application/files/8214/8933/0167/Simione_Medical_Supplies_Romano_dec2014_r2.pdf
+
+<br>
+
+
+3. In your own words, explain what is an HCC score. What does it mean for a patient to have a score of 0.75? of 1.5?
+
+**Answer:**
+
+Under the Affordable Care Act (ACA), insurance companies cannot inflate or deny coverage to ill people. Under this law, healthy people partially subsidize the health coverage of ill people, so it can be accessible for everyone. Medicare and insurance companies calculate the risk/expense each patient represents, which is called RAF (risk adjustment factor), through the Hierarchical Condition Categories (HCC). Hence, HCC is not actually a score, but a list of categories. (However, they are commonly used to refer the same idea) These categories include several deseases, such as depression, asthma or diabetes, and are based on demographic, clinical history, and in-person assesments. Medicare uses these HCC and RAF to reimburse health providers based on the health of their members.
+
+Different categories add different levels of risk. In general, its very difficult to determine why a person had 1.5 or 0.75 as a score. Essentially, this score work as a multiplication factor to the average cost for the specific county of the beneficiary, which will determine how much Medicare will pay for you monthyl. If the average in that county is 1000, then they would pay 1000 x 1.5 = 1500 or 1000 x 0.75 = 750.
+
+Citation: https://www.medirevv.com/blog/what-is-hcc-coding-understanding-todays-risk-adjustment-model https://www.tomdavisconsulting.com/raf-scores-calculated/
+
+<br>
+
+
+4. In your own words, explain what a LUPA is.
+
+**Answer:**
+
+LUPA stands for "Low Utilization Payment Adjustment". Usually Medicare reimburses home health agencies by "episodes" of 60 days, which include several beneficiaries' visits for the same illness or problem. This has a set of rules for reimbursment from Medicare, which is what the agencies usually expect. However, if an episode demands 4 visits or less, Medicare applies a LUPA and pays "per visit", which represents a significant decrease in the reimbursment that the agencies recieve.
+
+Citation: https://www.axxess.com/blog/news_n_update/understanding-the-mysterious-lupa/
+https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/HomeHealthPPS/index.html
+
+<br>
+
+### **Data Validation**
+
+1. Using public documents, calculate how many people received home health care benefits from Medicare in calendar year 2014. Compare this to the total number of beneficiaries in `provider` and in `provider_hhrg`. Do the numbers from these sources align? If not, why do you think they might not align?
+
+```{r}
+provider %>% 
+  summarise(benefic_providers = sum(`Distinct Beneficiaries (non-LUPA)`))
+
+provider_hhrg %>%
+  summarise(benefic_hhrg = sum(`Distinct Beneficiaries`))
+```
+
+
+**Answer:**
+
+The document in the link below says: <br>
+
+Home health agencies provide services to beneficiaries who are homebound and need skilled nursing or therapy. In 2014, about 3.4 million Medicare beneficiaries received care. <br>
+
+This number is almost exactly what we find in the datasets. There are a few discrepancies between different variables and datasets, but they all give around 3.4-3.5 million beneficiaries of home care. Other documents found report ALL medicare beneficiaries, which were around 50 million in 2014. <br>
+
+On `provider_hhrg` there is a specific variable of distinct beneficiaries that gives 3,468,099 beneficiaries. The documentation shows that these include only non-LUPA beneficiaries. In the `provider` dataset there is a distinct beneficiaries variable that only include NON-LUPA beneficiaries. This is off by 900 beneficiaries from the `provider_hhrg` dataset, which is a tiny fraction of people. The difference may have come from duplicated people that got double counted when aggregated or some other counting/coding error when aggregating data. Some episodes/beneficiaries might not have been correctly allocated to a specific HHRG and so are lost when looking for that level of detail. the difference is tiny in relative terms. <br>
+
+Citation: http://www.medpac.gov/docs/default-source/reports/chapter-8-home-health-care-services-march-2016-report-.pdf
+
+<br>
+
+2. Compare the total number of episodes in `provider` and in `provider_hhrg`. Do the numbers from these sources align? If not, why do you think they might not align?
+
+```{r}
+provider %>% 
+  summarise(episodes_provider = sum(`Total Episodes (non-LUPA)`))
+
+provider_hhrg %>% 
+  summarise(episodes_provider_hhrg = sum(`Total Episodes`))
+
+# Compare the number of providers between each data set.
+length(unique(provider$`Provider ID`))
+length(unique(provider_hhrg$`Provider ID`))
+
+# Missing providers
+provider_hhrg_id_list <- unique(provider_hhrg$`Provider ID`)
+
+provider %>%
+  filter(!(`Provider ID` %in% provider_hhrg_id_list))
+
+# For instance, missing JEFFERSON COUNTY HOME CARE is confirmed.
+provider_hhrg %>%
+  filter(`Provider ID` == 17008)
+```
+
+**Answer:** 
+
+`Provider_hhrg` shows 4,194,441 non-LUPA episodes and provider shows 5,975,644 non-LUPA episodes. This difference is much more significant. It seems that not all providers' information was reported to HHRG such that about 2,475 providers did not appear on the data aggregated by provider and HHRG. Then, we can think of a possibility that these providers' reports were missed during aggregation. Interestingly, some of these missing provider IDs disappear from the recent government documentation (https://data.medicare.gov/api/views/mbph-ap3k/rows.pdf?app_token=U29jcmF0YS0td2VraWNrYXNz0) on the list of providers.
+
+<br><br>
+
+3. What two columns uniquely identify any row in `provider_hhrg`? Use `n_distinct` to document your answer.
+
+**Answer:** 
+
+We will assume that Provider ID is unique in the `provider` dataset and provider ID + HHRG is unique in the `Provider` by HHRG. We will test these in the follwing way:
+
+```{r}
+
+provider_id <-
+  provider %>%
+  summarise(unique_ids = n_distinct(`Provider ID`))
+
+test_that("Provider ID is unique in provider data",
+          expect_equal(provider_id[[1]], nrow(provider)))  
+
+
+provider_hhrg_id <-
+  provider_hhrg %>%
+  mutate(id_x_hhrg = paste(as.factor(`Provider ID`), 
+                           HHRG, 
+                           sep = "-"
+                           )
+         ) %>%
+  summarise(unique_ids = n_distinct(id_x_hhrg))
+
+test_that("Provider ID and HHRG are unique in provider_hhrg data",
+          expect_equal(provider_hhrg_id[[1]], nrow(provider_hhrg)))  
+```
+
+
+
+
+
+
+

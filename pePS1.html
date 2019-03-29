@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="12173872" />
+
+<meta name="date" content="2018-10-16" />
+
+<title>34600 Problem Set 1</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Yoon's Archive</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Program Evaluation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pePS1.html">Mexican Universal Health Insurance</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    GIS and Spatial Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapping3-ChiTrauma.html">Chicago Trauma Center Service Area</a>
+    </li>
+    <li>
+      <a href="mapping2-ILInc.html">Illinois Income Distribution</a>
+    </li>
+    <li>
+      <a href="mapping1-ChiHIV.html">Chicago HIV Prevalence</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Policy Analysis with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Rps4.html">Health Care Data</a>
+    </li>
+    <li>
+      <a href="Rps3.html">Flight Data 2</a>
+    </li>
+    <li>
+      <a href="Rps2.html">Flight Data 1</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown-header">Python Coding</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="section-header">
+
+
+
+<h1 class="title toc-ignore">34600 Problem Set 1</h1>
+<h4 class="author"><em>12173872</em></h4>
+<h4 class="date"><em>10/16/2018</em></h4>
+
+</div>
+
+
+<p><br></p>
+<p>For this assignment, provide a write-up where you answer the questions below, selectively cutting and pasting output where needed. Be concise in your write-up; excess wordiness will be penalized. Also submit a log file that includes commands and results for your entire analysis.</p>
+<p><br></p>
+<div id="section-study-motivation" class="section level2">
+<h2><strong>Study motivation</strong></h2>
+<p>Developing and middle-income countries increasingly provide health coverage to their residents. Mexico has become a leading example. Prior to 2004, roughly half the Mexican population had no health insurance. Health coverage was available through the social security system for salaried employees and their families, but the roughly 50 million Mexicans outside the salaried sector had no insurance. In 2004, Mexico introduced Seguro Popular. Seguro Popular is a voluntary, noncontributory health insurance program for residents without coverage from the social security system. One of its explicit goals is to provide covered households with financial protection by reducing their incidence of catastrophic out-of-pocket health spending.</p>
+<p><br></p>
+</div>
+<div id="section-the-seguro-popular-field-experiment" class="section level2">
+<h2><strong>The Seguro Popular field experiment</strong></h2>
+<p>The experiment involved a paired-cluster randomization design, by which 100 largely rural “health clusters” were formed into 50 pairs on the basis of similarities in demographic characteristics and healthcare infrastructure. Health clusters are defined as a healthcare facility and the population living within its catchment area. Within matched pairs of health clusters, one was randomly assigned to treatment, with the other serving as control. Treatment involved publicity campaigns designed to encourage local residents to enroll. Extensive information about the initial design of the experiment has been published by King et al (2009). Pre-intervention baseline data were collected from participant households in 2005. Post-intervention follow-up data were collected in 2006, roughly 10 months after the intervention began. The 2005 survey included 32,515 households.</p>
+<div id="section-questions" class="section level3">
+<h3><strong>Questions:</strong></h3>
+<ol style="list-style-type: decimal">
+<li>Did Seguro Popular reduce extreme expenditures on health?</li>
+<li>Does it matter how we define “extreme expenditures?”</li>
+</ol>
+<p><br></p>
+</div>
+</div>
+<div id="section-data" class="section level2">
+<h2><strong>Data</strong></h2>
+<p>Data for this assignment are in the file SP_dataset.dta on Canvas.</p>
+<p><br></p>
+</div>
+<div id="section-analysis" class="section level2">
+<h2><strong>Analysis</strong></h2>
+<div id="section-set-up" class="section level3">
+<h3><strong>Set-up</strong></h3>
+<pre class="r"><code># Load libraries
+library(tidyverse)
+library(foreign)
+library(readstata13)
+library(haven)
+library(labelled)
+library(plm)
+library(lmtest)
+library(multiwayvcov)</code></pre>
+<pre><code>## Warning: package &#39;multiwayvcov&#39; was built under R version 3.5.3</code></pre>
+<pre class="r"><code>library(stargazer)</code></pre>
+<pre class="r"><code># Call the data
+data &lt;- read_dta(&quot;SP_dataset.dta&quot;)
+head(data)
+summary(data)</code></pre>
+<p><br></p>
+</div>
+<div id="section-q1" class="section level3">
+<h3><strong>Q1</strong></h3>
+<p>Inspect the data. Are there truly 100 clusters in 50 pairs? Does each pair have a treatment and a control cluster? What is the modal level of schooling in the sample? The modal marital status? What share of sample households were participating in Oportunidades, Mexico’s conditional cash transfer program? What is mean nonhealth expenditure (data are in Mexican pesos, where 12 pesos = approx. 1 dollar)? Does this make sense?</p>
+<p><br></p>
+<p><strong>Answer</strong> <br> I confirmed that 100 clusters are in 50 pairs, each of which has a treatment and a control cluster. I also found that <br> - the modal level of schooling is <u>“elementary education”</u>; <br> - the modal marital status is <u>“married”</u>; <br> - <u>44.99%</u> of the total sample households, or <u>45.15%</u> of the total sample households without NAs, participated in Oportunidades; and <br> - mean non-health expenditure is <u>10044.92 pesos</u> in 2005, equivalent to <u>$837.077</u>, and <u>9802.025 pesos</u> in 2006, equivalent to <u>$816.8354</u>.</p>
+<pre class="r"><code># Data rearranging
+(data_rearranged &lt;- 
+  data %&gt;%
+  select(clust_pair, cluster, everything()) %&gt;%
+  group_by(clust_pair, cluster))</code></pre>
+<pre><code>## # A tibble: 32,515 x 32
+## # Groups:   clust_pair, cluster [100]
+##    clust_pair cluster id_hogar   sex   age marstat hhsize food_yr_05
+##         &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl+l&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+##  1         47       1 GRO0602~     1    22 2            4       6300
+##  2         47       4 GRO0501~     1    56 3            1       5580
+##  3         48       3 GRO0700~     2    52 1            3       1500
+##  4         47       4 GRO0500~     1    21 1            6       4500
+##  5         47       4 GRO0503~     1    33 6            3       3600
+##  6         47       4 GRO0502~     2    32 2            5       6300
+##  7         47       4 GRO0500~     1    34 2            5       3600
+##  8         47       1 GRO0600~     1    29 3            3       2700
+##  9         47       4 GRO0501~     2    20 1            9       5400
+## 10         47       4 GRO0500~     2    30 2            3       4500
+## # ... with 32,505 more rows, and 24 more variables: allbut_05 &lt;dbl&gt;,
+## #   oop_yr3_05 &lt;dbl&gt;, food_yr_06 &lt;dbl&gt;, allbut_06 &lt;dbl&gt;, oop_yr3_06 &lt;dbl&gt;,
+## #   treatment &lt;dbl&gt;, nkid_05 &lt;dbl&gt;, nadult_05 &lt;dbl&gt;, headwomen_05 &lt;dbl&gt;,
+## #   edu_info_051 &lt;dbl&gt;, edu_info_052 &lt;dbl&gt;, edu_info_053 &lt;dbl&gt;,
+## #   edu_info_054 &lt;dbl&gt;, edu_info_055 &lt;dbl&gt;, edu_info_056 &lt;dbl&gt;,
+## #   insp2005 &lt;dbl&gt;, insp2006 &lt;dbl&gt;, opor_05 &lt;dbl&gt;, marstat1 &lt;dbl&gt;,
+## #   marstat2 &lt;dbl&gt;, marstat3 &lt;dbl&gt;, marstat4 &lt;dbl&gt;, marstat5 &lt;dbl&gt;,
+## #   marstat6 &lt;dbl&gt;</code></pre>
+<pre class="r"><code># Check clusters
+(cluster_pair &lt;- 
+  data_rearranged %&gt;%
+  summarise(n_cluster = n_distinct(clust_pair)) %&gt;%
+  arrange(clust_pair))</code></pre>
+<pre><code>## # A tibble: 100 x 3
+## # Groups:   clust_pair [50]
+##    clust_pair cluster n_cluster
+##         &lt;dbl&gt;   &lt;dbl&gt;     &lt;int&gt;
+##  1          1       5         1
+##  2          1       6         1
+##  3          2      18         1
+##  4          2      60         1
+##  5          3      13         1
+##  6          3      50         1
+##  7          4      22         1
+##  8          4      52         1
+##  9          5      49         1
+## 10          5      64         1
+## # ... with 90 more rows</code></pre>
+<pre class="r"><code># Check 100 different clusters and check 50 different clust_pairs.
+n_distinct(cluster_pair$cluster)</code></pre>
+<pre><code>## [1] 100</code></pre>
+<pre class="r"><code>n_distinct(cluster_pair$clust_pair)</code></pre>
+<pre><code>## [1] 50</code></pre>
+<pre class="r"><code># Check if each unique clust_pair has 2 clusters 
+cluster_pair %&gt;%
+  summarise(clust_num_by_pair = n_distinct(cluster)) %&gt;%
+  summarise(each_cluster_number = unique(clust_num_by_pair))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   each_cluster_number
+##                 &lt;int&gt;
+## 1                   2</code></pre>
+<pre class="r"><code># Check if each clust_pair has both treatment and control groups.
+data_rearranged %&gt;%
+  summarise(prop_treat_per_clust = mean(treatment)) %&gt;%
+  summarise(prop_treat_per_pair = mean(prop_treat_per_clust)) %&gt;%
+  filter(prop_treat_per_pair != 0.5)</code></pre>
+<pre><code>## # A tibble: 0 x 2
+## # ... with 2 variables: clust_pair &lt;dbl&gt;, prop_treat_per_pair &lt;dbl&gt;</code></pre>
+<p><br></p>
+<pre class="r"><code># Get the modal level of schooling (edu_info_051 to edu_info_056)
+data %&gt;%
+  summarise(
+    num_no_ed = sum(edu_info_051, na.rm = TRUE), 
+    num_ele = sum(edu_info_052, na.rm = TRUE), 
+    num_sec = sum(edu_info_053, na.rm = TRUE), 
+    num_high = sum(edu_info_054, na.rm = TRUE), 
+    num_tert = sum(edu_info_055, na.rm = TRUE), 
+    num_miss = sum(edu_info_056, na.rm = TRUE)
+  )</code></pre>
+<pre><code>## # A tibble: 1 x 6
+##   num_no_ed num_ele num_sec num_high num_tert num_miss
+##       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1      5919   15430    6736     1910     2343      162</code></pre>
+<p><br></p>
+<pre class="r"><code># Get the modal marital status
+data %&gt;%
+  group_by(marstat) %&gt;%
+  summarise(n())
+attr(data$marstat, &quot;labels&quot;)</code></pre>
+<pre><code>## # A tibble: 7 x 2
+##   marstat   `n()`
+##   &lt;dbl+lbl&gt; &lt;int&gt;
+## 1 &quot; 1&quot;       4350
+## 2 &quot; 2&quot;      17798
+## 3 &quot; 3&quot;       1778
+## 4 &quot; 4&quot;        355
+## 5 &quot; 5&quot;       2960
+## 6 &quot; 6&quot;       4485
+## 7 NA          789
+##     single    married  separated   divorced    widowed cohabiting 
+##          1          2          3          4          5          6</code></pre>
+<p><br></p>
+<pre class="r"><code># Proportion of Oportunidades participants (beneficiaries)
+sum(data$opor_05, na.rm = TRUE)/nrow(data)
+mean(data$opor_05, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 0.4499462
+## [1] 0.4515153</code></pre>
+<p><br></p>
+<pre class="r"><code># Mean non-health expenditure
+(avg.non_med05 &lt;- mean(data$allbut_05, na.rm = TRUE))
+avg.non_med05/12
+(avg.non_med06 &lt;- mean(data$allbut_06, na.rm = TRUE))
+avg.non_med06/12</code></pre>
+<pre><code>## [1] 10044.92
+## [1] 837.077
+## [1] 9802.025
+## [1] 816.8354</code></pre>
+<p><br><br></p>
+</div>
+<div id="section-q2" class="section level3">
+<h3><strong>Q2</strong></h3>
+<p>Which treatment parameters could be identified by these data?</p>
+<p><br></p>
+<p><strong>Answer</strong> <br> Since this is a voluntary program, it is possible that not all of the treated clusters were enrolled. Therefore, these data could identify the ITT (Intent-to-Treat) or LATE (Local Average Treatment Effect) for potential non-compliance issues through Wald Estimator.</p>
+<p><br><br></p>
+</div>
+<div id="section-q3" class="section level3">
+<h3><strong>Q3</strong></h3>
+<p>Assess the adequacy of random assignment. You will need to think about how to use Stata’s reg command to test for equal means among pre-intervention variables within cluster pairs. How important is it to account for dependence within clusters? What is the bottom line? Was random assignment properly executed?</p>
+<p><br></p>
+<p><strong>Answer</strong> <br> As the random assignment was done at the cluster level, it is important to cluster the standard errors to deal with potential heteroskedasticity. The regression of treatment status on each of the pre-intervention variables shows whether the treatment and control groups are balanced. Almost all of the pre-intervention variables were balanced except for the variable, insp2005. This implies that the treatment group was more likely to be enrolled in Seguro Popular in 2005, which made it doutable whether random assignment was properly implemented.</p>
+<pre class="r"><code>baseline &lt;- c(&quot;sex&quot;, &quot;age&quot;, &quot;marstat&quot;, &quot;hhsize&quot;, &quot;food_yr_05&quot;, &quot;allbut_05&quot;, &quot;oop_yr3_05&quot;, &quot;nkid_05&quot;, &quot;nadult_05&quot;, &quot;headwomen_05&quot;, &quot;edu_info_051&quot;, &quot;edu_info_052&quot;, &quot;edu_info_053&quot;, &quot;edu_info_054&quot;, &quot;edu_info_055&quot;, &quot;edu_info_056&quot;, &quot;insp2005&quot;, &quot;opor_05&quot;, &quot;marstat1&quot;, &quot;marstat2&quot;, &quot;marstat3&quot;, &quot;marstat4&quot;, &quot;marstat5&quot;, &quot;marstat6&quot;)
+
+for (i in seq_along(baseline)) {
+  test &lt;- lm(as.formula(paste(&quot;treatment ~&quot;, baseline[i])), data = data)
+  test$clse &lt;- cluster.vcov(test, data$cluster)
+  coeftest(test, test$clse)
+  stargazer(coeftest(test, test$clse),
+            type = &quot;text&quot;,
+            out = &quot;.txt&quot;,
+            style = &quot;aer&quot;)
+}</code></pre>
+<pre><code>## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## sex                      0.015                 
+##                         (0.012)                
+##                                                
+## Constant                0.476***               
+##                         (0.054)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## age                      0.000                 
+##                         (0.000)                
+##                                                
+## Constant                0.493***               
+##                         (0.055)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## marstat                  0.001                 
+##                         (0.006)                
+##                                                
+## Constant                0.497***               
+##                         (0.054)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## hhsize                   0.005                 
+##                         (0.005)                
+##                                                
+## Constant                0.477***               
+##                         (0.055)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## =================================================
+##                                                  
+## -------------------------------------------------
+## food_yr_05                 0.000                 
+##                           (0.000)                
+##                                                  
+## Constant                  0.492***               
+##                           (0.053)                
+##                                                  
+## -------------------------------------------------
+## Notes:     ***Significant at the 1 percent level.
+##            **Significant at the 5 percent level. 
+##            *Significant at the 10 percent level. 
+## 
+## ================================================
+##                                                 
+## ------------------------------------------------
+## allbut_05                 0.000                 
+##                          (0.000)                
+##                                                 
+## Constant                 0.493***               
+##                          (0.055)                
+##                                                 
+## ------------------------------------------------
+## Notes:    ***Significant at the 1 percent level.
+##           **Significant at the 5 percent level. 
+##           *Significant at the 10 percent level. 
+## 
+## =================================================
+##                                                  
+## -------------------------------------------------
+## oop_yr3_05                 0.000                 
+##                           (0.000)                
+##                                                  
+## Constant                  0.501***               
+##                           (0.051)                
+##                                                  
+## -------------------------------------------------
+## Notes:     ***Significant at the 1 percent level.
+##            **Significant at the 5 percent level. 
+##            *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## nkid_05                  0.007                 
+##                         (0.010)                
+##                                                
+## Constant                0.496***               
+##                         (0.051)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ================================================
+##                                                 
+## ------------------------------------------------
+## nadult_05                 0.008                 
+##                          (0.011)                
+##                                                 
+## Constant                 0.497***               
+##                          (0.051)                
+##                                                 
+## ------------------------------------------------
+## Notes:    ***Significant at the 1 percent level.
+##           **Significant at the 5 percent level. 
+##           *Significant at the 10 percent level. 
+## 
+## ===================================================
+##                                                    
+## ---------------------------------------------------
+## headwomen_05                 0.006                 
+##                             (0.023)                
+##                                                    
+## Constant                    0.499***               
+##                             (0.051)                
+##                                                    
+## ---------------------------------------------------
+## Notes:       ***Significant at the 1 percent level.
+##              **Significant at the 5 percent level. 
+##              *Significant at the 10 percent level. 
+## 
+## ===================================================
+##                                                    
+## ---------------------------------------------------
+## edu_info_051                 -0.010                
+##                             (0.031)                
+##                                                    
+## Constant                    0.502***               
+##                             (0.051)                
+##                                                    
+## ---------------------------------------------------
+## Notes:       ***Significant at the 1 percent level.
+##              **Significant at the 5 percent level. 
+##              *Significant at the 10 percent level. 
+## 
+## ===================================================
+##                                                    
+## ---------------------------------------------------
+## edu_info_052                 -0.019                
+##                             (0.026)                
+##                                                    
+## Constant                    0.509***               
+##                             (0.053)                
+##                                                    
+## ---------------------------------------------------
+## Notes:       ***Significant at the 1 percent level.
+##              **Significant at the 5 percent level. 
+##              *Significant at the 10 percent level. 
+## 
+## ===================================================
+##                                                    
+## ---------------------------------------------------
+## edu_info_053                 0.006                 
+##                             (0.023)                
+##                                                    
+## Constant                    0.499***               
+##                             (0.051)                
+##                                                    
+## ---------------------------------------------------
+## Notes:       ***Significant at the 1 percent level.
+##              **Significant at the 5 percent level. 
+##              *Significant at the 10 percent level. 
+## 
+## ===================================================
+##                                                    
+## ---------------------------------------------------
+## edu_info_054                 0.014                 
+##                             (0.045)                
+##                                                    
+## Constant                    0.499***               
+##                             (0.051)                
+##                                                    
+## ---------------------------------------------------
+## Notes:       ***Significant at the 1 percent level.
+##              **Significant at the 5 percent level. 
+##              *Significant at the 10 percent level. 
+## 
+## ===================================================
+##                                                    
+## ---------------------------------------------------
+## edu_info_055                 0.068                 
+##                             (0.059)                
+##                                                    
+## Constant                    0.495***               
+##                             (0.051)                
+##                                                    
+## ---------------------------------------------------
+## Notes:       ***Significant at the 1 percent level.
+##              **Significant at the 5 percent level. 
+##              *Significant at the 10 percent level. 
+## 
+## ===================================================
+##                                                    
+## ---------------------------------------------------
+## edu_info_056                 -0.025                
+##                             (0.082)                
+##                                                    
+## Constant                    0.500***               
+##                             (0.051)                
+##                                                    
+## ---------------------------------------------------
+## Notes:       ***Significant at the 1 percent level.
+##              **Significant at the 5 percent level. 
+##              *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## insp2005                0.317***               
+##                         (0.077)                
+##                                                
+## Constant                0.474***               
+##                         (0.051)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## opor_05                  0.012                 
+##                         (0.053)                
+##                                                
+## Constant                0.494***               
+##                         (0.057)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## marstat1                 0.010                 
+##                         (0.017)                
+##                                                
+## Constant                0.498***               
+##                         (0.051)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## marstat2                 -0.004                
+##                         (0.020)                
+##                                                
+## Constant                0.502***               
+##                         (0.052)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## marstat3                 -0.022                
+##                         (0.028)                
+##                                                
+## Constant                0.501***               
+##                         (0.051)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## marstat4                 -0.027                
+##                         (0.049)                
+##                                                
+## Constant                0.500***               
+##                         (0.051)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## marstat5                 -0.000                
+##                         (0.017)                
+##                                                
+## Constant                0.500***               
+##                         (0.051)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level. 
+## 
+## ===============================================
+##                                                
+## -----------------------------------------------
+## marstat6                 0.012                 
+##                         (0.031)                
+##                                                
+## Constant                0.498***               
+##                         (0.051)                
+##                                                
+## -----------------------------------------------
+## Notes:   ***Significant at the 1 percent level.
+##          **Significant at the 5 percent level. 
+##          *Significant at the 10 percent level.</code></pre>
+<p><br><br></p>
+</div>
+<div id="section-q4" class="section level3">
+<h3><strong>Q4</strong></h3>
+<p>Construct two variables relating health spending to the household’s total income. The first is the health budget share, equal to health spending divided by total spending. The second is the adjusted health budget share, equal to health spending divided by disposable income, where disposable income is defined as total spending less food expenditures.</p>
+<p><br></p>
+<p><strong>Answer</strong> <br> Two variables in each year are constructed like below.</p>
+<pre class="r"><code>data &lt;- 
+  data %&gt;%
+  mutate(
+    hlth_bdgt_shr05 = oop_yr3_05 / (allbut_05 + oop_yr3_05),
+    hlth_bdgt_shr06 = oop_yr3_06 / (allbut_06 + oop_yr3_06),
+    adj_hlth_bdgt_shr05 = oop_yr3_05 / (allbut_05 + oop_yr3_05 - food_yr_05),
+    adj_hlth_bdgt_shr06 = oop_yr3_06 / (allbut_06 + oop_yr3_06 - food_yr_06)
+  )</code></pre>
+<p><br><br></p>
+</div>
+<div id="section-q5" class="section level3">
+<h3><strong>Q5</strong></h3>
+<p>On average, what share of total expenditures does health spending account for? What are the 75th and 90th percentiles of the budget share distribution? What are the corresponding figures as a share of disposable income rather than total expenditures?</p>
+<p><br></p>
+<p><strong>Answer</strong> <br> For the health budget share in 2005, mean is 2.838933%, 75th percentile 0%, and 90the percentile 9.223296%. For the health budget share among disposable income in 2005, mean is 4.300733%, 75th percentile 0%, and 90the percentile 15.13814%.</p>
+<p>For the health budget share in 2006, mean is 3.248055%, 75th percentile 0.8309679%, and 90the percentile 10.7457556%.For the health budget share among disposable income in 2006, mean is 4.985194%, 75th percentile 1.539625%, and 90the percentile 18.334048%.</p>
+<pre class="r"><code># With default type to calculate percentiles
+mean(data$hlth_bdgt_shr05, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 0.02838933</code></pre>
+<pre class="r"><code>quantile(data$hlth_bdgt_shr05, probs = c(0.75, 0.9), na.rm = TRUE)</code></pre>
+<pre><code>##        75%        90% 
+## 0.00000000 0.09223296</code></pre>
+<pre class="r"><code>mean(data$adj_hlth_bdgt_shr05, na.rm =TRUE)</code></pre>
+<pre><code>## [1] 0.04300733</code></pre>
+<pre class="r"><code>quantile(data$adj_hlth_bdgt_shr05, probs = c(0.75, 0.9), na.rm = TRUE)</code></pre>
+<pre><code>##       75%       90% 
+## 0.0000000 0.1513814</code></pre>
+<pre class="r"><code>mean(data$hlth_bdgt_shr06, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 0.03248055</code></pre>
+<pre class="r"><code>quantile(data$hlth_bdgt_shr06, probs = c(0.75, 0.9), na.rm = TRUE)</code></pre>
+<pre><code>##         75%         90% 
+## 0.008309679 0.107457556</code></pre>
+<pre class="r"><code>mean(data$adj_hlth_bdgt_shr06, na.rm = TRUE)</code></pre>
+<pre><code>## [1] 0.04985194</code></pre>
+<pre class="r"><code>quantile(data$adj_hlth_bdgt_shr06, probs = c(0.75, 0.9), na.rm = TRUE)</code></pre>
+<pre><code>##        75%        90% 
+## 0.01539625 0.18334048</code></pre>
+<p><br><br></p>
+</div>
+<div id="section-q6" class="section level3">
+<h3><strong>Q6</strong></h3>
+<p>Construct two measures of extreme health spending: (i) a dummy equal to one if the household’s health budget share exceeds 20 percent; and (ii) a dummy equal to one if the household spends more than 30 percent of its disposable income on health. How are these measures related?</p>
+<p><br></p>
+<p><strong>Answer</strong> <br> They are highly correlated. (correlation for the two variables in 2005: 0.8316728, in 2006: 0.8512391)</p>
+<pre class="r"><code>(data &lt;- data %&gt;%
+  mutate(
+    ext_hlth_bdg05 = as.numeric((hlth_bdgt_shr05 &gt; 0.2)),
+    adj_ext_hlth_bdg05 = as.numeric((adj_hlth_bdgt_shr05 &gt; 0.3)),
+    ext_hlth_bdg06 = as.numeric((hlth_bdgt_shr06 &gt; 0.2)),
+    adj_ext_hlth_bdg06 = as.numeric((adj_hlth_bdgt_shr06 &gt; 0.3))
+  ) %&gt;%
+  select(
+    ext_hlth_bdg05,
+    ext_hlth_bdg06,
+    adj_ext_hlth_bdg05,
+    adj_ext_hlth_bdg06, 
+    everything()
+  )
+)</code></pre>
+<pre><code>## # A tibble: 32,515 x 40
+##    ext_hlth_bdg05 ext_hlth_bdg06 adj_ext_hlth_bd~ adj_ext_hlth_bd~ id_hogar
+##             &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt; &lt;chr&gt;   
+##  1              0              0                0                0 GRO0602~
+##  2              0             NA                0               NA GRO0501~
+##  3              0              0                0                0 GRO0700~
+##  4              0              0                0                0 GRO0500~
+##  5              0              0                0                0 GRO0503~
+##  6              0             NA                0               NA GRO0502~
+##  7              0              0                0                0 GRO0500~
+##  8              0              0                0                0 GRO0600~
+##  9             NA              0               NA                0 GRO0501~
+## 10              0              0                0                0 GRO0500~
+## # ... with 32,505 more rows, and 35 more variables: sex &lt;dbl&gt;, age &lt;dbl&gt;,
+## #   marstat &lt;dbl+lbl&gt;, hhsize &lt;dbl&gt;, food_yr_05 &lt;dbl&gt;, allbut_05 &lt;dbl&gt;,
+## #   oop_yr3_05 &lt;dbl&gt;, food_yr_06 &lt;dbl&gt;, allbut_06 &lt;dbl&gt;, oop_yr3_06 &lt;dbl&gt;,
+## #   treatment &lt;dbl&gt;, clust_pair &lt;dbl&gt;, nkid_05 &lt;dbl&gt;, nadult_05 &lt;dbl&gt;,
+## #   headwomen_05 &lt;dbl&gt;, edu_info_051 &lt;dbl&gt;, edu_info_052 &lt;dbl&gt;,
+## #   edu_info_053 &lt;dbl&gt;, edu_info_054 &lt;dbl&gt;, edu_info_055 &lt;dbl&gt;,
+## #   edu_info_056 &lt;dbl&gt;, insp2005 &lt;dbl&gt;, insp2006 &lt;dbl&gt;, opor_05 &lt;dbl&gt;,
+## #   cluster &lt;dbl&gt;, marstat1 &lt;dbl&gt;, marstat2 &lt;dbl&gt;, marstat3 &lt;dbl&gt;,
+## #   marstat4 &lt;dbl&gt;, marstat5 &lt;dbl&gt;, marstat6 &lt;dbl&gt;, hlth_bdgt_shr05 &lt;dbl&gt;,
+## #   hlth_bdgt_shr06 &lt;dbl&gt;, adj_hlth_bdgt_shr05 &lt;dbl&gt;,
+## #   adj_hlth_bdgt_shr06 &lt;dbl&gt;</code></pre>
+<pre class="r"><code>cor(data$ext_hlth_bdg05, data$adj_ext_hlth_bdg05, use=&quot;complete.obs&quot;)</code></pre>
+<pre><code>## [1] 0.8316728</code></pre>
+<pre class="r"><code>cor(data$ext_hlth_bdg06, data$adj_ext_hlth_bdg06, use=&quot;complete.obs&quot;)</code></pre>
+<pre><code>## [1] 0.8512391</code></pre>
+<p><br><br></p>
+</div>
+<div id="section-q7" class="section level3">
+<h3><strong>Q7</strong></h3>
+<p>Estimate the ITT effects of the intervention on extreme health spending. First, just regress the extreme health spending measures on the treatment dummy. Next, add cluster-pair dummies. In both cases, calculate standard errors that account for dependence among households within clusters. What happens to the coefficients when you add the cluster-pair dummies? To their standard errors? Why?</p>
+<p><br></p>
+<p><strong>Answer</strong> <br> Adding cluster-pair dummies decreases both the coefficients of treatment dummies and the standard errors. This might be due to the fact that dependence among households within cluster-pairs also contributes to the variation in the effects. However, the decrease in the coefficients was quite small which implies that the difference in cluster-pairs does not much contribute to the ITT.</p>
+<pre class="r"><code># (1) Regression of extreme health spending on treatment
+lm_ext_hlth &lt;- lm(ext_hlth_bdg06 ~ treatment, data = data)
+lm_ext_hlth$clse &lt;- cluster.vcov(lm_ext_hlth, data$cluster)
+test1 &lt;- coeftest(lm_ext_hlth, lm_ext_hlth$clse)
+
+# (2) Regression of adjusted extreme health spending (disposable income) on treatment
+lm_adj_ext_hlth &lt;- lm(adj_ext_hlth_bdg06 ~ treatment, data = data)
+lm_adj_ext_hlth$clse &lt;- cluster.vcov(lm_adj_ext_hlth, data$cluster)
+test2 &lt;- coeftest(lm_adj_ext_hlth, lm_adj_ext_hlth$clse)
+
+# (3) Regression of extreme health spending with cluster-pair dummies
+lm_ext_hlth_add &lt;- lm(ext_hlth_bdg06 ~ treatment + as.factor(clust_pair), data = data)
+lm_ext_hlth_add$clse &lt;- cluster.vcov(lm_ext_hlth_add, data$cluster)
+test3 &lt;- coeftest(lm_ext_hlth_add, lm_ext_hlth_add$clse)
+
+# (4) Regression of extreme health spending with cluster-pair dummies
+lm_adj_ext_hlth_add &lt;- lm(adj_ext_hlth_bdg06 ~ treatment + as.factor(clust_pair), data = data)
+lm_adj_ext_hlth_add$clse &lt;- cluster.vcov(lm_adj_ext_hlth_add, data$cluster)
+test4 &lt;- coeftest(lm_adj_ext_hlth_add, lm_adj_ext_hlth_add$clse)
+
+stargazer(test1, test2, test3, test4,
+          keep = &quot;treatment&quot;,
+          type = &quot;text&quot;,
+          out = &quot;.txt&quot;,
+          style = &quot;aer&quot;,
+          digits = 4,
+          column.labels = c(&quot;extreme&quot;, &quot;adjusted extreme&quot;, &quot;extreme paired&quot;,  &quot;adjusted extreme paired&quot;),
+          star.char = c(&quot;*&quot;, &quot;**&quot;, &quot;***&quot;),
+          star.cutoffs = c(0.05, 0.01, 0.001))</code></pre>
+<pre><code>## 
+## ==========================================================================
+##                                                                           
+##           extreme  adjusted extreme extreme paired adjusted extreme paired
+##             (1)          (2)             (3)                 (4)          
+## --------------------------------------------------------------------------
+## treatment -0.0134      -0.0129        -0.0142**           -0.0138**       
+##           (0.0073)     (0.0074)        (0.0047)           (0.0048)        
+##                                                                           
+## --------------------------------------------------------------------------
+## Notes:    ***Significant at the 0.1 percent level.                        
+##           **Significant at the 1 percent level.                           
+##           *Significant at the 5 percent level.</code></pre>
+<p><br><br></p>
+</div>
+<div id="section-q8" class="section level3">
+<h3><strong>Q8</strong></h3>
+<p>Now adjust for baseline characteristics. Again, do this with and without the cluster-pair dummies in the regression. What happens to the estimated treatment effects? To their standard errors?</p>
+<p><br></p>
+<p><strong>Answer</strong> <br> Having additional baseline characteristics makes the coefficients change, compared to the result from Q7. Having cluster-pair dummies gave more precise estimates by reducing the standard errors.</p>
+<pre class="r"><code># (1) Regression of extreme health spending on treatment and other other baseline characteristics
+lm_ext_hlth_final &lt;- lm(as.formula(paste(&quot;ext_hlth_bdg06 ~ treatment&quot;, paste(baseline, collapse = &quot;+&quot;), sep = &quot;+&quot;)), data = data)
+lm_ext_hlth_final$clse &lt;- cluster.vcov(lm_ext_hlth_final, data$cluster)
+test_ext_hlth_final &lt;- coeftest(lm_ext_hlth_final, lm_ext_hlth_final$clse)
+
+
+# (2) Regression of adjusted extreme health spending (disposable income) on treatment and other other baseline characteristics
+lm_adj_ext_hlth_final &lt;- lm(as.formula(paste(&quot;adj_ext_hlth_bdg06 ~ treatment&quot;, paste(baseline, collapse = &quot;+&quot;), sep = &quot;+&quot;)), data = data)
+lm_adj_ext_hlth_final$clse &lt;- cluster.vcov(lm_adj_ext_hlth_final, data$cluster)
+test_adj_ext_hlth_final &lt;- coeftest(lm_adj_ext_hlth_final, lm_adj_ext_hlth_final$clse)
+
+
+# (3) Regression of extreme health spending with cluster-pair dummies
+lm_ext_hlth_cp &lt;- lm(as.formula(paste(&quot;ext_hlth_bdg06 ~ treatment&quot;, paste(baseline, collapse = &quot;+&quot;), &quot;as.factor(clust_pair)&quot;, sep = &quot;+&quot;)), data = data)
+lm_ext_hlth_cp$clse &lt;- cluster.vcov(lm_ext_hlth_cp, data$cluster)
+test_ext_hlth_cp &lt;- coeftest(lm_ext_hlth_cp, lm_ext_hlth_cp$clse)
+
+
+# (4) Regression of extreme health spending with cluster-pair dummies
+lm_adj_ext_hlth_cp &lt;- lm(as.formula(paste(&quot;adj_ext_hlth_bdg06 ~ treatment&quot;, paste(baseline, collapse = &quot;+&quot;), &quot;as.factor(clust_pair)&quot;, sep = &quot;+&quot;)), data = data)
+lm_adj_ext_hlth_cp$clse &lt;- cluster.vcov(lm_adj_ext_hlth_cp, data$cluster)
+test_adj_ext_hlth_cp &lt;- coeftest(lm_adj_ext_hlth_cp, lm_adj_ext_hlth_cp$clse)
+
+stargazer(test_ext_hlth_final, test_adj_ext_hlth_final, test_ext_hlth_cp, test_adj_ext_hlth_cp,
+          keep = &quot;treatment&quot;,
+          type = &quot;text&quot;,
+          out = &quot;.txt&quot;,
+          style = &quot;aer&quot;,
+          digits = 4,
+          column.labels = c(&quot;extreme&quot;, &quot;adjusted extreme&quot;, &quot;extreme paired&quot;,  &quot;adjusted extreme paired&quot;),
+          star.char = c(&quot;*&quot;, &quot;**&quot;, &quot;***&quot;),
+          star.cutoffs = c(0.05, 0.01, 0.001))</code></pre>
+<pre><code>## 
+## ==========================================================================
+##                                                                           
+##           extreme  adjusted extreme extreme paired adjusted extreme paired
+##             (1)          (2)             (3)                 (4)          
+## --------------------------------------------------------------------------
+## treatment -0.0137      -0.0120        -0.0138**           -0.0124*        
+##           (0.0077)     (0.0078)        (0.0050)           (0.0052)        
+##                                                                           
+## --------------------------------------------------------------------------
+## Notes:    ***Significant at the 0.1 percent level.                        
+##           **Significant at the 1 percent level.                           
+##           *Significant at the 5 percent level.</code></pre>
+<p><br><br></p>
+</div>
+<div id="section-q9" class="section level3">
+<h3><strong>Q9</strong></h3>
+<p>Are any of your conclusions sensitive to the way that you measure extreme health expenditures?</p>
+<p><br></p>
+<p><strong>Answer</strong> <br> From the results above, the conclustions are sensitive to whether using 20% of total expenditure or 30% of disposable income. The latter tends to provide the coefficients slightly bigger (slightly closer to the zero).</p>
+<p><br><br></p>
+</div>
+<div id="section-q10" class="section level3">
+<h3><strong>Q10</strong></h3>
+<p>Now calculate the Wald estimator. How do you interpret it? What additional assumptions do you need to invoke for these estimates to be valid?</p>
+<p><br></p>
+<p><strong>Answer</strong> <br> Wald Estimator of the extreme health spending out of total expenditure is found to be -0.03533817 while that of the extreme health spending out of disposable income is found to be -0.03415077. In other words, for people who decided to take up Seguro Popular due to intervention, one more participation in the Seguro Popular program would lead to decrease the probability of having extreme expenditures on health by 3.5%.</p>
+<p>Additional assumptions should be made on SUTVA (No spillover effect) and monotonicity (No defiers). Also, assignment to treatment is assumed to affect the health expenditures through Seguro Popular and to be exogenous. Finally, the treatment (Seguro Popular take-up) is correlated with the intervention.</p>
+<pre class="r"><code>ext_hlth_treated &lt;- 
+  data %&gt;% 
+  filter(treatment == 1) %&gt;% 
+  summarise(expectation = mean(ext_hlth_bdg06, na.rm = TRUE)) %&gt;% 
+  as.numeric(.$expectation)
+
+ext_hlth_untreated &lt;- 
+  data %&gt;% 
+  filter(treatment == 0) %&gt;% 
+  summarise(expectation = mean(ext_hlth_bdg06, na.rm = TRUE)) %&gt;% 
+  as.numeric(.$expectation)
+
+adj_ext_hlth_treated &lt;- 
+  data %&gt;% 
+  filter(treatment == 1) %&gt;% 
+  summarise(expectation = mean(adj_ext_hlth_bdg06, na.rm = TRUE)) %&gt;% 
+  as.numeric(.$expectation)
+
+adj_ext_hlth_untreated &lt;- 
+  data %&gt;% 
+  filter(treatment == 0) %&gt;% 
+  summarise(expectation = mean(adj_ext_hlth_bdg06, na.rm = TRUE)) %&gt;% 
+  as.numeric(.$expectation)
+
+insp_treated &lt;-
+  data %&gt;% 
+  filter(treatment == 1) %&gt;% 
+  summarise(expectation = mean(insp2006, na.rm = TRUE)) %&gt;% 
+  as.numeric(.$expectation)
+
+insp_untreated &lt;-
+  data %&gt;% 
+  filter(treatment == 0) %&gt;% 
+  summarise(expectation = mean(insp2006, na.rm = TRUE)) %&gt;% 
+  as.numeric(.$expectation)
+
+
+# Wald Estimator for extreme spending out of total expenditure
+(ext_hlth_treated - ext_hlth_untreated) / (insp_treated - insp_untreated)</code></pre>
+<pre><code>## [1] -0.03533817</code></pre>
+<pre class="r"><code># Wald Estimator for extreme spending out of disposable income
+(adj_ext_hlth_treated - adj_ext_hlth_untreated) / (insp_treated - insp_untreated)</code></pre>
+<pre><code>## [1] -0.03415077</code></pre>
+<p><br> Name: Yoon Hong Park</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

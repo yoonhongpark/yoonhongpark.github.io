@@ -1,0 +1,439 @@
+---
+title: "34600 Problem Set 1"
+author: "12173872"
+date: "10/16/2018"
+runtime: shiny
+output:
+  html_document
+---
+
+
+<br>
+
+For this assignment, provide a write-up where you answer the questions below, selectively cutting and pasting output where needed. Be concise in your write-up; excess wordiness will be penalized. Also submit a log file that includes commands and results for your entire analysis.
+
+<br>
+
+## **Study motivation**
+Developing and middle-income countries increasingly provide health coverage to their residents. Mexico has become a leading example. Prior to 2004, roughly half the Mexican population had no health insurance. Health coverage was available through the social security system for salaried employees and their families, but the roughly 50 million Mexicans outside the salaried sector had no insurance. In 2004, Mexico introduced Seguro Popular. Seguro Popular is a voluntary, noncontributory health insurance program for residents without coverage from the social security system. One of its explicit goals is to provide covered households with financial protection by reducing their incidence of catastrophic out-of-pocket health spending.
+
+<br>
+
+## **The Seguro Popular field experiment**
+The experiment involved a paired-cluster randomization design, by which 100 largely rural “health clusters” were formed into 50 pairs on the basis of similarities in demographic characteristics and healthcare infrastructure. Health clusters are defined as a healthcare facility and the population living within its catchment area. Within matched pairs of health clusters, one was randomly assigned to treatment, with the other serving as control. Treatment involved publicity campaigns designed to encourage local residents to enroll. Extensive information about the initial design of the experiment has been published by King et al (2009). Pre-intervention baseline data were collected from participant households in 2005. Post-intervention follow-up data were collected in 2006, roughly 10 months after the intervention began. The 2005 survey included 32,515 households.
+
+### **Questions:**
+(1) Did Seguro Popular reduce extreme expenditures on health?
+(2) Does it matter how we define “extreme expenditures?”
+
+<br>
+
+## **Data**
+Data for this assignment are in the file SP_dataset.dta on Canvas.
+
+<br>
+
+## **Analysis** 
+
+### **Set-up**
+```{r setup, include=FALSE}
+# Set the working directory
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/2018.4 Fall/PPHA 34600 Program Evaluation/Problem Set 1")
+options(tinytex.verbose = TRUE)
+```
+
+
+```{r message=FALSE}
+# Load libraries
+library(tidyverse)
+library(foreign)
+library(readstata13)
+library(haven)
+library(labelled)
+library(plm)
+library(lmtest)
+library(multiwayvcov)
+library(stargazer)
+```
+
+```{r results='hide'}
+# Call the data
+data <- read_dta("SP_dataset.dta")
+head(data)
+summary(data)
+```
+
+
+<br>
+
+### **Q1**
+Inspect the data. Are there truly 100 clusters in 50 pairs? Does each pair have a treatment and a control cluster? What is the modal level of schooling in the sample? The modal marital status? What share of sample households were participating in Oportunidades, Mexico's conditional cash transfer program? What is mean nonhealth expenditure (data are in Mexican pesos, where 12 pesos = approx. 1 dollar)? Does this make sense?
+
+<br>
+
+**Answer** <br>
+I confirmed that 100 clusters are in 50 pairs, each of which has a treatment and a control cluster. I also found that <br>
+- the modal level of schooling is <u>"elementary education"</u>; <br>
+- the modal marital status is <u>"married"</u>; <br>
+- <u>44.99%</u> of the total sample households, or <u>45.15%</u> of the total sample households without NAs, participated in Oportunidades; and <br>
+- mean non-health expenditure is <u>10044.92 pesos</u> in 2005, equivalent to <u>\$837.077</u>, and <u>9802.025 pesos</u> in 2006, equivalent to <u>\$816.8354</u>.
+
+
+```{r}
+# Data rearranging
+(data_rearranged <- 
+  data %>%
+  select(clust_pair, cluster, everything()) %>%
+  group_by(clust_pair, cluster))
+
+# Check clusters
+(cluster_pair <- 
+  data_rearranged %>%
+  summarise(n_cluster = n_distinct(clust_pair)) %>%
+  arrange(clust_pair))
+
+# Check 100 different clusters and check 50 different clust_pairs.
+n_distinct(cluster_pair$cluster)
+n_distinct(cluster_pair$clust_pair)
+
+# Check if each unique clust_pair has 2 clusters 
+cluster_pair %>%
+  summarise(clust_num_by_pair = n_distinct(cluster)) %>%
+  summarise(each_cluster_number = unique(clust_num_by_pair))
+
+# Check if each clust_pair has both treatment and control groups.
+data_rearranged %>%
+  summarise(prop_treat_per_clust = mean(treatment)) %>%
+  summarise(prop_treat_per_pair = mean(prop_treat_per_clust)) %>%
+  filter(prop_treat_per_pair != 0.5)
+```
+
+<br>
+
+```{r}
+# Get the modal level of schooling (edu_info_051 to edu_info_056)
+data %>%
+  summarise(
+    num_no_ed = sum(edu_info_051, na.rm = TRUE), 
+    num_ele = sum(edu_info_052, na.rm = TRUE), 
+    num_sec = sum(edu_info_053, na.rm = TRUE), 
+    num_high = sum(edu_info_054, na.rm = TRUE), 
+    num_tert = sum(edu_info_055, na.rm = TRUE), 
+    num_miss = sum(edu_info_056, na.rm = TRUE)
+  )
+
+```
+
+<br>
+
+```{r, results = 'hold'}
+# Get the modal marital status
+data %>%
+  group_by(marstat) %>%
+  summarise(n())
+attr(data$marstat, "labels")
+```
+
+<br>
+
+```{r, results = 'hold'}
+# Proportion of Oportunidades participants (beneficiaries)
+sum(data$opor_05, na.rm = TRUE)/nrow(data)
+mean(data$opor_05, na.rm = TRUE)
+```
+
+<br>
+
+```{r, results = 'hold'}
+# Mean non-health expenditure
+(avg.non_med05 <- mean(data$allbut_05, na.rm = TRUE))
+avg.non_med05/12
+(avg.non_med06 <- mean(data$allbut_06, na.rm = TRUE))
+avg.non_med06/12
+```
+
+
+<br><br>
+
+
+### **Q2** 
+
+Which treatment parameters could be identified by these data?
+
+<br>
+
+**Answer** <br>
+Since this is a voluntary program, it is possible that not all of the treated clusters were enrolled. Therefore, these data could identify the ITT (Intent-to-Treat) or LATE (Local Average Treatment Effect) for potential non-compliance issues through Wald Estimator. 
+
+<br><br>
+
+### **Q3**
+Assess the adequacy of random assignment. You will need to think about how to use Stata's reg command to test for equal means among pre-intervention variables within cluster pairs. How important is it to account for dependence within clusters? What is the bottom line? Was random assignment properly executed?
+
+<br>
+
+**Answer** <br>
+As the random assignment was done at the cluster level, it is important to cluster the standard errors to deal with potential heteroskedasticity. The regression of treatment status on each of the pre-intervention variables shows whether the treatment and control groups are balanced. Almost all of the pre-intervention variables were balanced except for the variable, insp2005. This implies that the treatment group was more likely to be enrolled in Seguro Popular in 2005, which made it doutable whether random assignment was properly implemented.
+
+```{r, warning=FALSE}
+baseline <- c("sex", "age", "marstat", "hhsize", "food_yr_05", "allbut_05", "oop_yr3_05", "nkid_05", "nadult_05", "headwomen_05", "edu_info_051", "edu_info_052", "edu_info_053", "edu_info_054", "edu_info_055", "edu_info_056", "insp2005", "opor_05", "marstat1", "marstat2", "marstat3", "marstat4", "marstat5", "marstat6")
+
+for (i in seq_along(baseline)) {
+  test <- lm(as.formula(paste("treatment ~", baseline[i])), data = data)
+  test$clse <- cluster.vcov(test, data$cluster)
+  coeftest(test, test$clse)
+  stargazer(coeftest(test, test$clse),
+            type = "text",
+            out = ".txt",
+            style = "aer")
+}
+
+```
+
+
+<br><br>
+
+### **Q4**
+Construct two variables relating health spending to the household's total income. The first is the health budget share, equal to health spending divided by total spending. The second is the adjusted health budget share, equal to health spending divided by disposable income, where disposable income is defined as total spending less food expenditures.
+
+<br>
+
+**Answer** <br>
+Two variables in each year are constructed like below.
+
+```{r}
+data <- 
+  data %>%
+  mutate(
+    hlth_bdgt_shr05 = oop_yr3_05 / (allbut_05 + oop_yr3_05),
+    hlth_bdgt_shr06 = oop_yr3_06 / (allbut_06 + oop_yr3_06),
+    adj_hlth_bdgt_shr05 = oop_yr3_05 / (allbut_05 + oop_yr3_05 - food_yr_05),
+    adj_hlth_bdgt_shr06 = oop_yr3_06 / (allbut_06 + oop_yr3_06 - food_yr_06)
+  )
+
+```
+
+
+<br><br>
+
+### **Q5**
+On average, what share of total expenditures does health spending account for? What are the 75th and 90th percentiles of the budget share distribution? What are the corresponding figures as a share of disposable income rather than total expenditures?
+
+<br>
+
+**Answer** <br>
+For the health budget share in 2005, mean is 2.838933%, 75th percentile 0%, and 90the percentile 9.223296%. For the health budget share among disposable income in 2005, mean is 4.300733%, 75th percentile 0%, and 90the percentile 15.13814%.
+
+For the health budget share in 2006, mean is 3.248055%, 75th percentile 0.8309679%, and 90the percentile 10.7457556%.For the health budget share among disposable income in 2006, mean is 4.985194%, 75th percentile 1.539625%, and 90the percentile 18.334048%.
+
+
+```{r}
+# With default type to calculate percentiles
+mean(data$hlth_bdgt_shr05, na.rm = TRUE)
+quantile(data$hlth_bdgt_shr05, probs = c(0.75, 0.9), na.rm = TRUE)
+mean(data$adj_hlth_bdgt_shr05, na.rm =TRUE)
+quantile(data$adj_hlth_bdgt_shr05, probs = c(0.75, 0.9), na.rm = TRUE)
+
+mean(data$hlth_bdgt_shr06, na.rm = TRUE)
+quantile(data$hlth_bdgt_shr06, probs = c(0.75, 0.9), na.rm = TRUE)
+mean(data$adj_hlth_bdgt_shr06, na.rm = TRUE)
+quantile(data$adj_hlth_bdgt_shr06, probs = c(0.75, 0.9), na.rm = TRUE)
+```
+
+<br><br>
+
+### **Q6**
+Construct two measures of extreme health spending: (i) a dummy equal to one if the household's health budget share exceeds 20 percent; and (ii) a dummy equal to one if the household spends more than 30 percent of its disposable income on health. How are these measures related?
+
+<br>
+
+**Answer** <br>
+They are highly correlated. (correlation for the two variables in 2005: 0.8316728, in 2006: 0.8512391)
+
+
+```{r}
+(data <- data %>%
+  mutate(
+    ext_hlth_bdg05 = as.numeric((hlth_bdgt_shr05 > 0.2)),
+    adj_ext_hlth_bdg05 = as.numeric((adj_hlth_bdgt_shr05 > 0.3)),
+    ext_hlth_bdg06 = as.numeric((hlth_bdgt_shr06 > 0.2)),
+    adj_ext_hlth_bdg06 = as.numeric((adj_hlth_bdgt_shr06 > 0.3))
+  ) %>%
+  select(
+    ext_hlth_bdg05,
+    ext_hlth_bdg06,
+    adj_ext_hlth_bdg05,
+    adj_ext_hlth_bdg06, 
+    everything()
+  )
+)
+
+
+cor(data$ext_hlth_bdg05, data$adj_ext_hlth_bdg05, use="complete.obs")
+cor(data$ext_hlth_bdg06, data$adj_ext_hlth_bdg06, use="complete.obs")
+```
+
+<br><br>
+
+
+### **Q7**
+Estimate the ITT effects of the intervention on extreme health spending. First, just regress the extreme health spending measures on the treatment dummy. Next, add cluster-pair dummies. In both cases, calculate standard errors that account for dependence among households within clusters. What happens to the coefficients when you add the cluster-pair dummies? To their standard errors? Why?
+
+<br>
+
+**Answer** <br>
+Adding cluster-pair dummies decreases both the coefficients of treatment dummies and the standard errors. This might be due to the fact that dependence among households within cluster-pairs also contributes to the variation in the effects. However, the decrease in the coefficients was quite small which implies that the difference in cluster-pairs does not much contribute to the ITT.
+
+```{r}
+# (1) Regression of extreme health spending on treatment
+lm_ext_hlth <- lm(ext_hlth_bdg06 ~ treatment, data = data)
+lm_ext_hlth$clse <- cluster.vcov(lm_ext_hlth, data$cluster)
+test1 <- coeftest(lm_ext_hlth, lm_ext_hlth$clse)
+
+# (2) Regression of adjusted extreme health spending (disposable income) on treatment
+lm_adj_ext_hlth <- lm(adj_ext_hlth_bdg06 ~ treatment, data = data)
+lm_adj_ext_hlth$clse <- cluster.vcov(lm_adj_ext_hlth, data$cluster)
+test2 <- coeftest(lm_adj_ext_hlth, lm_adj_ext_hlth$clse)
+
+# (3) Regression of extreme health spending with cluster-pair dummies
+lm_ext_hlth_add <- lm(ext_hlth_bdg06 ~ treatment + as.factor(clust_pair), data = data)
+lm_ext_hlth_add$clse <- cluster.vcov(lm_ext_hlth_add, data$cluster)
+test3 <- coeftest(lm_ext_hlth_add, lm_ext_hlth_add$clse)
+
+# (4) Regression of extreme health spending with cluster-pair dummies
+lm_adj_ext_hlth_add <- lm(adj_ext_hlth_bdg06 ~ treatment + as.factor(clust_pair), data = data)
+lm_adj_ext_hlth_add$clse <- cluster.vcov(lm_adj_ext_hlth_add, data$cluster)
+test4 <- coeftest(lm_adj_ext_hlth_add, lm_adj_ext_hlth_add$clse)
+
+stargazer(test1, test2, test3, test4,
+          keep = "treatment",
+          type = "text",
+          out = ".txt",
+          style = "aer",
+          digits = 4,
+          column.labels = c("extreme", "adjusted extreme", "extreme paired",  "adjusted extreme paired"),
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(0.05, 0.01, 0.001))
+```
+
+<br><br>
+
+### **Q8** 
+Now adjust for baseline characteristics. Again, do this with and without the cluster-pair dummies in the regression. What happens to the estimated treatment effects? To their standard errors?
+
+<br>
+
+**Answer** <br>
+Having additional baseline characteristics makes the coefficients change, compared to the result from Q7. Having cluster-pair dummies gave more precise estimates by reducing the standard errors.
+
+```{r}
+# (1) Regression of extreme health spending on treatment and other other baseline characteristics
+lm_ext_hlth_final <- lm(as.formula(paste("ext_hlth_bdg06 ~ treatment", paste(baseline, collapse = "+"), sep = "+")), data = data)
+lm_ext_hlth_final$clse <- cluster.vcov(lm_ext_hlth_final, data$cluster)
+test_ext_hlth_final <- coeftest(lm_ext_hlth_final, lm_ext_hlth_final$clse)
+
+
+# (2) Regression of adjusted extreme health spending (disposable income) on treatment and other other baseline characteristics
+lm_adj_ext_hlth_final <- lm(as.formula(paste("adj_ext_hlth_bdg06 ~ treatment", paste(baseline, collapse = "+"), sep = "+")), data = data)
+lm_adj_ext_hlth_final$clse <- cluster.vcov(lm_adj_ext_hlth_final, data$cluster)
+test_adj_ext_hlth_final <- coeftest(lm_adj_ext_hlth_final, lm_adj_ext_hlth_final$clse)
+
+
+# (3) Regression of extreme health spending with cluster-pair dummies
+lm_ext_hlth_cp <- lm(as.formula(paste("ext_hlth_bdg06 ~ treatment", paste(baseline, collapse = "+"), "as.factor(clust_pair)", sep = "+")), data = data)
+lm_ext_hlth_cp$clse <- cluster.vcov(lm_ext_hlth_cp, data$cluster)
+test_ext_hlth_cp <- coeftest(lm_ext_hlth_cp, lm_ext_hlth_cp$clse)
+
+
+# (4) Regression of extreme health spending with cluster-pair dummies
+lm_adj_ext_hlth_cp <- lm(as.formula(paste("adj_ext_hlth_bdg06 ~ treatment", paste(baseline, collapse = "+"), "as.factor(clust_pair)", sep = "+")), data = data)
+lm_adj_ext_hlth_cp$clse <- cluster.vcov(lm_adj_ext_hlth_cp, data$cluster)
+test_adj_ext_hlth_cp <- coeftest(lm_adj_ext_hlth_cp, lm_adj_ext_hlth_cp$clse)
+
+stargazer(test_ext_hlth_final, test_adj_ext_hlth_final, test_ext_hlth_cp, test_adj_ext_hlth_cp,
+          keep = "treatment",
+          type = "text",
+          out = ".txt",
+          style = "aer",
+          digits = 4,
+          column.labels = c("extreme", "adjusted extreme", "extreme paired",  "adjusted extreme paired"),
+          star.char = c("*", "**", "***"),
+          star.cutoffs = c(0.05, 0.01, 0.001))
+```
+
+
+<br><br>
+
+
+### **Q9**
+Are any of your conclusions sensitive to the way that you measure extreme health expenditures?
+
+<br>
+
+**Answer** <br>
+From the results above, the conclustions are sensitive to whether using 20% of total expenditure or 30% of disposable income. The latter tends to provide the coefficients slightly bigger (slightly closer to the zero).
+
+
+<br><br>
+
+### **Q10** 
+Now calculate the Wald estimator. How do you interpret it? What additional assumptions do you need to invoke for these estimates to be valid?
+
+<br>
+
+**Answer** <br>
+Wald Estimator of the extreme health spending out of total expenditure is found to be -0.03533817 while that of the extreme health spending out of disposable income is found to be -0.03415077. In other words, for people who decided to take up Seguro Popular due to intervention, one more participation in the Seguro Popular program would lead to decrease the probability of having extreme expenditures on health by 3.5%.
+
+Additional assumptions should be made on SUTVA (No spillover effect) and monotonicity (No defiers). Also, assignment to treatment is assumed to affect the health expenditures through Seguro Popular and to be exogenous. Finally, the treatment (Seguro Popular take-up) is correlated with the intervention.
+
+```{r}
+
+ext_hlth_treated <- 
+  data %>% 
+  filter(treatment == 1) %>% 
+  summarise(expectation = mean(ext_hlth_bdg06, na.rm = TRUE)) %>% 
+  as.numeric(.$expectation)
+
+ext_hlth_untreated <- 
+  data %>% 
+  filter(treatment == 0) %>% 
+  summarise(expectation = mean(ext_hlth_bdg06, na.rm = TRUE)) %>% 
+  as.numeric(.$expectation)
+
+adj_ext_hlth_treated <- 
+  data %>% 
+  filter(treatment == 1) %>% 
+  summarise(expectation = mean(adj_ext_hlth_bdg06, na.rm = TRUE)) %>% 
+  as.numeric(.$expectation)
+
+adj_ext_hlth_untreated <- 
+  data %>% 
+  filter(treatment == 0) %>% 
+  summarise(expectation = mean(adj_ext_hlth_bdg06, na.rm = TRUE)) %>% 
+  as.numeric(.$expectation)
+
+insp_treated <-
+  data %>% 
+  filter(treatment == 1) %>% 
+  summarise(expectation = mean(insp2006, na.rm = TRUE)) %>% 
+  as.numeric(.$expectation)
+
+insp_untreated <-
+  data %>% 
+  filter(treatment == 0) %>% 
+  summarise(expectation = mean(insp2006, na.rm = TRUE)) %>% 
+  as.numeric(.$expectation)
+
+
+# Wald Estimator for extreme spending out of total expenditure
+(ext_hlth_treated - ext_hlth_untreated) / (insp_treated - insp_untreated)
+
+# Wald Estimator for extreme spending out of disposable income
+(adj_ext_hlth_treated - adj_ext_hlth_untreated) / (insp_treated - insp_untreated)
+
+```
+
+
+<br>
+Name: Yoon Hong Park

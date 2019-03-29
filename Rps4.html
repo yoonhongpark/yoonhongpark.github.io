@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yoon Hong Park and Gonzalo Pons" />
+
+<meta name="date" content="2018-10-28" />
+
+<title>Problem Set 4</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Yoon's Archive</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About me</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Program Evaluation
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pePS1.html">Mexican Universal Health Insurance</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    GIS and Spatial Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mapping3-ChiTrauma.html">Chicago Trauma Center Service Area</a>
+    </li>
+    <li>
+      <a href="mapping2-ILInc.html">Illinois Income Distribution</a>
+    </li>
+    <li>
+      <a href="mapping1-ChiHIV.html">Chicago HIV Prevalence</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Policy Analysis with R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Rps4.html">Health Care Data</a>
+    </li>
+    <li>
+      <a href="Rps3.html">Flight Data 2</a>
+    </li>
+    <li>
+      <a href="Rps2.html">Flight Data 1</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown-header">Python Coding</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="section-header">
+
+
+
+<h1 class="title toc-ignore">Problem Set 4</h1>
+<h4 class="author"><em>Yoon Hong Park and Gonzalo Pons</em></h4>
+<h4 class="date"><em>October 28, 2018</em></h4>
+
+</div>
+
+
+<p><strong>Front matter</strong></p>
+<p>This submission is my work alone and complies with the 30531 integrity policy.</p>
+<p>Add your initials to indicate your agreement: <strong>YHP GP</strong></p>
+<pre class="r"><code># LOAD LIBRARIES HERE
+library(tidyverse)</code></pre>
+<p><br><br></p>
+<div id="section-public-sector-application-home-health-care-data" class="section level2">
+<h2><strong>Public Sector Application: Home Health Care Data</strong></h2>
+<p><em>The Department of Health and Human Services Office of the Inspector General is interested in identifying home health agency that are potentially over-billing Medicare. However, nursing homes could also be billing a lot because they have unusually sick patients. We wouldn’t want to punish nursing homes that are taking sicker patients.</em> &lt;<strong>Here</strong>&gt;<a href="%22https://oig.hhs.gov/oei/reports/oei-05-16-00031.pdf%22">Link</a> <em>is the report we will learn more about on in next Monday’s guest lecture. Please read it in advance of the guest lecture.</em></p>
+<p>In several places, the problem set asks you to explain something “in your own words”. In this situation, you should not copy-paste a definition you find online. Instead, do enough reading online until you feel like you understand the concept. Then, call your mother (or your roommate or your friend who is not a Harris student) and explain each concept to her. Finally, write down the concept, as you explained it to your mother.</p>
+<p><br></p>
+<div id="section-data-integration" class="section level3">
+<h3><strong>Data Integration</strong></h3>
+<p>Some of the variable names in the dataset do not comply with the style guide. There is no need to change source variable names. However, if you create a new variable, that should comply with the style guide.</p>
+<p><br></p>
+<ol style="list-style-type: decimal">
+<li>Find and download Medicare’s home health public use files (PUF) by provider for 2014. Open the file in Excel. What does it mean when there is a “*&quot; listed in this file? Read the file into R. You will get some warnings when you read it in. What are the warnings? Name the data frame <code>provider</code>. Use <code>test_that</code> to check that you have 10867 rows.</li>
+</ol>
+<p><strong>Answer:</strong> I sense “*&quot; means missing values. <br></p>
+<p>Initially I tried with <code>read_csv</code> but it didn’t allow me because it was an xlsx instead of csv. Hence, following the class ppt I downloaded and used <code>read_xlsx</code>. This avoided all formatting problems.</p>
+<pre class="r"><code># Load Libraries to test and read xlsx file
+library(testthat)
+library(readxl)
+
+provider &lt;- 
+  read_xlsx(&quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/HH PUF - Provider 2014.xlsx&quot;,
+            sheet = &quot;Provider 2014&quot;,
+            col_names = TRUE,
+            na = c(&quot;&quot;, &quot;*&quot;))
+
+test_that(&quot;provider has 10,867 rows&quot;,
+          expect_equal(nrow(provider), 10867))</code></pre>
+<p><br><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Find and download Medicare’s home health PUF by provider and HHRG for 2014. Read it into R and name it <code>provider_hhrg</code>. Use <code>test_that</code> to check that you have 104920 rows.</li>
+</ol>
+<pre class="r"><code>provider_hhrg &lt;- 
+  read_xlsx(&quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/HH PUF - Provider by HHRG 2014.xlsx&quot;,
+            sheet = &quot;Provider by HHRG 2014&quot;,
+            col_names = TRUE,
+            na = c(&quot;&quot;, &quot;*&quot;))
+
+test_that(&quot;provider_hhrg has 104,920 rows&quot;,
+          expect_equal(nrow(provider_hhrg), 104920))</code></pre>
+<p><br><br></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Download Medicare’s 2014 case-mix weights using the file here. Name the data frame <code>case_mix_weight</code>. Name the variable for 2014 weights <code>weights_2014</code>. Drop the column named “2013 HH PPS Case-Mix Weights”. Use <code>test_that</code> to check that you have 153 rows.</li>
+</ol>
+<pre class="r"><code>case_mix_weight &lt;- 
+  read_xlsx(&quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/CY 2014 Final HH PPS Case-Mix Weights.xlsx&quot;,
+            sheet = &quot;Weights1&quot;,
+            col_names = TRUE)
+
+case_mix_weight &lt;- 
+  case_mix_weight %&gt;%
+  transmute(
+    `Payment group`,
+    `Description`,
+    `Clinical, Functional, and Service Levels`,
+    weights_2014 = `2014 Final HH PPS Case-Mix Weights`
+  )
+
+test_that(&quot;case_mix_weight has 153 rows&quot;, 
+          expect_equal(nrow(case_mix_weight), 153))</code></pre>
+<p><br><br></p>
+</div>
+<div id="section-institutional-research" class="section level3">
+<h3><strong>Institutional Research</strong></h3>
+<p><em>All administrative datasets contain acronyms and reflect concepts that will take some time to understand. As a data analyst, you will always know less about the institutions than the people who run and staff them. However, program staff have limited time to talk to you and so you need to figure out as much as you can from Google before you meet with them.</em></p>
+<ol style="list-style-type: decimal">
+<li>What are five examples of services that home health agencies bill Medicare for?</li>
+</ol>
+<p><strong>Answer:</strong></p>
+<p>From this <website><a href="https://www.medicare.gov/coverage/home-health-services">Link</a> I found that they bill for:</p>
+<ol style="list-style-type: lower-alpha">
+<li>Part-time or intermittent skilled nursing care</li>
+<li>Part-time or intermittent home health aide care</li>
+<li>Physical therapy</li>
+<li>Occupational therapy</li>
+<li>Speech-language pathology services</li>
+</ol>
+<p><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li>In your own words, explain what is an HHRG code.</li>
+</ol>
+<p><strong>Answer:</strong></p>
+<p>“HHRG codes” are represented by “HIPPS codes” on medical claims. They are sometimes refered to as each other. HHRG stands for “home health resource group” and HIPPS stands for “home health prospective payment system”. All these acronyms refer to a system used by home health agencies(HHA; providers of skilled nursing care) and medicare to determine the base payment for each type of service, adjusted for several characteristics of the beneficiary, the location, and similars. <br></p>
+<p>HHRG codes consist of 4 letters starting with a number indicating whether the episodes are early or late followed by three alphabet letters, each of which indicates how wide a range of clinical care is provided, how well they function in terms of bathing, dressing, etc., and how often therapy visits occurred. Based on HHRG codes, the “HIPPS” codes are composed by 5 letters, having the last letter to indicate how well non-routine medical supplies are provided (or not provided). Non-routine medical supplies are used for a patient’s specific illness, which are different from routine medical supplies used for the usual home visits. <br></p>
+<p>Citation: <a href="https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/ProspMedicareFeeSvcPmtGen/Downloads/hippsusesv4.pdf" class="uri">https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/ProspMedicareFeeSvcPmtGen/Downloads/hippsusesv4.pdf</a> <a href="http://www.mhha.org/wp-content/uploads/Committees/Regulatory/HH-Billing-Basics.pdf" class="uri">http://www.mhha.org/wp-content/uploads/Committees/Regulatory/HH-Billing-Basics.pdf</a> <a href="http://www.medpac.gov/docs/default-source/payment-basics/medpac_payment_basics_16_hha_final.pdf" class="uri">http://www.medpac.gov/docs/default-source/payment-basics/medpac_payment_basics_16_hha_final.pdf</a> <a href="https://www.simione.com/application/files/8214/8933/0167/Simione_Medical_Supplies_Romano_dec2014_r2.pdf" class="uri">https://www.simione.com/application/files/8214/8933/0167/Simione_Medical_Supplies_Romano_dec2014_r2.pdf</a></p>
+<p><br></p>
+<ol start="3" style="list-style-type: decimal">
+<li>In your own words, explain what is an HCC score. What does it mean for a patient to have a score of 0.75? of 1.5?</li>
+</ol>
+<p><strong>Answer:</strong></p>
+<p>Under the Affordable Care Act (ACA), insurance companies cannot inflate or deny coverage to ill people. Under this law, healthy people partially subsidize the health coverage of ill people, so it can be accessible for everyone. Medicare and insurance companies calculate the risk/expense each patient represents, which is called RAF (risk adjustment factor), through the Hierarchical Condition Categories (HCC). Hence, HCC is not actually a score, but a list of categories. (However, they are commonly used to refer the same idea) These categories include several deseases, such as depression, asthma or diabetes, and are based on demographic, clinical history, and in-person assesments. Medicare uses these HCC and RAF to reimburse health providers based on the health of their members.</p>
+<p>Different categories add different levels of risk. In general, its very difficult to determine why a person had 1.5 or 0.75 as a score. Essentially, this score work as a multiplication factor to the average cost for the specific county of the beneficiary, which will determine how much Medicare will pay for you monthyl. If the average in that county is 1000, then they would pay 1000 x 1.5 = 1500 or 1000 x 0.75 = 750.</p>
+<p>Citation: <a href="https://www.medirevv.com/blog/what-is-hcc-coding-understanding-todays-risk-adjustment-model" class="uri">https://www.medirevv.com/blog/what-is-hcc-coding-understanding-todays-risk-adjustment-model</a> <a href="https://www.tomdavisconsulting.com/raf-scores-calculated/" class="uri">https://www.tomdavisconsulting.com/raf-scores-calculated/</a></p>
+<p><br></p>
+<ol start="4" style="list-style-type: decimal">
+<li>In your own words, explain what a LUPA is.</li>
+</ol>
+<p><strong>Answer:</strong></p>
+<p>LUPA stands for “Low Utilization Payment Adjustment”. Usually Medicare reimburses home health agencies by “episodes” of 60 days, which include several beneficiaries’ visits for the same illness or problem. This has a set of rules for reimbursment from Medicare, which is what the agencies usually expect. However, if an episode demands 4 visits or less, Medicare applies a LUPA and pays “per visit”, which represents a significant decrease in the reimbursment that the agencies recieve.</p>
+<p>Citation: <a href="https://www.axxess.com/blog/news_n_update/understanding-the-mysterious-lupa/" class="uri">https://www.axxess.com/blog/news_n_update/understanding-the-mysterious-lupa/</a> <a href="https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/HomeHealthPPS/index.html" class="uri">https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/HomeHealthPPS/index.html</a></p>
+<p><br></p>
+</div>
+<div id="section-data-validation" class="section level3">
+<h3><strong>Data Validation</strong></h3>
+<ol style="list-style-type: decimal">
+<li>Using public documents, calculate how many people received home health care benefits from Medicare in calendar year 2014. Compare this to the total number of beneficiaries in <code>provider</code> and in <code>provider_hhrg</code>. Do the numbers from these sources align? If not, why do you think they might not align?</li>
+</ol>
+<pre class="r"><code>provider %&gt;% 
+  summarise(benefic_providers = sum(`Distinct Beneficiaries (non-LUPA)`))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   benefic_providers
+##               &lt;dbl&gt;
+## 1           3468999</code></pre>
+<pre class="r"><code>provider_hhrg %&gt;%
+  summarise(benefic_hhrg = sum(`Distinct Beneficiaries`))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   benefic_hhrg
+##          &lt;dbl&gt;
+## 1      3468099</code></pre>
+<p><strong>Answer:</strong></p>
+<p>The document in the link below says: <br></p>
+<p>Home health agencies provide services to beneficiaries who are homebound and need skilled nursing or therapy. In 2014, about 3.4 million Medicare beneficiaries received care. <br></p>
+<p>This number is almost exactly what we find in the datasets. There are a few discrepancies between different variables and datasets, but they all give around 3.4-3.5 million beneficiaries of home care. Other documents found report ALL medicare beneficiaries, which were around 50 million in 2014. <br></p>
+<p>On <code>provider_hhrg</code> there is a specific variable of distinct beneficiaries that gives 3,468,099 beneficiaries. The documentation shows that these include only non-LUPA beneficiaries. In the <code>provider</code> dataset there is a distinct beneficiaries variable that only include NON-LUPA beneficiaries. This is off by 900 beneficiaries from the <code>provider_hhrg</code> dataset, which is a tiny fraction of people. The difference may have come from duplicated people that got double counted when aggregated or some other counting/coding error when aggregating data. Some episodes/beneficiaries might not have been correctly allocated to a specific HHRG and so are lost when looking for that level of detail. the difference is tiny in relative terms. <br></p>
+<p>Citation: <a href="http://www.medpac.gov/docs/default-source/reports/chapter-8-home-health-care-services-march-2016-report-.pdf" class="uri">http://www.medpac.gov/docs/default-source/reports/chapter-8-home-health-care-services-march-2016-report-.pdf</a></p>
+<p><br></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Compare the total number of episodes in <code>provider</code> and in <code>provider_hhrg</code>. Do the numbers from these sources align? If not, why do you think they might not align?</li>
+</ol>
+<pre class="r"><code>provider %&gt;% 
+  summarise(episodes_provider = sum(`Total Episodes (non-LUPA)`))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   episodes_provider
+##               &lt;dbl&gt;
+## 1           5975644</code></pre>
+<pre class="r"><code>provider_hhrg %&gt;% 
+  summarise(episodes_provider_hhrg = sum(`Total Episodes`))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   episodes_provider_hhrg
+##                    &lt;dbl&gt;
+## 1                4194441</code></pre>
+<pre class="r"><code># Compare the number of providers between each data set.
+length(unique(provider$`Provider ID`))</code></pre>
+<pre><code>## [1] 10867</code></pre>
+<pre class="r"><code>length(unique(provider_hhrg$`Provider ID`))</code></pre>
+<pre><code>## [1] 8392</code></pre>
+<pre class="r"><code># Missing providers
+provider_hhrg_id_list &lt;- unique(provider_hhrg$`Provider ID`)
+
+provider %&gt;%
+  filter(!(`Provider ID` %in% provider_hhrg_id_list))</code></pre>
+<pre><code>## # A tibble: 2,475 x 49
+##    `Provider ID` `Agency Name` `Street Address` City  State `Zip Code`
+##            &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     
+##  1         17008 JEFFERSON CO~ 2201 ARLINGTON ~ BESS~ AL    35020     
+##  2         17139 ASSOCIATES H~ 102 WEST CONECU~ UNIO~ AL    36089     
+##  3         17167 GENTIVA HEAL~ 3319 DR JOHN HA~ PELL~ AL    35125     
+##  4         17169 CV HOME HEAL~ 17035 HWY 11 NO~ VANCE AL    35490     
+##  5         17801 AUTAUGA COUN~ 219 NORTH COURT~ PRAT~ AL    36067     
+##  6         17812 MARENGO COUN~ 303 INDUSTRIAL ~ LIND~ AL    36748     
+##  7         17828 ETOWAH COUNT~ 709 EAST BROAD ~ GADS~ AL    35903     
+##  8         17851 MONTGOMERY C~ 3060 MOBILE HIG~ MONT~ AL    36108     
+##  9         17873 MORGAN COUNT~ 201 GORDON DRIV~ DECA~ AL    35601     
+## 10         17875 CULLMAN COUN~ 601 LOGAN AVENU~ CULL~ AL    35055     
+## # ... with 2,465 more rows, and 43 more variables: `Total Episodes
+## #   (non-LUPA)` &lt;dbl&gt;, `Distinct Beneficiaries (non-LUPA)` &lt;dbl&gt;, `Average
+## #   Number of Total Visits Per Episode (non-LUPA)` &lt;dbl&gt;, `Average Number
+## #   of Skilled Nursing Visits Per Episode (non-LUPA)` &lt;dbl&gt;, `Average
+## #   Number of PT Visits Per Episode (non-LUPA)` &lt;dbl&gt;, `Average Number of
+## #   OT Visits Per Episode (non-LUPA)` &lt;dbl&gt;, `Average Number of ST Visits
+## #   Per Episode (non-LUPA)` &lt;dbl&gt;, `Average Number of Home Health Aide
+## #   Visits Per Episode (non-LUPA)` &lt;dbl&gt;, `Average Number of
+## #   Medical-Social Visits Per Episode (non-LUPA)` &lt;dbl&gt;, `Total HHA Charge
+## #   Amount (non-LUPA)` &lt;dbl&gt;, `Total HHA Medicare Payment Amount
+## #   (non-LUPA)` &lt;dbl&gt;, `Total HHA Medicare Standard Payment Amount
+## #   (non-LUPA)` &lt;dbl&gt;, `Outlier Payments as a Percent of Medicare Payment
+## #   Amount (non-LUPA)` &lt;dbl&gt;, `Total LUPA Episodes` &lt;dbl&gt;, `Total HHA
+## #   Medicare Payment Amount for LUPAs` &lt;dbl&gt;, `Average Age` &lt;dbl&gt;, `Male
+## #   Beneficiaries` &lt;dbl&gt;, `Female Beneficiaries` &lt;dbl&gt;, `Nondual
+## #   Beneficiaries` &lt;dbl&gt;, `Dual Beneficiaries` &lt;dbl&gt;, `White
+## #   Beneficiaries` &lt;dbl&gt;, `Black Beneficiaries` &lt;dbl&gt;, `Asian Pacific
+## #   Islander Beneficiaries` &lt;dbl&gt;, `Hispanic Beneficiaries` &lt;dbl&gt;,
+## #   `American Indian or Alaska Native Beneficiaries` &lt;dbl&gt;, `Other/
+## #   Unknown Beneficiaries` &lt;dbl&gt;, `Average HCC Score` &lt;dbl&gt;, `Percent of
+## #   Beneficiaries with Atrial Fibrillation` &lt;dbl&gt;, `Percent of
+## #   Beneficiaries with Alzheimer&#39;s` &lt;dbl&gt;, `Percent of Beneficiaries with
+## #   Asthma` &lt;dbl&gt;, `Percent of Beneficiaries with Cancer` &lt;dbl&gt;, `Percent
+## #   of Beneficiaries with CHF` &lt;dbl&gt;, `Percent of Beneficiaries with
+## #   Chronic Kidney Disease` &lt;dbl&gt;, `Percent of Beneficiaries with
+## #   COPD` &lt;dbl&gt;, `Percent of Beneficiaries with Depression` &lt;dbl&gt;,
+## #   `Percent of Beneficiaries with Diabetes` &lt;dbl&gt;, `Percent of
+## #   Beneficiaries with Hyperlipidemia` &lt;dbl&gt;, `Percent of Beneficiaries
+## #   with Hypertension` &lt;dbl&gt;, `Percent of Beneficiaries with IHD` &lt;dbl&gt;,
+## #   `Percent of Beneficiaries with Osteoporosis` &lt;dbl&gt;, `Percent of
+## #   Beneficiaries with RA/OA` &lt;dbl&gt;, `Percent of Beneficiaries with
+## #   Schizophrenia` &lt;dbl&gt;, `Percent of Beneficiaries with Stroke` &lt;dbl&gt;</code></pre>
+<pre class="r"><code># For instance, missing JEFFERSON COUNTY HOME CARE is confirmed.
+provider_hhrg %&gt;%
+  filter(`Provider ID` == 17008)</code></pre>
+<pre><code>## # A tibble: 0 x 20
+## # ... with 20 variables: `Provider ID` &lt;dbl&gt;, `Agency Name` &lt;chr&gt;, `Street
+## #   Address` &lt;chr&gt;, City &lt;chr&gt;, State &lt;chr&gt;, `Zip Code` &lt;chr&gt;, HHRG &lt;chr&gt;,
+## #   `HHRG Description` &lt;chr&gt;, `Total Episodes` &lt;dbl&gt;, `Distinct
+## #   Beneficiaries` &lt;dbl&gt;, `Average Number of Total Visits Per
+## #   Episode` &lt;dbl&gt;, `Average Number of Skilled Nursing Visits` &lt;dbl&gt;,
+## #   `Average Number of PT Visits` &lt;dbl&gt;, `Average Number of OT
+## #   Visits` &lt;dbl&gt;, `Average Number of ST Visits` &lt;dbl&gt;, `Average Number of
+## #   HH Aide Visits` &lt;dbl&gt;, `Average Number of Medical-Social
+## #   Visits` &lt;dbl&gt;, `Average HHA Charge Amount` &lt;dbl&gt;, `Average HHA
+## #   Medicare Payment Amount` &lt;dbl&gt;, `Average HHA Medicare Standard Payment
+## #   Amount` &lt;dbl&gt;</code></pre>
+<p><strong>Answer:</strong></p>
+<p><code>Provider_hhrg</code> shows 4,194,441 non-LUPA episodes and provider shows 5,975,644 non-LUPA episodes. This difference is much more significant. It seems that not all providers’ information was reported to HHRG such that about 2,475 providers did not appear on the data aggregated by provider and HHRG. Then, we can think of a possibility that these providers’ reports were missed during aggregation. Interestingly, some of these missing provider IDs disappear from the recent government documentation (<a href="https://data.medicare.gov/api/views/mbph-ap3k/rows.pdf?app_token=U29jcmF0YS0td2VraWNrYXNz0" class="uri">https://data.medicare.gov/api/views/mbph-ap3k/rows.pdf?app_token=U29jcmF0YS0td2VraWNrYXNz0</a>) on the list of providers.</p>
+<p><br><br></p>
+<ol start="3" style="list-style-type: decimal">
+<li>What two columns uniquely identify any row in <code>provider_hhrg</code>? Use <code>n_distinct</code> to document your answer.</li>
+</ol>
+<p><strong>Answer:</strong></p>
+<p>We will assume that Provider ID is unique in the <code>provider</code> dataset and provider ID + HHRG is unique in the <code>Provider</code> by HHRG. We will test these in the follwing way:</p>
+<pre class="r"><code>provider_id &lt;-
+  provider %&gt;%
+  summarise(unique_ids = n_distinct(`Provider ID`))
+
+test_that(&quot;Provider ID is unique in provider data&quot;,
+          expect_equal(provider_id[[1]], nrow(provider)))  
+
+
+provider_hhrg_id &lt;-
+  provider_hhrg %&gt;%
+  mutate(id_x_hhrg = paste(as.factor(`Provider ID`), 
+                           HHRG, 
+                           sep = &quot;-&quot;
+                           )
+         ) %&gt;%
+  summarise(unique_ids = n_distinct(id_x_hhrg))
+
+test_that(&quot;Provider ID and HHRG are unique in provider_hhrg data&quot;,
+          expect_equal(provider_hhrg_id[[1]], nrow(provider_hhrg)))  </code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

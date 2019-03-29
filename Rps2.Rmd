@@ -22,9 +22,9 @@ library(tidyverse)
 
 ## **Public Sector Application: Flight Data**
 
- *{An international trade organization is hosting a two-day convention in Chicago in 2019. The mayor’s tourism office has asked for some planning help based on historical data from 2016.}*
+ *An international trade organization is hosting a two-day convention in Chicago in 2019. The mayor’s tourism office has asked for some planning help based on historical data from 2016.*
 
-<br><br>
+<br>
 
 ### **Download BTS data**
 
@@ -34,7 +34,7 @@ library(tidyverse)
 
 * Read it into R using `chi.flights <- read_csv("data.csv")` and use the bind_rows command to stitch together the monthly files into a yearlong file.
     + Note: Rmd files will look for data in the same folder as the file. You likely downloaded data into your Downloads directory. You can point R to look in downloads e.g. (for Mac and Linux) `chi.flights <- read_csv("~/Downloads/data.csv")` or move the files to your current working directory.
-    + Warning: `setwd()` does not work inside of Rmd chunks. See <**this post**>[link](http://pbahr.github.io/tips/2016/04/16/fix_rmarkdown_working_directory_issue) for an alternative solution.
+    + Warning: `setwd()` does not work inside of Rmd chunks. See [**this post**](http://pbahr.github.io/tips/2016/04/16/fix_rmarkdown_working_directory_issue) for an alternative solution.
     
 ```{r, results=FALSE, warning=FALSE, message=FALSE}
 # Import data (Cited from https://stackoverflow.com/questions/45783120/assocating-excel-file-name-with-dplyrbind-rows-id)

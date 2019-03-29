@@ -6,7 +6,11 @@ navbar:
       href: index.html
     - text: "About me"
       href: about.html
-    - text: "Mapping"
+    - text: "Program Evaluation"
+      menu:
+        - text: "Mexican Universal Health Insurance"
+          href: pePS1.html
+    - text: "GIS and Spatial Analysis"
       menu:
         - text: "Chicago Trauma Center Service Area"
           href: mapping3-ChiTrauma.html
@@ -16,10 +20,14 @@ navbar:
           href: mapping1-ChiHIV.html
     - text: "Policy Analysis with R"
       menu:
-        - text: "Flight Data"
+        - text: "Health Care Data"
+          href: Rps4.html
+        - text: "Flight Data 2"
+          href: Rps3.html
+        - text: "Flight Data 1"
           href: Rps2.html
     - text: "Python Coding"
-    - text: "Study Replications"
+    
 output:
   html_document:
     theme: cosmo
