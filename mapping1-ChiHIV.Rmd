@@ -148,8 +148,7 @@ tm_shape(ChiCommArea) +
   tm_layout(
     outer.margins = 0,
     panel.show = TRUE,
-    panel.labels = "Chicago HIV Prevalence Rate (2015)", 
-    panel.label.size = 1.35,
+    panel.labels = "Chicago HIV Prevalence Rate (2015)",
     panel.label.bg.color = "white",
     legend.position = c("left", "center"), 
     frame = FALSE)

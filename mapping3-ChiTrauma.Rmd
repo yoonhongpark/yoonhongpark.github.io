@@ -251,7 +251,6 @@ TCenterChi <- tm_shape(ComArea.Transform) + tm_borders() +
   tm_layout(
     panel.show = TRUE,
     panel.labels = "Adult Trauma Centers in Chicago(2018)", 
-    panel.label.size = 1.5,
     panel.label.bg.color = "white",
     legend.position = c("left", "center"), 
     frame = FALSE) 
@@ -266,8 +265,7 @@ TCenterChiSub <- tm_shape(ComArea.Transform) + tm_borders() +
   tm_credits("Source: Illinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
   tm_layout(
     panel.show = TRUE,
-    panel.labels = "Adult Trauma Centers Including Suburbs (2018)", 
-    panel.label.size = 1.5,
+    panel.labels = "Adult Trauma Centers Including Suburbs (2018)",
     panel.label.bg.color = "white",
     legend.position = c("left", "center"), 
     frame = FALSE) 
@@ -291,8 +289,7 @@ CrimeMap <- tm_shape(ComArea.Transform) + tm_borders() +
   tm_credits("Source: \nCity of Chicago Data Portal (Crimes - 2018) \nIllinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
   tm_layout(
     panel.show = TRUE,
-    panel.labels = "Number of Crimes (w/ violence) (2018)", 
-    panel.label.size = 1.5,
+    panel.labels = "Number of Crimes (w/ violence) (2018)",
     panel.label.bg.color = "white",
     legend.position = c("left", "center"), 
     frame = FALSE) 
@@ -306,8 +303,7 @@ AccidentMap <- tm_shape(ComAreaAcc.Transform) + tm_borders() +
   tm_credits("Source: \nNational Highway Traffic Safety Administration (Accidents - 2016) \nIllinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
   tm_layout(
     panel.show = TRUE,
-    panel.labels = "Number of Severe accident injuries (2016)", 
-    panel.label.size = 1.5,
+    panel.labels = "Number of Severe Accident Injuries (2016)",
     panel.label.bg.color = "white",
     legend.position = c("left", "center"), 
     frame = FALSE) 
@@ -332,8 +328,7 @@ IndivPovRtMap <- tm_shape(IndivPov) + tm_borders() +
   tm_credits("Source: \nChicago Health Atlas (Individual Poverty 2011-2015) \nIllinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
   tm_layout(
     panel.show = TRUE,
-    panel.labels = "Individual Poverty (2011-2015)", 
-    panel.label.size = 1.5,
+    panel.labels = "Individual Poverty (2011-2015)",
     panel.label.bg.color = "white",
     legend.position = c("left", "center"), 
     frame = FALSE) 
@@ -347,8 +342,7 @@ HousePovRtMap <- tm_shape(HousePov) + tm_borders() +
   tm_credits("Source: \nChicago Health Atlas (Household Poverty 2011-2015) \nIllinois Department of Public Health (Trauma Centers)", align = "left", size = 0.7, position = c("left", "bottom")) +
   tm_layout(
     panel.show = TRUE,
-    panel.labels = "Household Poverty (2011-2015)", 
-    panel.label.size = 1.5,
+    panel.labels = "Household Poverty (2011-2015)",
     panel.label.bg.color = "white",
     legend.position = c("left", "center"), 
     frame = FALSE) 

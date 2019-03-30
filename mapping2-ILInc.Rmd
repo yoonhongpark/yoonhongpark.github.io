@@ -174,8 +174,7 @@ tm_shape(ILCounty) +
   tm_layout(
     outer.margins = 0,
     panel.show = TRUE,
-    panel.labels = "County-level Income Distribution (2015)", 
-    panel.label.size = 1.15,
+    panel.labels = "County-level Income Distribution (2015)",
     panel.label.bg.color = "white",
     legend.position = c("left", "bottom"), 
     frame = FALSE)
@@ -187,8 +186,7 @@ tm_shape(ILTract) +
   tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) +
   tm_layout(
     panel.show = TRUE,
-    panel.labels = "Tract-level Income Distribution (2015)", 
-    panel.label.size = 1.15,
+    panel.labels = "Tract-level Income Distribution (2015)",
     panel.label.bg.color = "white",
     legend.position = c("left", "bottom"), 
     frame = FALSE)
@@ -201,8 +199,7 @@ tm_shape(ILCounty) +
   tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) + 
   tm_layout(
     panel.show = TRUE,
-    panel.labels = "County-level Income Distribution (2015)", 
-    panel.label.size = 1.15,
+    panel.labels = "County-level Income Distribution (2015)",
     panel.label.bg.color = "white",
     legend.position = c("left", "bottom"), 
     frame = FALSE)
@@ -216,7 +213,6 @@ tm_shape(ILTract) +
     panel.show = TRUE,
     panel.labels = "Tract-level Income Distribution (2015)", 
     panel.label.bg.color = "white",
-    panel.label.size = 1.15,
     legend.position = c("left", "bottom"), 
     frame = FALSE)
 ```
@@ -237,8 +233,7 @@ MedIncCount <- tm_shape(ILCounty) +
   tm_layout(
     outer.margins = 0,
     panel.show = TRUE,
-    panel.labels = "County-level Income Distribution (2015)", 
-    panel.label.size = 1.15,
+    panel.labels = "County-level Income Distribution (2015)",
     panel.label.bg.color = "white",
     legend.position = c("left", "bottom"), 
     frame = FALSE)
@@ -251,8 +246,7 @@ MedIncTract <- tm_shape(ILTract) +
   tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) +
   tm_layout(
     panel.show = TRUE,
-    panel.labels = "Tract-level Income Distribution (2015)", 
-    panel.label.size = 1.15,
+    panel.labels = "Tract-level Income Distribution (2015)",
     panel.label.bg.color = "white",
     legend.position = c("left", "bottom"), 
     frame = FALSE)
@@ -269,8 +263,7 @@ AgIncCoun <- tm_shape(ILCounty) +
   tm_credits("U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates", align = "right", size = 0.7) + 
   tm_layout(
     panel.show = TRUE,
-    panel.labels = "County-level Income Distribution (2015)", 
-    panel.label.size = 1.15,
+    panel.labels = "County-level Income Distribution (2015)",
     panel.label.bg.color = "white",
     legend.position = c("left", "bottom"), 
     frame = FALSE)
@@ -285,7 +278,6 @@ AgIncTrac <- tm_shape(ILTract) +
     panel.show = TRUE,
     panel.labels = "Tract-level Income Distribution (2015)", 
     panel.label.bg.color = "white",
-    panel.label.size = 1.15,
     legend.position = c("left", "bottom"), 
     frame = FALSE)
 

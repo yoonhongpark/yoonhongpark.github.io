@@ -189,19 +189,22 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Program Evaluation
+    Program Evaluation (R/Stata)
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="pePS1.html">Mexican Universal Health Insurance</a>
+      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
+    </li>
+    <li>
+      <a href="PS2-f2018.html">Very Low Birth Weight (RDD)</a>
     </li>
   </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    GIS and Spatial Analysis
+    GIS and Spatial Analysis (R)
      
     <span class="caret"></span>
   </a>
@@ -219,7 +222,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Policy Analysis with R
+    Policy Analysis (R)
      
     <span class="caret"></span>
   </a>
@@ -235,7 +238,16 @@ $(document).ready(function () {
     </li>
   </ul>
 </li>
-<li class="dropdown-header">Python Coding</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Programming (Python)
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Scraping</li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -436,8 +448,7 @@ ILTract$AgInc15 &lt;- as.numeric(as.character(ILTract$AgInc15))</code></pre>
   tm_layout(
     outer.margins = 0,
     panel.show = TRUE,
-    panel.labels = &quot;County-level Income Distribution (2015)&quot;, 
-    panel.label.size = 1.15,
+    panel.labels = &quot;County-level Income Distribution (2015)&quot;,
     panel.label.bg.color = &quot;white&quot;,
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)</code></pre>
@@ -450,12 +461,11 @@ ILTract$AgInc15 &lt;- as.numeric(as.character(ILTract$AgInc15))</code></pre>
   tm_credits(&quot;U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates&quot;, align = &quot;right&quot;, size = 0.7) +
   tm_layout(
     panel.show = TRUE,
-    panel.labels = &quot;Tract-level Income Distribution (2015)&quot;, 
-    panel.label.size = 1.15,
+    panel.labels = &quot;Tract-level Income Distribution (2015)&quot;,
     panel.label.bg.color = &quot;white&quot;,
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)</code></pre>
-<pre><code>## Some legend labels were too wide. These labels have been resized to 0.60, 0.55, 0.55, 0.52, 0.48. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
+<pre><code>## Some legend labels were too wide. These labels have been resized to 0.60, 0.56, 0.56, 0.52, 0.49. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
 <p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 <pre class="r"><code>tm_shape(ILCounty) + 
   tm_fill(&quot;AgInc15&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;, title = &quot;Average Income ($)&quot;) + 
@@ -465,12 +475,11 @@ ILTract$AgInc15 &lt;- as.numeric(as.character(ILTract$AgInc15))</code></pre>
   tm_credits(&quot;U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates&quot;, align = &quot;right&quot;, size = 0.7) + 
   tm_layout(
     panel.show = TRUE,
-    panel.labels = &quot;County-level Income Distribution (2015)&quot;, 
-    panel.label.size = 1.15,
+    panel.labels = &quot;County-level Income Distribution (2015)&quot;,
     panel.label.bg.color = &quot;white&quot;,
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)</code></pre>
-<pre><code>## Legend labels were too wide. The labels have been resized to 0.65, 0.65, 0.65, 0.65, 0.60. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
+<pre><code>## Legend labels were too wide. The labels have been resized to 0.65, 0.65, 0.65, 0.65, 0.61. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
 <p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
 <pre class="r"><code>tm_shape(ILTract) + 
   tm_fill(&quot;AgInc15&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;, title = &quot;Average Income ($)&quot;) + 
@@ -482,10 +491,9 @@ ILTract$AgInc15 &lt;- as.numeric(as.character(ILTract$AgInc15))</code></pre>
     panel.show = TRUE,
     panel.labels = &quot;Tract-level Income Distribution (2015)&quot;, 
     panel.label.bg.color = &quot;white&quot;,
-    panel.label.size = 1.15,
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)</code></pre>
-<pre><code>## Some legend labels were too wide. These labels have been resized to 0.60, 0.55, 0.52, 0.48, 0.48. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
+<pre><code>## Some legend labels were too wide. These labels have been resized to 0.60, 0.56, 0.52, 0.49, 0.49. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
 <p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-10-4.png" width="672" /></p>
 <p><br></p>
 <p>To make multifacteted maps, I assigned a name to each mapping code and then used those names to arrange the maps. The outcomes of these codes were the final result of this assignment.</p>
@@ -498,8 +506,7 @@ ILTract$AgInc15 &lt;- as.numeric(as.character(ILTract$AgInc15))</code></pre>
   tm_layout(
     outer.margins = 0,
     panel.show = TRUE,
-    panel.labels = &quot;County-level Income Distribution (2015)&quot;, 
-    panel.label.size = 1.15,
+    panel.labels = &quot;County-level Income Distribution (2015)&quot;,
     panel.label.bg.color = &quot;white&quot;,
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)
@@ -512,8 +519,7 @@ MedIncTract &lt;- tm_shape(ILTract) +
   tm_credits(&quot;U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates&quot;, align = &quot;right&quot;, size = 0.7) +
   tm_layout(
     panel.show = TRUE,
-    panel.labels = &quot;Tract-level Income Distribution (2015)&quot;, 
-    panel.label.size = 1.15,
+    panel.labels = &quot;Tract-level Income Distribution (2015)&quot;,
     panel.label.bg.color = &quot;white&quot;,
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)
@@ -530,8 +536,7 @@ current.mode &lt;- tmap_mode(&quot;plot&quot;) </code></pre>
   tm_credits(&quot;U.S. Census Bureau, \n2011-2015 American Community Survey \n5-Year Estimates&quot;, align = &quot;right&quot;, size = 0.7) + 
   tm_layout(
     panel.show = TRUE,
-    panel.labels = &quot;County-level Income Distribution (2015)&quot;, 
-    panel.label.size = 1.15,
+    panel.labels = &quot;County-level Income Distribution (2015)&quot;,
     panel.label.bg.color = &quot;white&quot;,
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)
@@ -546,7 +551,6 @@ AgIncTrac &lt;- tm_shape(ILTract) +
     panel.show = TRUE,
     panel.labels = &quot;Tract-level Income Distribution (2015)&quot;, 
     panel.label.bg.color = &quot;white&quot;,
-    panel.label.size = 1.15,
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)
 

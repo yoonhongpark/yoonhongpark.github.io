@@ -1,6 +1,6 @@
 ---
 title: "34600 Problem Set 1"
-author: "12173872"
+author: "Yoon Hong Park"
 date: "10/16/2018"
 runtime: shiny
 output:

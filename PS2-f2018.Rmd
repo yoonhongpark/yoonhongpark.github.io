@@ -1,0 +1,787 @@
+---
+title: "34600 Problem Set 2"
+author: "Yoon Hong Park"
+date: "10/30/2018"
+runtime: shiny
+output:
+  html_document
+---
+
+<br>
+For this assignment, provide a write-‐up where you answer the questions below, selectively cutting and pasting output where needed1. Be concise in your write-‐up; excess wordiness will be penalized. Also, submit a log file that includes commands and results for your entire analysis. The assignment makes use of almond_etal_2008.dta, which you can find on Canvas.
+
+<br>
+
+## **Motivation**
+A key policy question in health economics is whether the benefits of additional medical expenditures exceed their cost. The question is particularly relevant since medical expenditures in the United States have been on the rise for a long time. To analyze this question Almond et al (2008), use a RDD design and compare health outcomes of newborns around the threshold of very low birth weight (1500 grams). They argue that the threshold is commonly used as a rule of thumb to prescribe medical treatment, which is followed mainly by convention, and does not reflect biological criteria. In this problem set we will reproduce some of their basic results, so start by reading their paper, which you can find in Canvas.
+
+<br>
+
+## **Questions:**
+
+### **Set-up**
+```{r setup, include=FALSE}
+# Set the working directory
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/2018.4 Fall/PPHA 34600 Program Evaluation/Problem Set 2")
+options(tinytex.verbose = TRUE)
+```
+
+
+```{r message=FALSE}
+# Load libraries
+library(tidyverse)
+library(foreign)
+library(readstata13)
+library(haven)
+library(labelled)
+library(statar)
+library(rdd)
+library(stargazer)
+```
+
+
+```{r results='hide'}
+# Call the data
+data <- read_dta("almond_etal_2008.dta")
+attr(data, "var.labels")
+head(data)
+```
+
+<br><br>
+
+### **Q1**
+Start by getting the descriptive statistics of birth weight in the sample, what is the mean, standard deviation, minimum, and maximum?
+
+<br>
+
+**Answer** <br> 
+The mean weight is 1511.576 grams; the standard deviation is 89.01614 grams; the minimum is 1350 grams; and the maximum is 1650 grams. 
+
+```{r, collapse = TRUE}
+# Data rearranging
+any(is.na(data$bweight))
+summary(data$bweight)
+mean(data$bweight)
+sd(data$bweight, na.rm = TRUE)
+
+```
+
+<br><br>
+
+
+### **Q2** 
+
+Now plot one year and 28 day mortality rates against our running variable, birth weight. To do so, make bins of one ounce (28.35 grams) around the 1500 grams threshold, and get the mean mortality rate on each bin. Make a separate graph for each outcome. Describe the relationship between birth weight and mortality. Does it appear to be a discontinuity of mortality around the very low birth weight threshold? How does the number of observations in each bin affect your mean estimates?
+
+<br>
+
+**Answer** <br>
+Both below and above the threshold, the birth weight and mortality have a negative relationship, which indicates that the mortality rate decreases when the birth weight increases. Yes, there seems to be a discrete jump between right below and right above the threshold. Then, the second set of codes adjusts the binwidth to increase and to decrease the number of observations in each bin. As the width gets broader, the number of observations in each bin gets larger, then the mean estimates form a smoother line, which does not show the jump between below/above the threshold. However, as the width gets narrower, the number of observations gets smaller, then the mean estimates would show more spikes of the general trend. 
+
+
+```{r, fig.align = "default", fig.show = "hold", out.width = "50%"}
+head(data)
+
+# Create bins starting from 1500 in both to the higher and the lower end.
+bin.breaks.one.oz <- 
+  sort(c(seq(1500, 1300, -28.35), seq(1528.35, 1700, 28.35)))
+bin.breaks.three.oz <- 
+  sort(c(seq(1500, 1300, -28.35*3), seq(1585.05, 1700, 28.35*3)))
+bin.breaks.half.oz <- 
+  sort(c(seq(1500, 1300, -28.35*0.5), seq(1514.175, 1700, 28.35*0.5)))
+
+
+# Create bins, calculatem mean per bin, and add mid points for plotting.
+# One-ounce bin plot for one-year mortality rates (agedth5) 
+data %>%
+  mutate(
+    bins = cut(bweight,
+               breaks = bin.breaks.one.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(agedth5, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight, 
+                   breaks = bin.breaks.one.oz, 
+                   right = TRUE, 
+                   plot = FALSE)$mids[2:13]
+  ) %>%
+  ggplot() +
+  geom_point(aes(x = binmids, y = binmean)) + 
+  xlim(c(1350, 1650)) +
+  geom_vline(aes(xintercept = 1500), color="black")
+
+
+# One-ounce bin plot for 28-day mortality rates (agedth4)
+data %>%
+  mutate(
+    bins = cut(bweight, 
+               breaks = bin.breaks.one.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(agedth4, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight, 
+                   breaks = bin.breaks.one.oz, 
+                   right = TRUE, 
+                   plot = FALSE)$mids[2:13]
+  ) %>%
+  ggplot() +
+  geom_point(aes(x = binmids, y = binmean)) + 
+  xlim(c(1350, 1650)) +
+  geom_vline(aes(xintercept = 1500), color="black")
+```
+
+```{r, fig.align = "default", fig.show = "hold", out.width = "50%"}
+# For exploring the number of observations by adjusting the binwidth.
+# Three-ounce bin plot for one-year mortality rates (agedth5)
+data %>%
+  mutate(
+    bins = cut(bweight, 
+               breaks = bin.breaks.three.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(agedth5, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight, 
+                   breaks = bin.breaks.three.oz, 
+                   right = TRUE, 
+                   plot = FALSE)$mids
+  ) %>%
+  ggplot() +
+  geom_point(aes(x = binmids, y = binmean)) + 
+  xlim(c(1350, 1650)) +
+  geom_vline(aes(xintercept = 1500), color="black")
+
+
+# Three-ounce bin plot for 28-day mortality rates (agedth4)
+data %>%
+  mutate(
+    bins = cut(bweight, 
+               breaks = bin.breaks.three.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(agedth4, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight, 
+                   breaks = bin.breaks.three.oz, 
+                   right = TRUE, 
+                   plot = FALSE)$mids
+  ) %>%
+  ggplot() +
+    geom_point(aes(x = binmids, y = binmean)) + 
+    xlim(c(1350, 1650)) +
+    geom_vline(aes(xintercept = 1500), color="black")
+
+
+# Half-ounce bin plot for one-year mortality rates (agedth5)
+data %>%
+  mutate(
+    bins = cut(bweight, 
+               breaks = bin.breaks.half.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(agedth5, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight, 
+                   breaks = bin.breaks.half.oz, 
+                   right = TRUE, 
+                   plot = FALSE)$mids[4:25]
+  ) %>%
+  ggplot() +
+    geom_point(aes(x = binmids, y = binmean)) + 
+    xlim(c(1350, 1650)) +
+    geom_vline(aes(xintercept = 1500), color="black")
+
+
+# Three-ounce bin plot for 28-day mortality rates (agedth4)
+data %>%
+  mutate(
+    bins = cut(bweight, 
+               breaks = bin.breaks.half.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(agedth4, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight, 
+                   breaks = bin.breaks.half.oz, 
+                   right = TRUE, 
+                   plot = FALSE)$mids[4:25]
+  ) %>%
+  ggplot() +
+  geom_point(aes(x = binmids, y = binmean)) + 
+  xlim(c(1350, 1650)) +
+  geom_vline(aes(xintercept = 1500), color="black")
+```
+
+
+<br><br>
+
+### **Q3**
+
+A key assumption for an RDD to provide a causal estimate is that individuals are not able to sort according to the running variable, i.e., they should not be able to manipulate its value. Discuss in your own words whether this is a reasonable assumption in this case.
+
+<br>
+
+**Answer** <br>
+To check if this is a reasonable assumption, we need to think about two potential cases: mothers manipulating the birth weight by giving births earlier and doctors misreporting the birth weight systematically. First of all, Almond and his colleagues' conversations with physicians suggest that it is impossible to predict the birth weight before giving births, which rejects the first potential case. Also, the histogram below suggests that the distribution of frequency of birth weights around 1500g are similar to that around 1400g and 1600g, suggesting that the doctors would not systematically manipulate the birthweight in order to gain more reimbursements or other benefits.
+
+```{r, warning=FALSE}
+ggplot(data, aes(x = bweight)) +
+  geom_histogram(binwidth = 2.835)
+
+manip.test <- data %>%
+  mutate(
+    new_bweight = cut_width(bweight, 1, closed = "right")
+  ) %>%
+  group_by(new_bweight) %>%
+  mutate(
+    new_bweight_count = n(),
+    VLBW              = bweight < 1500,
+    non_VLBW          = bweight >= 1500,
+    running           = bweight - 1500,
+    VLBW_run          = VLBW * running,
+    non_VLBW_run      = non_VLBW * running
+  ) %>%
+  summarise(
+    new_bweight_count = n(),
+    new_VLBW          = sum(VLBW),
+    new_non_VLBW      = sum(non_VLBW),
+    new_running       = sum(running),
+    new_VLBW_run      = sum(VLBW_run),
+    new_non_VLBW_run  = sum(non_VLBW_run)
+  )
+
+# Run Manipulation Test Regression
+lm_manip_test <- lm(new_bweight_count ~ new_VLBW + new_VLBW_run + new_non_VLBW_run, data = manip.test)
+
+stargazer(
+  lm_manip_test,
+  type = "text", 
+  out = ".txt", 
+  style = "aer", 
+  digits = 4,
+  dep.var.labels = "Birth Weight Counts per Bin (Gram)",
+  covariate.labels = c("Birth weight < 1500g", 
+                       "Birth weight < 1500g * Grams from cutoff",
+                       "Birth weight >= 1500g * Grams from cutoff")
+)
+```
+
+
+<br><br>
+
+
+### **Q4**
+Assess informally whether the behavior of other covariates is smooth around the threshold, by plotting the mean of some covariates (mother’s age, mother’s education less than high school, gestational age, prenatal care visits, and year of birth) against birth weight as you did in point (2). Is there any evidence of discontinuities on other covariates around the very low birth weight threshold? If they were, how could these affect your RDD estimates?
+
+<br>
+
+**Answer** <br>
+I could not see that much jump between below and above the threshold. Particularly, gastational ages and prenatal care visits are graphically smooth. Other covariates also seem to not affect the changes between below and above the threshold. If some covariates showed significant discontinuity around the threshold, it might be highly correlated with the treatment such that our RDD estimate on the treatment effect would be biased.
+
+
+```{r, fig.align = "default", fig.show = "hold", out.width = "50%"}
+# Create a plot with 1 ounce bin for mother's age (mom_age)
+data %>%
+  mutate(
+    bins = cut(bweight, 
+               breaks = bin.breaks.one.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(mom_age, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight, 
+                   breaks = bin.breaks.one.oz, 
+                   right = TRUE, 
+                   plot = FALSE)$mids[2:13]
+  ) %>%
+  ggplot() +
+  geom_point(aes(x = binmids, y = binmean)) + 
+  xlim(c(1350, 1650)) +
+  ylim(c(26.1, 26.6)) +
+  geom_vline(aes(xintercept = 1500), color="black") +
+  xlab("Birth Weight") +
+  ylab("Mother's Age")
+
+
+# Create a plot with 1 ounce bin for mother's education < high school (mom_ed1)
+data %>%
+  mutate(
+    bins = cut(bweight, 
+               breaks = bin.breaks.one.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(mom_ed1, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight,
+                   breaks = bin.breaks.one.oz,
+                   right = TRUE, 
+                   plot = FALSE)$mids[2:13]
+  ) %>%
+  ggplot() +
+  geom_point(aes(x = binmids, y = binmean)) + 
+  xlim(c(1350, 1650)) +
+  ylim(c(0.24, 0.27)) +
+  geom_vline(aes(xintercept = 1500), color="black") +
+  xlab("Birth Weight") +
+  ylab("Mother's Education")
+
+
+# Create a plot with 1 ounce bin for gastational age (gest)
+data %>%
+  mutate(
+    bins = cut(bweight, 
+               breaks = bin.breaks.one.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(gest, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight, 
+                   breaks = bin.breaks.one.oz, 
+                   right = TRUE, 
+                   plot = FALSE)$mids[2:13]
+  ) %>%
+  ggplot() +
+  geom_point(aes(x = binmids, y = binmean)) + 
+  xlim(c(1350, 1650))  +
+  ylim(c(31, 33)) +
+  geom_vline(aes(xintercept = 1500), color="black") +
+  xlab("Birth Weight") +
+  ylab("Gastational Age")
+
+
+# Create a plot with 1 ounce bin for prenatal care visits (nprenatal)
+data %>%
+  mutate(
+    bins = cut(bweight, 
+               breaks = bin.breaks.one.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(nprenatal, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight, 
+                   breaks = bin.breaks.one.oz, 
+                   right = TRUE, 
+                   plot = FALSE)$mids[2:13]
+  ) %>%
+  ggplot() +
+  geom_point(aes(x = binmids, y = binmean)) + 
+  xlim(c(1350, 1650)) +
+  ylim(c(8, 9.5)) +
+  geom_vline(aes(xintercept = 1500), color="black") +
+  xlab("Birth Weight") +
+  ylab("Prenatal-Care Visits")
+
+
+# Create a plot with 1 ounce bin for year of birth (yob)
+data %>%
+  mutate(
+    bins = cut(bweight, 
+               breaks = bin.breaks.one.oz, 
+               right = FALSE, 
+               dig.lab = 10)
+  ) %>%
+  group_by(bins) %>%
+  summarise(
+    binmean = mean(yob, na.rm = TRUE)
+  ) %>%
+  mutate(
+    binmids = hist(data$bweight, 
+                   breaks = bin.breaks.one.oz, 
+                   right = TRUE, 
+                   plot = FALSE)$mids[2:13]
+  ) %>%
+  ggplot() +
+  geom_point(aes(x = binmids, y = binmean)) + 
+  xlim(c(1350, 1650)) +
+  ylim(c(1992, 1994)) +
+  geom_vline(aes(xintercept = 1500), color="black") +
+  xlab("Birth Weight") +
+  ylab("Year of Birth")
+
+```
+
+<br><br>
+
+### **Q5**
+Now get an estimate of the size of the discontinuity in one-‐year and 28-‐day mortality, around the 1500 grams threshold using a caliper of 85 grams (above and below the threshold). To do so, use the following model:
+$$Y_{i} = \alpha_{0} + \alpha_{1}VLBW_{i} + \alpha_{2}VLBW_{i}(g_{i}-1500) + \alpha_{3}(1-VLBW_{i})(g_{i}-1500)+\varepsilon_{i}$$
+where $Y_{i}$ is the outcome of interest, $VLBW_{i}$ indicates that a newborn had very low birth weight (< 1500 grams), $g_{i}$ is birth weight and $\varepsilon_{i}$ a disturbance term. Interpret the coefficients $\alpha_{1}$, $\alpha_{2}$, and $\alpha_{3}$.
+
+<br>
+
+**Answer** <br>
+The coefficient $\alpha_{1}$ is the estimated impact of being VLBW ("Birth weight < 1500g") on the mortality rate (28-day and one-year) within the 85g caliper. The impact of being VLBW on one-year mortality is found to be -0.0095 (or 0.95 percent point reduction), while that on 28-day mortality is found to be -0.0088 (or 0.88 percent point reduction).
+
+```{r}
+# Data-cleaning, using calipers of 85 grams above and below.
+data.calip85 <-
+  data %>%
+  filter(bweight >= 1500-85, bweight <= 1500+85) %>%
+  mutate(
+    VLBW         = bweight < 1500,
+    non_VLBW     = bweight >= 1500,
+    running      = bweight - 1500,
+    VLBW_run     = VLBW * running,
+    non_VLBW_run = non_VLBW * running
+  )
+
+# Regression on One-year mortality
+lm_one_year <- lm(agedth5 ~ VLBW + VLBW_run + non_VLBW_run, data = data.calip85)
+
+# Regression on 28-day mortality
+lm_28_day <- lm(agedth4 ~ VLBW + VLBW_run + non_VLBW_run, data = data.calip85)
+
+
+# Print the result
+stargazer(
+  lm_one_year, 
+  lm_28_day, 
+  type = "text", 
+  out = ".txt", 
+  style = "aer", 
+  digits = 4,
+  dep.var.labels = c("One-Year Mortality", "28-Day Mortality"),
+  covariate.labels = c("Birth weight < 1500g", 
+                       "Birth weight < 1500g * Grams from cutoff",
+                       "Birth weight >= 1500g * Grams from cutoff")
+)
+```
+
+
+<br><br>
+
+
+### **Q6**
+Now add covariates to the model in (5). Include mother’s age, indicators for mother’s education and race, indicators for year of birth, indicators for gestational age and prenatal care visits. Use the dummies provided in the data for gestational age and prenatal care visits. Compare your estimates to those obtained in (5) and explain the difference if any.
+
+<br>
+
+**Answer** <br>
+First of all, by the nature of adding more covariates that might have little but still more than zero effect on the infant mortality rate, so the estimates of treatment effects from Q6 are smaller (in terms of the magnitude without sign) that those from Q5. (0.0076 < 0.0095, 0.0073 < 0.0088) While standard error for these estimates remain almost the same, the magnitude changed relatively signficantly meaning that some of the covariates included in Q6 regression might also have a quite large effect on the treatment outcome. Also, as the number of covariates that probably affected the outcome increased, the F Statistics became larger in Q6 than in Q5, which means that Q6 analysis became more precise and more explanatory, which was also supported by the increase in the adjusted R squared.
+
+
+```{r}
+# Data-cleaning for next regression
+data.calip85.cov <-
+  data.calip85 %>%
+  mutate(
+    mom_age1 = ifelse(mom_age >= 31 & mom_age <= 35, 1, 0),
+    mom_age2 = ifelse(mom_age >= 36 & mom_age <= 40, 1, 0),
+    mom_age3 = ifelse(mom_age >= 41, 1, 0),
+    mom_race1 = ifelse(mom_race == "black", 1, 0),
+    mom_race2 = ifelse(mom_race == "other", 1, 0),
+    yob_dummies = factor(yob) 
+  )
+
+# Regression on One-year mortality with other covariates
+lm_one_year_cov <- lm(agedth5 ~ VLBW + VLBW_run + non_VLBW_run + mom_age1 + 
+                      mom_age2 + mom_age3 + mom_ed2 + mom_ed3 + mom_ed4 + 
+                      mom_ed5 + mom_race + yob_dummies + gest_wks1 + 
+                      gest_wks2 + gest_wks3  + nprenatal_1 + nprenatal_2 + 
+                      nprenatal_3, data = data.calip85.cov)
+
+
+# Regression on 28-day mortality with other covariates
+lm_28_day_cov <- lm(agedth4 ~ VLBW + VLBW_run + non_VLBW_run + mom_age1 + 
+                    mom_age2 + mom_age3 + mom_ed2 + mom_ed3 + mom_ed4 + 
+                    mom_ed5 + mom_race + yob_dummies + gest_wks1 + 
+                    gest_wks2 + gest_wks3  + nprenatal_1 + nprenatal_2 + 
+                    nprenatal_3, data = data.calip85.cov)
+
+
+# Print the result
+stargazer(
+  lm_28_day_cov,
+  lm_one_year_cov,
+  type = "text",
+  out = ".txt",
+  style = "aer",
+  digits = 4,
+  title = "Caliper of 85 grams",
+  dep.var.labels = c("28-Day Mortality", "One-Year Mortality"),
+  covariate.labels = c("Birth weight < 1500g", 
+                       "Birth weight < 1500g * Grams from cutoff",
+                       "Birth weight >= 1500g * Grams from cutoff",
+                       "Mother's Age: 31-35",
+                       "Mother's Age: 36-40",
+                       "Mother's Age: 41+",
+                       "Mother's Education: High School",
+                       "Mother's Education: Some College",
+                       "Mother's Education: College +",
+                       "Mother's Education: Missing",
+                       "Mother's Race",
+                       "Year of Birth: 1984",
+                       "Year of Birth: 1985",
+                       "Year of Birth: 1986",
+                       "Year of Birth: 1987",
+                       "Year of Birth: 1988",
+                       "Year of Birth: 1989",
+                       "Year of Birth: 1990",
+                       "Year of Birth: 1991",
+                       "Year of Birth: 1995",
+                       "Year of Birth: 1996",
+                       "Year of Birth: 1997",
+                       "Year of Birth: 1998",
+                       "Year of Birth: 1999",
+                       "Year of Birth: 2000",
+                       "Year of Birth: 2001",
+                       "Year of Birth: 2002",
+                       "Gestational Age: -36 weeks",
+                       "Gestational Age: 37-42 weeks",
+                       "Gestational Age: 43+ weeks",
+                       "Prenatal Visits: -8 visits",
+                       "Prenatal Visits: 9-14 visits",
+                       "Prenatal Visits: 15+ visits")
+)
+
+```
+
+
+<br><br>
+
+
+### **Q7**
+Use the model in (6) to assess the sensitivity of the estimates to the use of different calipers. Use calipers of 30 and 120 grams (above and below the 1500 threshold). Are the estimates any different to those obtained in (6)? What is the tradeoff that we face when increasing/decreasing the caliper?
+
+<br>
+
+**Answer** <br>
+With the calipler of 30g, the impact of being VLBW on the 28-day mortality rate becomes -0.0139 and that on the one-year rate becomes -0.0138, both of which are large compared to -0.0073 and -0.0076 above. As the caliper gets smaller, the estimate of impact goes larger, but the standard error also gets larger, meaning low precision due to the smaller range of sample. Indeed, the slope coefficiennt for the group below the threshold (<1500g) becomes no longer statistifically significant. At the same time, however, the estimate is also less biased, showing the larger magnitude of impact.
+
+
+On the other hand, with the calipler of 120g, the impact of being VLBW on the 28-day mortality rate becomes -0.0056 and that on the one-year rate becomes -0.0064, both of which are small compared to -0.0073 and -0.0076 above. As the caliper gets larger, the estimate of impact gets smaller, but the standard error also gets smaller. Indeed, the slope coefficient for both groups below and above the threshold becomes smaller, or "flatter." Since the large caliper deals with a wider range of data, the slope coefficient is estimated on the more spread-out data points. In other words, as the data quantity within the caliper is large, the estimate is more precise, but at the same time, the estimated impact is also getting smaller and probably underestimated (biased).
+
+This shows the tradeoff between bias and precision when the size of caliper is chosen. Larger caliper gives more precise estimate with more biased, and vice versa.
+
+```{r}
+# Data-cleaning, using calipers of 30 and of 120
+data.calip30 <-
+  data %>%
+  filter(bweight >= 1500-30, bweight <= 1500+30) %>%
+  mutate(
+    VLBW         = bweight < 1500,
+    non_VLBW     = bweight >= 1500,
+    running      = bweight - 1500,
+    VLBW_run     = VLBW * running,
+    non_VLBW_run = non_VLBW * running
+  )
+
+data.calip120 <-
+  data %>%
+  filter(bweight >= 1500-120, bweight <= 1500+120) %>%
+  mutate(
+    VLBW         = bweight < 1500,
+    non_VLBW     = bweight >= 1500,
+    running      = bweight - 1500,
+    VLBW_run     = VLBW * running,
+    non_VLBW_run = non_VLBW * running
+  )
+
+
+# For each data, create some dummies for next regression
+data.calip30.cov <-
+  data.calip30 %>%
+  mutate(
+    mom_age1 = ifelse(mom_age >= 31 & mom_age <= 35, 1, 0),
+    mom_age2 = ifelse(mom_age >= 36 & mom_age <= 40, 1, 0),
+    mom_age3 = ifelse(mom_age >= 41, 1, 0),
+    mom_race1 = ifelse(mom_race == "black", 1, 0),
+    mom_race2 = ifelse(mom_race == "other", 1, 0),
+    yob_dummies = factor(yob) 
+  )
+
+data.calip120.cov <-
+  data.calip120 %>%
+  mutate(
+    mom_age1 = ifelse(mom_age >= 31 & mom_age <= 35, 1, 0),
+    mom_age2 = ifelse(mom_age >= 36 & mom_age <= 40, 1, 0),
+    mom_age3 = ifelse(mom_age >= 41, 1, 0),
+    mom_race1 = ifelse(mom_race == "black", 1, 0),
+    mom_race2 = ifelse(mom_race == "other", 1, 0),
+    yob_dummies = factor(yob) 
+  )
+
+
+# Regression on One-year mortality with other covariates for caliper 30
+lm_one_year_cov_30 <- lm(agedth5 ~ VLBW + VLBW_run + non_VLBW_run + mom_age1 + 
+                      mom_age2 + mom_age3 + mom_ed2 + mom_ed3 + mom_ed4 + 
+                      mom_ed5 + mom_race + yob_dummies + gest_wks1 + 
+                      gest_wks2 + gest_wks3  + nprenatal_1 + nprenatal_2 + 
+                      nprenatal_3, data = data.calip30.cov)
+
+
+# Regression on 28-day mortality with other covariates for caliper 30
+lm_28_day_cov_30 <- lm(agedth4 ~ VLBW + VLBW_run + non_VLBW_run + mom_age1 + 
+                    mom_age2 + mom_age3 + mom_ed2 + mom_ed3 + mom_ed4 + 
+                    mom_ed5 + mom_race + yob_dummies + gest_wks1 + 
+                    gest_wks2 + gest_wks3  + nprenatal_1 + nprenatal_2 + 
+                    nprenatal_3, data = data.calip30.cov)
+
+
+# Regression on One-year mortality with other covariates for caliper 120
+lm_one_year_cov_120 <- lm(agedth5 ~ VLBW + VLBW_run + non_VLBW_run + mom_age1 + 
+                      mom_age2 + mom_age3 + mom_ed2 + mom_ed3 + mom_ed4 + 
+                      mom_ed5 + mom_race + yob_dummies + gest_wks1 + 
+                      gest_wks2 + gest_wks3  + nprenatal_1 + nprenatal_2 + 
+                      nprenatal_3, data = data.calip120.cov)
+
+
+# Regression on 28-day mortality with other covariates for caliper 120
+lm_28_day_cov_120 <- lm(agedth4 ~ VLBW + VLBW_run + non_VLBW_run + mom_age1 + 
+                    mom_age2 + mom_age3 + mom_ed2 + mom_ed3 + mom_ed4 + 
+                    mom_ed5 + mom_race + yob_dummies + gest_wks1 + 
+                    gest_wks2 + gest_wks3  + nprenatal_1 + nprenatal_2 + 
+                    nprenatal_3, data = data.calip120.cov)
+
+# Print the result
+stargazer(
+  lm_28_day_cov_30,
+  lm_one_year_cov_30,
+  type = "text",
+  out = ".txt",
+  style = "aer",
+  digits = 4,
+  title = "Caliper of 30 grams",
+  dep.var.labels = c("28-Day Mortality", "One-Year Mortality"),
+  covariate.labels = c("Birth weight < 1500g", 
+                       "Birth weight < 1500g * Grams from cutoff",
+                       "Birth weight >= 1500g * Grams from cutoff",
+                       "Mother's Age: 31-35",
+                       "Mother's Age: 36-40",
+                       "Mother's Age: 41+",
+                       "Mother's Education: High School",
+                       "Mother's Education: Some College",
+                       "Mother's Education: College +",
+                       "Mother's Education: Missing",
+                       "Mother's Race",
+                       "Year of Birth: 1984",
+                       "Year of Birth: 1985",
+                       "Year of Birth: 1986",
+                       "Year of Birth: 1987",
+                       "Year of Birth: 1988",
+                       "Year of Birth: 1989",
+                       "Year of Birth: 1990",
+                       "Year of Birth: 1991",
+                       "Year of Birth: 1995",
+                       "Year of Birth: 1996",
+                       "Year of Birth: 1997",
+                       "Year of Birth: 1998",
+                       "Year of Birth: 1999",
+                       "Year of Birth: 2000",
+                       "Year of Birth: 2001",
+                       "Year of Birth: 2002",
+                       "Gestational Age: -36 weeks",
+                       "Gestational Age: 37-42 weeks",
+                       "Gestational Age: 43+ weeks",
+                       "Prenatal Visits: -8 visits",
+                       "Prenatal Visits: 9-14 visits",
+                       "Prenatal Visits: 15+ visits")
+)
+
+stargazer(
+  lm_28_day_cov_120,
+  lm_one_year_cov_120,
+  type = "text",
+  out = ".txt",
+  style = "aer",
+  digits = 4,
+  title = "Caliper of 120 grams",
+  dep.var.labels = c("28-Day Mortality", "One-Year Mortality"),
+  covariate.labels = c("Birth weight < 1500g", 
+                       "Birth weight < 1500g * Grams from cutoff",
+                       "Birth weight >= 1500g * Grams from cutoff",
+                       "Mother's Age: 31-35",
+                       "Mother's Age: 36-40",
+                       "Mother's Age: 41+",
+                       "Mother's Education: High School",
+                       "Mother's Education: Some College",
+                       "Mother's Education: College +",
+                       "Mother's Education: Missing",
+                       "Mother's Race",
+                       "Year of Birth: 1984",
+                       "Year of Birth: 1985",
+                       "Year of Birth: 1986",
+                       "Year of Birth: 1987",
+                       "Year of Birth: 1988",
+                       "Year of Birth: 1989",
+                       "Year of Birth: 1990",
+                       "Year of Birth: 1991",
+                       "Year of Birth: 1995",
+                       "Year of Birth: 1996",
+                       "Year of Birth: 1997",
+                       "Year of Birth: 1998",
+                       "Year of Birth: 1999",
+                       "Year of Birth: 2000",
+                       "Year of Birth: 2001",
+                       "Year of Birth: 2002",
+                       "Gestational Age: -36 weeks",
+                       "Gestational Age: 37-42 weeks",
+                       "Gestational Age: 43+ weeks",
+                       "Prenatal Visits: -8 visits",
+                       "Prenatal Visits: 9-14 visits",
+                       "Prenatal Visits: 15+ visits")
+)
+
+```
+
+
+<br><br>
+
+
+### **Q8** 
+Synthetize your findings and discuss what kind of supplementary information would you need to make a cost-‐benefit analysis of treatment received by newborns close to the very low birth weight threshold.
+
+<br>
+
+**Answer** <br>
+According to this study, it was found that the newborns weighing from 1414.95g to 1500g have the average one-year mortality rate that is 0.76 percentage-point lower than the mortality rate of those from 1500g to 1585.05g. And from the conversation with doctors, the newborns just below 1500g got additional treatment suggesting that this treatment caused this lower mortality rate.
+
+From the findings above, it is important to calculate the cost and the benefit of additional treatment provided to the newborns just below the threshold. The benefit can be calculated by the value of one baby's life saved by the additional treatment. The cost can be the average spending on the additional treatment that the newborns with VLBW receive.
+
+
+<br>
+
+Name: Yoon Hong Park

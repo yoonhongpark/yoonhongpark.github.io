@@ -6,11 +6,13 @@ navbar:
       href: index.html
     - text: "About me"
       href: about.html
-    - text: "Program Evaluation"
+    - text: "Program Evaluation (R/Stata)"
       menu:
-        - text: "Mexican Universal Health Insurance"
+        - text: "Mexican Universal Health Insurance (ITT/LATE)"
           href: pePS1.html
-    - text: "GIS and Spatial Analysis"
+        - text: "Very Low Birth Weight (RDD)"
+          href: PS2-f2018.html
+    - text: "GIS and Spatial Analysis (R)"
       menu:
         - text: "Chicago Trauma Center Service Area"
           href: mapping3-ChiTrauma.html
@@ -18,7 +20,7 @@ navbar:
           href: mapping2-ILInc.html
         - text: "Chicago HIV Prevalence"
           href: mapping1-ChiHIV.html
-    - text: "Policy Analysis with R"
+    - text: "Policy Analysis (R)"
       menu:
         - text: "Health Care Data"
           href: Rps4.html
@@ -26,7 +28,9 @@ navbar:
           href: Rps3.html
         - text: "Flight Data 1"
           href: Rps2.html
-    - text: "Python Coding"
+    - text: "Programming (Python)"
+      menu:
+        - text: "Scraping"
     
 output:
   html_document:
