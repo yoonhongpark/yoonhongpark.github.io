@@ -12,6 +12,11 @@ This submission is my work alone and complies with the 30531 integrity policy.
   
   Add your initials to indicate your agreement: **YHP GP**
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon")
+options(tinytex.verbose = TRUE)
+```
 
 ```{r message=FALSE, warning=FALSE}
 # LOAD LIBRARIES HERE
@@ -46,7 +51,7 @@ library(testthat)
 library(readxl)
 
 provider <- 
-  read_xlsx("../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/HH PUF - Provider 2014.xlsx",
+  read_xlsx("./HH PUF - Provider 2014.xlsx",
             sheet = "Provider 2014",
             col_names = TRUE,
             na = c("", "*"))
@@ -61,7 +66,7 @@ test_that("provider has 10,867 rows",
 
 ```{r}
 provider_hhrg <- 
-  read_xlsx("../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/HH PUF - Provider by HHRG 2014.xlsx",
+  read_xlsx("./HH PUF - Provider by HHRG 2014.xlsx",
             sheet = "Provider by HHRG 2014",
             col_names = TRUE,
             na = c("", "*"))
@@ -75,7 +80,7 @@ test_that("provider_hhrg has 104,920 rows",
 3. Download Medicare’s 2014 case-mix weights using the file here. Name the data frame `case_mix_weight`. Name the variable for 2014 weights `weights_2014`. Drop the column named “2013 HH PPS Case-Mix Weights”. Use `test_that` to check that you have 153 rows.
 ```{r}
 case_mix_weight <- 
-  read_xlsx("../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/CY 2014 Final HH PPS Case-Mix Weights.xlsx",
+  read_xlsx("./CY 2014 Final HH PPS Case-Mix Weights.xlsx",
             sheet = "Weights1",
             col_names = TRUE)
 

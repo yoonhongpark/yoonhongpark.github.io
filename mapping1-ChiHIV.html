@@ -195,10 +195,13 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
+      <a href="PE_pset3.html">Ban the Box (DID)</a>
     </li>
     <li>
       <a href="PS2-f2018.html">Very Low Birth Weight (RDD)</a>
+    </li>
+    <li>
+      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
     </li>
   </ul>
 </li>
@@ -273,11 +276,6 @@ $(document).ready(function () {
 <div id="section-basic-setup" class="section level2">
 <h2><strong>Basic Setup</strong></h2>
 <p><br></p>
-<div id="section-set-the-current-working-directory" class="section level3">
-<h3><strong>Set the current working directory</strong></h3>
-<pre class="r"><code>setwd(&quot;../../2018.3 Summer/Intro to GIS/Assignment 1&quot;)</code></pre>
-<p><br></p>
-</div>
 <div id="section-load-libraries" class="section level3">
 <h3><strong>Load Libraries</strong></h3>
 <pre class="r"><code>library(rgdal)</code></pre>
@@ -302,7 +300,7 @@ library(RColorBrewer)</code></pre>
 </div>
 <div id="section-load-the-hiv-data" class="section level3">
 <h3><strong>Load the HIV data</strong></h3>
-<pre class="r"><code>Census.Data &lt;- read.csv(&quot;../../2018.3 Summer/Intro to GIS/Assignment 1/HIV_prevalence.csv&quot;)
+<pre class="r"><code>Census.Data &lt;- read.csv(&quot;HIV_prevalence.csv&quot;)
 
 head(Census.Data)</code></pre>
 <pre><code>##    Category        SubCategory      Indicator Year      Geography
@@ -351,7 +349,7 @@ head(Census.Data)</code></pre>
 </div>
 <div id="section-load-the-shapefile" class="section level3">
 <h3><strong>Load the shapefile</strong></h3>
-<pre class="r"><code>Output.Areas &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 1/Boundaries - Community Areas (current)&quot;, &quot;geo_export_33b739f8-cd83-43f1-a0a4-17c16a5a9d46&quot;)</code></pre>
+<pre class="r"><code>Output.Areas &lt;- readOGR(&quot;./Boundaries - Community Areas (current)&quot;, &quot;geo_export_33b739f8-cd83-43f1-a0a4-17c16a5a9d46&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
 ## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 1\Boundaries - Community Areas (current)&quot;, layer: &quot;geo_export_33b739f8-cd83-43f1-a0a4-17c16a5a9d46&quot;
 ## with 77 features
@@ -399,23 +397,23 @@ head(ChiCommArea)</code></pre>
 <p>First, I Created a map for quick overview.</p>
 <pre class="r"><code>qtm(ChiCommArea, fill=&quot;Crude_Rate&quot;)</code></pre>
 <pre><code>## Linking to GEOS 3.6.1, GDAL 2.2.3, proj.4 4.9.3</code></pre>
-<p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p><br></p>
 <p>From this quick overview, I realized that the variables were concentrated in the lower two intervals. With curiosity about how the variables were naturally clustered, I created another map using natural breaks rather than quantile. I also wanted to change the palette to shape this map aesthetically better.</p>
 <pre class="r"><code>tm_shape(ChiCommArea) + 
   tm_fill(&quot;Crude_Rate&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;)</code></pre>
-<p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p><br></p>
 <p>From the two maps above, I felt something special heppened in the northeastern side, so created another map with standard deviation.</p>
 <pre class="r"><code>tm_shape(ChiCommArea) + 
   tm_fill(&quot;Crude_Rate&quot;, palette = &quot;BuPu&quot;, style = &quot;sd&quot;)</code></pre>
-<p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p><br></p>
 <p>While the standard deviation map clearly showed the outliers located in the northeastern side of Chicago, I chose the natural break map to see how those variables were geographically clustered as I could see twe clusters forming contours in addition to the cluster of outliers. (I used 6 bins for the assignment, but I find out that using 6 bins is better to distinguish regions by intervals.) Then, I changed the title of legend and added borders.</p>
 <pre class="r"><code>tm_shape(ChiCommArea) + 
   tm_fill(&quot;Crude_Rate&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;, title = &quot;HIV Prevalence Rate\n     (per 100,000 people)&quot;) + 
   tm_borders(alpha = .4)</code></pre>
-<p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p><br></p>
 <p>Then, I added a title, a legend, a compass, a scale-bar, and a source credit to this map. This was the final map of HIV Prevalence Rate in the City of Chicago.</p>
 <pre class="r"><code>tm_shape(ChiCommArea) + 
@@ -431,7 +429,7 @@ head(ChiCommArea)</code></pre>
     panel.label.bg.color = &quot;white&quot;,
     legend.position = c(&quot;left&quot;, &quot;center&quot;), 
     frame = FALSE)</code></pre>
-<p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="mapping1-ChiHIV_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 
 

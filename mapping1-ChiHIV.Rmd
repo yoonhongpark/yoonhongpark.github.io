@@ -8,6 +8,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/2018.3 Summer/Intro to GIS/Assignment 1")
+options(tinytex.verbose = TRUE)
 ```
 
 <br><br>
@@ -17,14 +19,6 @@ This project was one of three assignments from the "Introduction to GIS and Spat
 <br><br>
 
 ## **Basic Setup**
-
-<br>
-
-### **Set the current working directory**
-```{r, eval=FALSE, results=FALSE, warning=FALSE}
-setwd("../../2018.3 Summer/Intro to GIS/Assignment 1")
-```
-
 
 <br>
 
@@ -43,7 +37,7 @@ library(RColorBrewer)
 
 ### **Load the HIV data**
 ```{r, results=TRUE, warning=FALSE}
-Census.Data <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 1/HIV_prevalence.csv")
+Census.Data <- read.csv("HIV_prevalence.csv")
 
 head(Census.Data)
 ```
@@ -54,7 +48,7 @@ head(Census.Data)
 
 ### **Load the shapefile**
 ```{r, results=TRUE, warning=FALSE}
-Output.Areas <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 1/Boundaries - Community Areas (current)", "geo_export_33b739f8-cd83-43f1-a0a4-17c16a5a9d46")
+Output.Areas <- readOGR("./Boundaries - Community Areas (current)", "geo_export_33b739f8-cd83-43f1-a0a4-17c16a5a9d46")
 
 head(Output.Areas)
 ```

@@ -13,6 +13,12 @@ This submission is my work alone and complies with the 30531 integrity policy.
   Add your initials to indicate your agreement: **YHP ZZ**
 
 <br><br>
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps3-fall-2018-2-2")
+options(tinytex.verbose = TRUE)
+```
+
 
 ```{r message=FALSE, warning=FALSE}
 # LOAD LIBRARIES HERE
@@ -30,20 +36,8 @@ library(tidyverse)
 ```{r, message=FALSE}
 # Load the data
 
-file_list <- 
-  list.files(
-    path = "../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps3-fall-2018-2-2", 
-    pattern = ".csv", 
-    recursive = TRUE
-  )
-
-
-df_list <- 
-  lapply(
-    paste("../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps3-fall-2018-2-2", "/", file_list, sep = ""), 
-    read_csv
-  )
-
+file_list <- list.files(pattern = ".csv", recursive = TRUE)
+df_list <- lapply(file_list, read_csv)
 chi.flights <- bind_rows(df_list)
 
 

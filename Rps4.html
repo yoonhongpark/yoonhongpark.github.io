@@ -196,10 +196,13 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
+      <a href="PE_pset3.html">Ban the Box (DID)</a>
     </li>
     <li>
       <a href="PS2-f2018.html">Very Low Birth Weight (RDD)</a>
+    </li>
+    <li>
+      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
     </li>
   </ul>
 </li>
@@ -293,7 +296,7 @@ library(testthat)
 library(readxl)
 
 provider &lt;- 
-  read_xlsx(&quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/HH PUF - Provider 2014.xlsx&quot;,
+  read_xlsx(&quot;./HH PUF - Provider 2014.xlsx&quot;,
             sheet = &quot;Provider 2014&quot;,
             col_names = TRUE,
             na = c(&quot;&quot;, &quot;*&quot;))
@@ -305,7 +308,7 @@ test_that(&quot;provider has 10,867 rows&quot;,
 <li>Find and download Medicare’s home health PUF by provider and HHRG for 2014. Read it into R and name it <code>provider_hhrg</code>. Use <code>test_that</code> to check that you have 104920 rows.</li>
 </ol>
 <pre class="r"><code>provider_hhrg &lt;- 
-  read_xlsx(&quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/HH PUF - Provider by HHRG 2014.xlsx&quot;,
+  read_xlsx(&quot;./HH PUF - Provider by HHRG 2014.xlsx&quot;,
             sheet = &quot;Provider by HHRG 2014&quot;,
             col_names = TRUE,
             na = c(&quot;&quot;, &quot;*&quot;))
@@ -317,7 +320,7 @@ test_that(&quot;provider_hhrg has 104,920 rows&quot;,
 <li>Download Medicare’s 2014 case-mix weights using the file here. Name the data frame <code>case_mix_weight</code>. Name the variable for 2014 weights <code>weights_2014</code>. Drop the column named “2013 HH PPS Case-Mix Weights”. Use <code>test_that</code> to check that you have 153 rows.</li>
 </ol>
 <pre class="r"><code>case_mix_weight &lt;- 
-  read_xlsx(&quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps4_fall_2018-gonzalo-and-yoon/CY 2014 Final HH PPS Case-Mix Weights.xlsx&quot;,
+  read_xlsx(&quot;./CY 2014 Final HH PPS Case-Mix Weights.xlsx&quot;,
             sheet = &quot;Weights1&quot;,
             col_names = TRUE)
 

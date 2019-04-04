@@ -3,4 +3,4 @@ title: "Yoon's Archive"
 output: html_document
 ---
 
-This is Yoon's Archive that presents a set of projects done for either course assignments or personal projects.
+This is Yoon's Archive that presents a set of projects done for either course assignment or research projects.

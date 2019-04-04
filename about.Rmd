@@ -1,4 +1,20 @@
 ---
 title: "About me"
+runtime: shiny
 output: html_document
 ---
+
+```{r, echo = FALSE, out.width = "25%", fig.align = "right"}
+knitr::include_graphics("Profile.jpg")
+```
+
+<br><br>
+<h4> I am Yoon Hong Park, a Master of Public Policy (MPP) candidate (Spring 2019) at the University of Chicago Harris School. Seeking for a full-time research assistant/associate position, I create this website as an archive of my previous research/data works in order to show my data analysis skills that can be applied to both academic research as well as policy analyses.</h4>
+
+<br>
+
+<h4>Those works consist of some individual/group assignments during the coursework at Harris and some pieces of research assistance that I have been in charge of at the Center for Spatial Data Science. The course assignments include (1) replication of existing economic studies, (2) mining, cleaning, analyzing, and visualizing public data (and some private data from Amazon), and (3) other types of programming such as scraping online through BeautifulSoup, using API, and utilizing basic SQL. In the last quarter at Harris, I am planning to take the Machine Learning Class.</h4> 
+
+<br>
+
+<h4>The website is still being updated. Those works currently presented on the website are just a part of my works. Since this website is based on RMarkdown, all those works are based on R. Please note that I can replicate in Stata all those study-replication assignments that I have done using R. Furthermore, I will soon integrate Jupyter Notebook to present my works done in Python.</h4> 

@@ -196,10 +196,13 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
+      <a href="PE_pset3.html">Ban the Box (DID)</a>
     </li>
     <li>
       <a href="PS2-f2018.html">Very Low Birth Weight (RDD)</a>
+    </li>
+    <li>
+      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
     </li>
   </ul>
 </li>
@@ -281,19 +284,8 @@ library(tidyverse)</code></pre>
 <p><em>For each question, please follow the four-part approach laid out in lecture. I have given you the question (step 1). You should write out your query (step 2), show the plot from this query (step 3), and write out the answer to the question in a sentence (step 4).</em></p>
 <pre class="r"><code># Load the data
 
-file_list &lt;- 
-  list.files(
-    path = &quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps3-fall-2018-2-2&quot;, 
-    pattern = &quot;.csv&quot;, 
-    recursive = TRUE
-  )
-
-
-df_list &lt;- 
-  lapply(
-    paste(&quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps3-fall-2018-2-2&quot;, &quot;/&quot;, file_list, sep = &quot;&quot;), 
-    read_csv
-  )</code></pre>
+file_list &lt;- list.files(pattern = &quot;.csv&quot;, recursive = TRUE)
+df_list &lt;- lapply(file_list, read_csv)</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X26&#39; [26]
 
 ## Warning: Missing column names filled in: &#39;X26&#39; [26]

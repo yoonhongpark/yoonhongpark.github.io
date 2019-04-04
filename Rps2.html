@@ -196,10 +196,13 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
+      <a href="PE_pset3.html">Ban the Box (DID)</a>
     </li>
     <li>
       <a href="PS2-f2018.html">Very Low Birth Weight (RDD)</a>
+    </li>
+    <li>
+      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
     </li>
   </ul>
 </li>
@@ -294,8 +297,8 @@ library(tidyverse)</code></pre>
 </ul>
 <pre class="r"><code># Import data (Cited from https://stackoverflow.com/questions/45783120/assocating-excel-file-name-with-dplyrbind-rows-id)
 # knitr::opts_knit$set(root.dir = &quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark&quot;)
-file_list &lt;- list.files(path = &quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark&quot;, pattern = &quot;.csv&quot;, recursive=TRUE)
-df_list &lt;- lapply(paste(&quot;../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark&quot;, &quot;/&quot;, file_list, sep = &quot;&quot;), read_csv)
+file_list &lt;- list.files(pattern = &quot;.csv&quot;, recursive=TRUE)
+df_list &lt;- lapply(file_list, read_csv)
 chi.flights &lt;- bind_rows(df_list)
 summary(chi.flights)</code></pre>
 <p><br></p>

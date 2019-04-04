@@ -13,6 +13,12 @@ This submission is my work alone and complies with the 30531 integrity policy.
   Add your initials to indicate your agreement: **YHP**
 
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark")
+options(tinytex.verbose = TRUE)
+```
+
 ```{r message=FALSE, warning=FALSE}
 # LOAD LIBRARIES HERE
 library(tidyverse)
@@ -39,8 +45,8 @@ library(tidyverse)
 ```{r, results=FALSE, warning=FALSE, message=FALSE}
 # Import data (Cited from https://stackoverflow.com/questions/45783120/assocating-excel-file-name-with-dplyrbind-rows-id)
 # knitr::opts_knit$set(root.dir = "../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark")
-file_list <- list.files(path = "../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark", pattern = ".csv", recursive=TRUE)
-df_list <- lapply(paste("../../2018.4 Fall/PPHA 30531 Data Skills For Pub Pol/ps2-fall-2018-yoonhongpark", "/", file_list, sep = ""), read_csv)
+file_list <- list.files(pattern = ".csv", recursive=TRUE)
+df_list <- lapply(file_list, read_csv)
 chi.flights <- bind_rows(df_list)
 summary(chi.flights)
 ```

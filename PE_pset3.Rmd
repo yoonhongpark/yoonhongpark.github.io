@@ -1,0 +1,428 @@
+---
+title: "34600 Problem Set 3"
+author: "Yoon Hong Park"
+date: "11/13/2018"
+runtime: shiny
+output:
+  html_document
+---
+
+<br>
+
+For this assignment, provide a write-up where you answer the questions below, selectively cutting and pasting output where needed. Be concise in your write-up; excess wordiness will be penalized. Also, submit a log file that includes commands and results for your entire analysis. The assignment makes use of AganStarrQJEData.dta, which you can find on Canvas.
+
+In this problem set we will reproduce some of Amanda Agan and Sonja Starr’s basic results, so start by reading their paper (Ban the box, criminal records, and racial discrimination: A field experiment), which you can find on Canvas.
+
+<br style="line-height:1"></br>
+
+## **Questions** 
+
+### **Set-up**
+```{r setup, include=FALSE}
+# Set the working directory
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/2018.4 Fall/PPHA 34600 Program Evaluation/Problem Set 3")
+options(tinytex.verbose = TRUE)
+```
+
+
+```{r message=FALSE, warning = FALSE}
+# Load libraries
+library(tidyverse)
+library(broom)
+library(foreign)
+library(readstata13)
+library(haven)
+library(labelled)
+library(statar)
+library(rdd)
+library(stargazer)
+library("plm")
+library(lmtest)
+library(multiwayvcov)
+```
+
+
+```{r results='hide'}
+# Call the data
+data <- read_dta("AganStarrQJEData.dta")
+
+attr(data$crime, "label")
+head(data)
+
+data <- filter(data, remover != -1)
+```
+
+<br><br>
+
+### **Q1**
+For this question, restrict your analysis to the set of job applications that asked about criminal records (“Box” applications) in the before period (“pre-BTB” period). (Note: there are some applications that did not have a box in the pre-BTB period, but then added them in the post-period. Agan and Star code these as “remover = -1” in their data and call them “reverse compliers.” Exclude these observations from your analysis throughout this assignment.)
+
+<br>
+
+#### **a)**
+What is the average callback rate for people who committed crimes? For those who didn’t? Is the difference statistically significant?
+
+<br>
+
+**Answer** <br>
+The average callback rate for people who committed crimes is about <u>8.46%</u> while that for people who did not commit crimes is about <u>13.57%</u>. The two sample t-test with the very small p-value = 0.000025 suggest that this difference of <u>5.2%</u> is statistically significant.
+
+
+```{r}
+c_crime <-
+  data %>%
+  filter(crimbox == 1, pre == 1, crime == 1)
+
+n_crime <-
+  data %>%
+  filter(crimbox == 1, pre == 1, crime == 0)
+
+t.test(n_crime$response, c_crime$response, var.equal = TRUE)
+```
+
+<br>
+
+#### **b)**
+Can we interpret this as a causal effect? Explain briefly.
+
+<br>
+
+**Answer** <br>
+As this study is based on the randomized-control-test (RCT) that randomized the assignment of treatment (conviction status), the difference that we simply calculated above can be inferred as the causal effect of previous conviction status.
+
+
+<br><br>
+
+### **Q2** 
+
+Now consider just the “Box” applications but include both the pre- and post-BTB periods.
+
+<br>
+
+#### **a)**
+Regress callback rates on race, GED, and employment gap. Include “chain” and “center” fixed effects. Does race appear to have an effect on callback rates? Does this coefficient have a causal interpretation?
+
+<br>
+
+**Answer** <br> 
+The race seems to have a statistically significant effect on the callback rate, implying that white people are 2.43% more likely to get a positive response than the non-white. However, to conclude that this coefficient implies the causality, we need to test other models by adding more variables so that we can avoid the omitted-variable bias.
+
+
+```{r}
+compliers <- filter(data, remover == 1)
+
+callback_wo_convic <-
+  lm(response ~ white + ged + empgap + factor(cogroup_comb) + factor(center),
+     data = compliers)
+
+# Cluster standard errors
+callback_wo_convic$clse <- cluster.vcov(callback_wo_convic, compliers$chain_id)
+callback_wo_convic_test <- coeftest(callback_wo_convic, callback_wo_convic$clse)
+
+
+# Show Results from Regression
+stargazer(
+  callback_wo_convic,
+  type = "text",
+  style = "aer",
+  digits = 5,
+  title = "Effects of Applicant Characteristics on Callback Rates",
+  dep.var.labels = "Callback to Box Applicants",
+  covariate.labels = c("White", 
+                       "GED",
+                       "Employment Gap"),
+  omit = c("cogroup_comb", "center"),
+  omit.labels = c("Chain FE", "Center FE"),
+  se = list(callback_wo_convic_test[, 2])
+)
+
+```
+
+<br>
+
+
+#### **b)**
+Estimate the model again, but without the chain and center fixed effects. Does the coefficient on “white” change? Why is it important to include chain and center fixed effects?
+
+<br>
+
+**Answer** <br>
+There was not much change in the "coefficient" itself. The standard error is larger in the model without fixed effects than in the model with them. This implies that the chain and center fixed effects make the model more precise by capturing unobserved heterogeneity that is fixed at geographic-center level and chain-level.
+
+
+```{r, fig.align = "default", fig.show = "hold", out.width = "50%"}
+callback_wo_fe <- lm(response ~ white + ged + empgap, data = compliers)
+
+# Cluster standard errors
+callback_wo_fe$clse <- cluster.vcov(callback_wo_fe, compliers$chain_id)
+callback_wo_fe_test <- coeftest(callback_wo_fe, callback_wo_fe$clse)
+
+# Show Results from Regression 
+stargazer(
+  callback_wo_fe,
+  type = "text",
+  style = "aer",
+  digits = 4,
+  title = "Effects of Applicant Characteristics on Callback Rates",
+  dep.var.labels = "Callback to Box Applicants",
+  covariate.labels = c("White", 
+                       "GED",
+                       "Employment Gap"),
+  omit = c("cogroup_comb", "center"),
+  omit.labels = c("Chain FE", "Center FE"), 
+  se = list(callback_wo_fe_test[, 2])
+)
+```
+
+<br>
+
+
+#### **c)**
+Now add the “conviction” variable. What happens to the coefficient on “white”? If the coefficient changes, does this mean that the previous regression was subject to omitted variable bias?
+
+<br>
+
+**Answer** <br>
+It was reasonable to suspect that the previous model might omit some other variables that could potentially be correlated with the race and also affect the callback rate, which can be the "conviction" variable. The coefficient on "white" does not change much although it indeed changes. Since the correlation between the "conviction" variable and the "race" variable is low (0.01913946), the small change in the coefficient does not suggest that the previous regression model was subject to omitted variable bias.
+
+```{r, fig.align = "default", fig.show = "hold", out.width = "50%"}
+
+# Add "Conviction" to b)
+callback_w_convic <- lm(response ~ crime + white + ged + empgap, data = compliers)
+
+# Cluster standard errors
+callback_w_convic$clse <- cluster.vcov(callback_w_convic, compliers$chain_id)
+callback_w_convic_test <- coeftest(callback_w_convic, callback_w_convic$clse)
+
+# Show Results from Regression
+stargazer(
+  callback_w_convic,
+  type = "text",
+  out = ".txt",
+  style = "aer",
+  digits = 4,
+  title = "Effects of Applicant Characteristics on Callback Rates",
+  dep.var.labels = "Callback to Box Applicants",
+  covariate.labels = c("Conviction",
+                       "White", 
+                       "GED",
+                       "Employment Gap"),
+  omit = c("cogroup_comb", "center"),
+  omit.labels = c("Chain FE", "Center FE"),
+  se = list(callback_w_convic_test[, 2])
+)
+
+
+# Add "Conviction" to a)
+callback_w_convic_fe <- lm(response ~ crime + white + ged + empgap + factor(cogroup_comb) + factor(center), data = compliers)
+
+# Cluster standard errors
+callback_w_convic_fe$clse <- cluster.vcov(callback_w_convic_fe, compliers$chain_id)
+callback_w_convic_fe_test <- coeftest(callback_w_convic_fe, callback_w_convic_fe$clse)
+
+# Show Results from Regression
+stargazer(
+  callback_w_convic_fe,
+  type = "text",
+  out = ".txt",
+  style = "aer",
+  digits = 4,
+  title = "Effects of Applicant Characteristics on Callback Rates",
+  dep.var.labels = "Callback to Box Applicants",
+  covariate.labels = c("Conviction",
+                       "White",
+                       "GED",
+                       "Employment Gap"
+                       ),
+  omit = c("cogroup_comb", "center"),
+  omit.labels = c("Chain FE", "Center FE"),
+  se = list(callback_w_convic_fe_test[, 2])
+)
+
+cor(compliers$white, compliers$crime)
+```
+
+<br><br>
+
+### **Q3**
+
+The authors estimate the following model for different subsets of the data, where “Box” is an indicator for whether the application had a box asking about employment, and X is a vector of covariates:
+
+$$Callback_{ij} = \alpha + \beta_{1}Box_{j} + \beta_{2}White_{i} + \beta_{3}Box_{j}*White_{i} + X_{i}\gamma + \varepsilon_{ij}$$
+<br>
+
+#### **a)**
+Suppose they run this regression on the full sample, which includes both Box and non-Box applications, but only in the pre-period (don’t actually do this yet). What do $\alpha$, $\beta_1$, $\beta_2$, and $\beta_3$ tell you?
+
+<br>
+
+**Answer** <br>
+$\alpha$ indicates the callback rate (averaged) for non-white applicants to non-Box employers in the pre-Ban-the-Box period, controlled for other covariates. $\beta_1$ indicates the average difference in the callback rate between the non-white applicants to Box stores and those to non-Box stores. $\beta_2$ indicates the average difference in the callback rate between the White applicants and the Black applicants to non-Box employers. 
+
+$\beta_2 + \beta_3$ indicates the difference in the callback rates between the White applicants and the Black applicants when the employers had the Ban, and that $\beta_1 + \beta_3$ indicates the difference in the callback rates between the White applicants to Box stores and the White applicants to non-Box stores. Therefore, $\beta_3$ indicates the average gap between the difference in the callback rates between the white applicants to non-box employers and those to box employers and the difference in the callback rates between the non-white applicants to non-box employers and those to box employers.
+
+<br>
+
+
+#### **b)**
+Do you think “Box” and “non-Box” stores might differ in systematic ways, besides their decision to include a box asking about criminal history? In other words, do we think this variable is “as-if” randomly assigned?
+
+<br>
+
+**Answer** <br>
+It is reasonable to suspect that those stores might be systematically different due to the characteristics of their geographic locations and the types of stores. Indeed the authors compare some characteristics of the Box stores with those of non-Box stores in [Online Appendix A3](https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/qje/133/1/10.1093_qje_qjx028/2/qjx028_supp.pdf?Expires=1554270516&Signature=aAnUYOm2aXNFdd5Ipto~fmxgB~f-k57MCrpggnEAND6JVAP3isuTiLqVkBiXoDmzj4-HjoRuSmSxlPPXTQ1ZKvMwAVniGCD8FeR33tvWk8hT6zxgcT~n86w9XKWs74F3qhSUktr9pwbCBoEU~dklOWjFfdQTuaNvZCVsUMhXjs3jxVoRo~bHVDF8k00Lxu8-MBgXm8Txc9w0uonIA57QVzELDIEQSNhoVKnVfrdD8gO2xQiwfMC-tqk~c6E2UYCF3T1pWF0wFT~OgNcaBXOdj0kje0R~VXiQxH3C5e7Im6IDWiFfSDx0d2VYgaPS1fFfsCIPtfj1nsj6v7ToGxk~Pg__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA). The authors found only one systematic difference, which means the retail stores are more likely to have Box than non-retail stores, but they argued that their additional analyses having the "retail" variable in the regression model were not different from the model with the "retail" variable except for the interaction term, $Box_j \times White_i$. Therefore, we do not need to think the "retail" variable "as-if" randomly assigned.
+
+<br>
+
+#### **c)**
+Suppose they run the regression on just the “Box” applications in both periods (again, don’t do this yet). What is the interpretation of the coefficients now? (remover == 1)
+
+<br>
+
+**Answer** <br>
+If we limit the data to Ban-the-Box compliers, in the regression on both periods, the variation in the "Box" variable is solely explained by being in pre-BTB period. In other words, in this regression, the Box variable indicates whether an observation is in the pre-BTB period.
+
+Then, $\alpha$ indicates the callback rate (averaged) for non-white applicants in the post-BTB period, controlled for other covariates, or simply "intercepts for non-white applicants in the post-BTB period." $\beta_1$ indicates the average difference in the callback rate between non-white applicants in the pre-BTB period and those in the post-BTB period. $\beta_2$ indicates the average difference in the callback rate between white applicants and non-white applicants in the post-BTB period. $\beta_3$ indicates the average gap between the difference in the callback rates between the white applicants in the pre-BTB period and those in the post-BTB period and the difference in the callback rates between the non-white applicants in the pre-BTB period and those in the post-BTB period.
+
+```{r}
+compliers %>% filter(crimbox != pre)
+```
+
+
+
+<br><br>
+
+### **Q4**
+For the below estimations, include controls for employment gap and ged, as well as center fixed effects. Again, exclude the so-called “reverse compliers.”
+
+#### **a)**
+Estimate the model from question 3 on both “Box” and non-“Box” applications in just the pre-period.
+
+<br>
+
+**Answer** <br>
+The callback rate (averaged) for black applicants to non-Box stores in the pre-BTB period, controlled for other covariates, or simply $\alpha$, is 0.0847. $\beta_1$, the average difference in the callback rate between the non-white applicants to Box stores and those to non-Box stores, is  0.0150. $\beta_2$, the average difference in the callback rate between the white applicants and the non-white applicants to non-Box stores, is 0.0315. $\beta_3$ is -0.0302. Except for $\beta_1$, other coefficients are found to be statistically significant.
+
+
+```{r}
+pre_btb <- data %>% filter(post == 0)
+box_non_box_callback <- lm(response ~ box_white + white + crimbox + ged + empgap + factor(center), data = pre_btb)
+
+# Cluster standard errors
+box_non_box_callback$clse <- cluster.vcov(box_non_box_callback, pre_btb$chain_id)
+box_non_box_callback_test <- coeftest(box_non_box_callback, box_non_box_callback$clse)
+
+# Show Results from Regression
+stargazer(
+  box_non_box_callback,
+  type = "text",
+  out = ".txt",
+  style = "aer",
+  digits = 4,
+  title = "Effects of Applicant Characteristics on Callback Rates",
+  dep.var.labels = "Callback to Box / non-Box Applicants",
+  covariate.labels = c("Box * White", 
+                       "White",
+                       "Box"),
+  omit = c("ged", "empgap", "center"),
+  omit.labels = c("Controls - GED", "Controls - Employment Gap", "Center FE"),
+  se = list(box_non_box_callback_test[, 2])
+)
+
+```
+
+
+<br>
+
+#### **b)**
+What kind of standard errors should you use, and why?
+
+<br>
+
+**Answer** <br>
+As noted by Agan & Starr (2018), the clustered standard errors on the chain, which all tables above report as "standard errors," should be used. This is because the entire chains might be sensitive to the "serially correlated shocks," and because chains have the smaller units, stores, the distribution of which might not be independently and identically distributed, resulting in the correlation of error terms. Clustered errors on the center might give you low p-value more easily since the center is way bigger unit than the chain.
+
+
+```{r}
+n_distinct(data$chain_id)
+n_distinct(data$center)
+```
+
+
+<br>
+
+
+
+#### **c)**
+Is the coefficient on “crimbox” statistically significant? What about “white” and the interaction of “crimbox” and “white”? Interpret these findings.
+
+<br>
+
+**Answer** <br>
+The coefficient on "crimbox" is not statistically significant, but the coefficients on both "white" and the interaction of "crimbox" and "white" are statistically significant. While the difference in the callback rate was not statistically significant between non-white applicants to Box stores and those to non-Box stores, both coefficients regarding the race segregation are found to be statically significant. 
+
+$\beta_2$ indicates that white applicants to non-Box stores are 3.15 percent points more likely to get the callback than non-white applicants to non_Box stores. $\beta_3$ indicates that the gap in callback rates between white and non-white applicants is 3.02 percent points smaller when they apply to Box stores than non-Box stores.
+
+
+<br>
+
+#### **d)**
+Now estimate the model from question 3 on just “Box” applications in both periods. Interpret the coefficients. (remover == 1)
+
+<br>
+
+**Answer** <br>
+The callback rate (averaged) for black applicants in the pre-BTB period, controlled for other covariates, or simply $\alpha$, is 0.1298. $\beta_1$, the average difference in the callback rate between the applicants in the pre-BTB and post-BTB periods regardless of their races, is  -0.0017. $\beta_2$, the average difference in the callback rate between the White applicants and the Black applicants, regardless of the period, is 0.0401. $\beta_3$ is -0.0327. Except for $\beta_1$, the other coefficients are found to be statistically significant.
+
+$\beta_2$ indicates that white applicants to non-Box stores are 4 percent points more likely to get the callback than non-white applicants in the post-BTB period. $\beta_3$ indicates that the gap in callback rates between white and non-white applicants is 3.27 percent points smaller when they apply in the pre-BTB period than in the post-BTB period. 
+
+As discussed in Q3 c), since we limit the data to the BTB complier cases, the Box variable in this all-period regression indicates whether being in the pre-BTB period or not. Then, the fact that $\beta_1$ is not statistically significant shows that there was no difference in non-white applicants' callback rates between the pre-BTB period and the post-BTB period.
+
+
+```{r}
+pre_post_callback <- lm(response ~ box_white + white + crimbox + ged + empgap + factor(center), data = compliers)
+
+# Cluster standard errors
+pre_post_callback$clse <- cluster.vcov(pre_post_callback, compliers$chain_id)
+pre_post_callback_test <- coeftest(pre_post_callback, pre_post_callback$clse)
+
+# Show Results from Regression
+stargazer(
+  pre_post_callback,
+  type = "text",
+  out = ".txt",
+  style = "aer",
+  digits = 4,
+  title = "Effects of Applicant Characteristics on Callback Rates",
+  dep.var.labels = "Callback to Box / non-Box Applicants",
+  covariate.labels = c("Pre * White", 
+                       "White",
+                       "Pre"),
+  omit = c("ged", "empgap", "center"),
+  omit.labels = c("Controls - GED", "Controls - Employment Gap", "Center FE"),
+  se = list(pre_post_callback_test[, 2])
+)
+
+```
+
+
+<br><br>
+
+
+### **Q5**
+Based on the above analysis, what are your conclusions about the effects of BTB?
+
+<br>
+
+**Answer** <br> 
+The cross-sectional analysis shown in Q4 a) shows that the difference in callback rates bewteen white and non-white applicants was bigger when they applied to non-Box employers than when they applied to Box employers. However, we are not sure whether employers being Box stores or non-Box ones are exogenous, so the difference is caused by the Ban-the-Box policy.
+
+Then, the temporal analysis shown in Q4 d) suggests that while the Ban-the-Box policy do not affect the callback rates of non-white applicants, employers complying with the Ban-the-Box policy discriminate more based on race. Because we limit the data into complier cases, it is reasonable to assume that there was a parallel trend of difference in callback rates between white and non-white applicants in the post-BTB period if the Ban-the-Box policy had not been executed.
+
+To see the effects of BTB more specifically, it might be necessary to do triple difference in order to implement both cross-sectional and temporal analyses at the same time as the authors did. 
+
+
+
+<br><br>
+Name: Yoon Hong Park

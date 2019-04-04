@@ -8,6 +8,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/2018.3 Summer/Intro to GIS/Assignment 3")
+options(tinytex.verbose = TRUE)
 ```
 
 <br><br>
@@ -17,14 +19,6 @@ This project was tha last assignment from the "Introduction to GIS and Spatial A
 <br><br>
 
 ## **Basic Setup**
-
-<br>
-
-### **Set the current working directory**
-```{r, eval=FALSE, results=FALSE, warning=FALSE}
-setwd("../../2018.3 Summer/Intro to GIS/Assignment 3")
-```
-
 
 <br>
 
@@ -51,7 +45,7 @@ library(maptools)
 ### **Load the boundary shapefile**
 To unify the coordinate system, I chose EPSG 4326 system.
 ```{r, results=TRUE, warning=FALSE}
-ComArea.Areas <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3/Boundaries - Community Areas (current)", "geo_export_7572d77c-9922-44f5-ba1b-d9dd6bc3fa86")
+ComArea.Areas <- readOGR("./Boundaries - Community Areas (current)", "geo_export_7572d77c-9922-44f5-ba1b-d9dd6bc3fa86")
 
 head(ComArea.Areas)
 crs(ComArea.Areas)
@@ -69,10 +63,10 @@ ComArea.Transform <- spTransform(ComArea.Areas, CRS.new)
 ### **Trauma Center Service areas**
 Since there was no official data set that has the exact coordinates in both EPSG 4326 system and EPSG 3529 system, I made my own data file by looking up the list from the [Department of Public Health of the State of Illinois](http://www.dph.illinois.gov/topics-services/emergency-preparedness-response/ems/trauma-program/centersByReg), searching them on Google Map, getting the EPSG  4326 coordinates and turning them into EPSG 3529 coordinates at the "[EPSG.io](https://epsg.io/transform#s_srs=4326&t_srs=3529)" website. As the number of trauma centers was 7 at most, including the two trauma centers which are technically located outside of Chicago, I did this manually and saved as both csv files and shapefiles. If there were too many, I might code a repetitive process of getting coordiantes through Google API. I made two different csv files, of which one covered only truama centers in the City of Chicago while the other covered two more trauma centers outside of Chicago that also served some parts of the city. 
 ```{r, results=TRUE, warning-FALSE}
-traumacenter <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Trauma Centers")
+traumacenter <- readOGR(".", "Trauma Centers")
 traumacenter.Transform <- spTransform(traumacenter, CRS.new)
 
-traumacenterupd <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Trauma Centers (update)")
+traumacenterupd <- readOGR(".", "Trauma Centers (update)")
 traumacenterupd.Transform <- spTransform(traumacenterupd, CRS.new)
 
 crs(traumacenter) # no_defs
@@ -102,11 +96,11 @@ tm_shape(ComArea.Transform) + tm_borders() +
 It seems both worked well, so then I switched my focus on creating buffers to abstractly show the service area that each trauma center covered. From the literature reviews, the largest distance from a trauma center to a trauma incident that would make patients survive with high possibility was 5~10 miles, so I made a buffer of 10 miles from each trauma center. Since the buffer system used meter-system, I put equivalent meter-values to 10 miles.To make buffer areas, I needed to open those csv files instead of shapefiles.
 
 ```{r, results=TRUE, warning=FALSE}
-traumacenterUTM <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 3/Trauma Centers.csv")
+traumacenterUTM <- read.csv("Trauma Centers.csv")
 tcenter.points <- SpatialPointsDataFrame(traumacenterUTM[,7:8], traumacenterUTM, proj4string = CRS("+init=EPSG:3529"))
 tcenter_buffers <- gBuffer(tcenter.points, width = 8046.72*2, byid = TRUE)
 
-traumacenterUTMupd <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 3/Trauma Centers (update).csv")
+traumacenterUTMupd <- read.csv("Trauma Centers (update).csv")
 tcenterupd.points <- SpatialPointsDataFrame(traumacenterUTMupd[,7:8], traumacenterUTMupd, proj4string = CRS("+init=EPSG:3529"))
 tcenter_buffers.upd <- gBuffer(tcenterupd.points, width = 8046.72*2, byid = TRUE)
 ```
@@ -143,10 +137,10 @@ union.buffersupd <- gUnaryUnion(tcenter_buffers.upd)
 ### **Crime Data (PIP Method)**
 The crime data was available from the [City of Chicago Data Portal](https://data.cityofchicago.org/). First, I loaded the crime data and subsetted by serioucs crimes, including "HOMICIDE", "BATTERY", "CRIM SEXUAL ASSAULT", "ASSAULT", "WEAPONS VIOLATION."
 ```{r results=FALSE, warning=FALSE}
-Crime18.Data <- fread("../../2018.3 Summer/Intro to GIS/Assignment 3/Crimes_-_2018.csv", header = T)
+Crime18.Data <- fread("./Crimes_-_2018.csv", header = T)
 
 CrimeList <- c("HOMICIDE", "BATTERY", "CRIM SEXUAL ASSAULT", "ASSAULT", "WEAPONS VIOLATION")
-Crime18.Subset <- Crime18.Data[Crime18.Data$'Primary Type' == CrimeList, ]
+Crime18.Subset <- Crime18.Data[Crime18.Data$`Primary Type` %in% CrimeList, ]
 Crime18.SubSubset <- Crime18.Subset[!grep("POSS", Crime18.Subset$Description), ]
 Crime18.SubSubset <- Crime18.SubSubset[!grep("SALE", Crime18.SubSubset$Description), ]
 Crime18.SubSubset <- Crime18.SubSubset[!grep("RECKLESS", Crime18.SubSubset$Description), ]
@@ -160,7 +154,7 @@ Crime18.SubSubset <- Crime18.SubSubset[!grep("DEFACE", Crime18.SubSubset$Descrip
 <br>
 With those subset of the data, I used GeoDa to create a shapefile and reloaded the shapefile for points-in-polygon method, which required me to transform the shapefile into EPSG 4326 coordinate system.
 ```{r, results=TRUE, warning=FALSE}
-ChiCrimes <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Crimes_-_2018(subset)")
+ChiCrimes <- readOGR(".", "Crimes_-_2018(subset)")
 ChiCrimes.Transform <- spTransform(ChiCrimes, CRS.new)
 ```
 
@@ -186,8 +180,8 @@ crs(ComArea.Transform)
 ### **Accident Data (PIP Method)**
 The accident data came from the [National Highway Traffic Safety Administration](https://www-fars.nhtsa.dot.gov//QueryTool/QuerySection/SelectYear.aspx). I downloaded the most recent data, which covered the whole year of 2016 and subsetted the data by the severe injuries, which were represented as more than or equal to 3 in the "injury severity" column that would lead to trauma centers. For convenience, I subsetted the data by using Excel and saved it also as a shapefile by using GeoDa. I also reloaded the boundary shapefile just to avoid merging the data wrongly.
 ```{r, results=TRUE, warning=FALSE}
-ComAreas <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3/Boundaries - Community Areas (current)", "geo_export_7572d77c-9922-44f5-ba1b-d9dd6bc3fa86")
-ChiAccidents <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Accidents_-_2016")
+ComAreas <- readOGR("./Boundaries - Community Areas (current)", "geo_export_7572d77c-9922-44f5-ba1b-d9dd6bc3fa86")
+ChiAccidents <- readOGR(".", "Accidents_-_2016")
 
 crs(ComAreas)
 crs(ChiAccidents)
@@ -221,10 +215,10 @@ crs(ComAreaAcc.Transform)
 ### **Poverty Data**
 To provide more complementary evidence, I chose both household and individual poverty rates as poverty indicators. The data were available from [Chicago Health Atlas](https://www.chicagohealthatlas.org/). For convenience, I used GeoDa to merge the poverty data into the community area shapefile because there was nothing to subset for these indicators. The values were numeric data, so I did not need to turn them into numeric values. These were ready for mapping.
 ```{r, results=TRUE, warning=FALSE}
-IndivPov <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Individual_poverty")
+IndivPov <- readOGR(".", "Individual_poverty")
 str(IndivPov@data)
 
-HousePov <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 3", "Household_poverty")
+HousePov <- readOGR(".", "Household_poverty")
 str(HousePov@data)
 ```
 

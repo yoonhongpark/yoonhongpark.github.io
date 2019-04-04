@@ -8,6 +8,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/2018.3 Summer/Intro to GIS/Assignment 2")
+options(tinytex.verbose = TRUE)
 ```
 
 <br><br>
@@ -17,15 +19,6 @@ This project was one of three assignments from the "Introduction to GIS and Spat
 <br><br>
 
 ## **Basic Setup**
-
-<br>
-
-### **Set the current working directory**
-```{r, eval=FALSE, results=FALSE, warning=FALSE}
-setwd("../../2018.3 Summer/Intro to GIS/Assignment 2")
-```
-
-
 <br>
 
 ### **Load Libraries**
@@ -43,8 +36,8 @@ library(RColorBrewer)
 
 ### **Load the Income data by different levels of analysis**
 ```{r, results=FALSE, warning=FALSE}
-Census.DataCount <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 2/county-level/ACS_15_5YR_DP03_with_ann.csv")
-Census.DataTract <- read.csv("../../2018.3 Summer/Intro to GIS/Assignment 2/tract-level/ACS_15_5YR_DP03_with_ann.csv")
+Census.DataCount <- read.csv("./county-level/ACS_15_5YR_DP03_with_ann.csv")
+Census.DataTract <- read.csv("./tract-level/ACS_15_5YR_DP03_with_ann.csv")
 
 head(Census.DataCount)
 head(Census.DataTract)
@@ -73,9 +66,9 @@ names(Census.SubsetTract)[2:3]<- c("MedInc15", "AgInc15")
 ### **Load the shapefile**
 Before I loaded the shapefiles, I found out that there were two tracts in the tract-level shapefile which actually represented part of Michigan Lake. Therefore, I used GeoDa to tear this part off from tract-level map. There was 3123 elements in the original shapefile, but after tearing off those two tracts, it became 3123 elements.
 ```{r, results=TRUE, warning=FALSE}
-Output.AreasCount <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 2/county-level", "IL_Counties")
-Output.AreasTract <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 2/tract-level", "IL_tracts")
-Output.AreasTractOrg <- readOGR("../../2018.3 Summer/Intro to GIS/Assignment 2/tract-level", "tl_2015_17_tract")
+Output.AreasCount <- readOGR("./county-level", "IL_Counties")
+Output.AreasTract <- readOGR("./tract-level", "IL_tracts")
+Output.AreasTractOrg <- readOGR("./tract-level", "tl_2015_17_tract")
 
 head(Output.AreasCount)
 head(Output.AreasTract)

@@ -8,10 +8,12 @@ navbar:
       href: about.html
     - text: "Program Evaluation (R/Stata)"
       menu:
-        - text: "Mexican Universal Health Insurance (ITT/LATE)"
-          href: pePS1.html
+        - text: "Ban the Box (DID)"
+          href: PE_pset3.html
         - text: "Very Low Birth Weight (RDD)"
           href: PS2-f2018.html
+        - text: "Mexican Universal Health Insurance (ITT/LATE)"
+          href: pePS1.html
     - text: "GIS and Spatial Analysis (R)"
       menu:
         - text: "Chicago Trauma Center Service Area"

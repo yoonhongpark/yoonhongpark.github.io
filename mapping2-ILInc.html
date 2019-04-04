@@ -195,10 +195,13 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
+      <a href="PE_pset3.html">Ban the Box (DID)</a>
     </li>
     <li>
       <a href="PS2-f2018.html">Very Low Birth Weight (RDD)</a>
+    </li>
+    <li>
+      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
     </li>
   </ul>
 </li>
@@ -273,11 +276,6 @@ $(document).ready(function () {
 <div id="section-basic-setup" class="section level2">
 <h2><strong>Basic Setup</strong></h2>
 <p><br></p>
-<div id="section-set-the-current-working-directory" class="section level3">
-<h3><strong>Set the current working directory</strong></h3>
-<pre class="r"><code>setwd(&quot;../../2018.3 Summer/Intro to GIS/Assignment 2&quot;)</code></pre>
-<p><br></p>
-</div>
 <div id="section-load-libraries" class="section level3">
 <h3><strong>Load Libraries</strong></h3>
 <pre class="r"><code>library(rgdal)
@@ -289,8 +287,8 @@ library(RColorBrewer)</code></pre>
 </div>
 <div id="section-load-the-income-data-by-different-levels-of-analysis" class="section level3">
 <h3><strong>Load the Income data by different levels of analysis</strong></h3>
-<pre class="r"><code>Census.DataCount &lt;- read.csv(&quot;../../2018.3 Summer/Intro to GIS/Assignment 2/county-level/ACS_15_5YR_DP03_with_ann.csv&quot;)
-Census.DataTract &lt;- read.csv(&quot;../../2018.3 Summer/Intro to GIS/Assignment 2/tract-level/ACS_15_5YR_DP03_with_ann.csv&quot;)
+<pre class="r"><code>Census.DataCount &lt;- read.csv(&quot;./county-level/ACS_15_5YR_DP03_with_ann.csv&quot;)
+Census.DataTract &lt;- read.csv(&quot;./tract-level/ACS_15_5YR_DP03_with_ann.csv&quot;)
 
 head(Census.DataCount)
 head(Census.DataTract)</code></pre>
@@ -311,19 +309,19 @@ names(Census.SubsetTract)[2:3]&lt;- c(&quot;MedInc15&quot;, &quot;AgInc15&quot;)
 <div id="section-load-the-shapefile" class="section level3">
 <h3><strong>Load the shapefile</strong></h3>
 <p>Before I loaded the shapefiles, I found out that there were two tracts in the tract-level shapefile which actually represented part of Michigan Lake. Therefore, I used GeoDa to tear this part off from tract-level map. There was 3123 elements in the original shapefile, but after tearing off those two tracts, it became 3123 elements.</p>
-<pre class="r"><code>Output.AreasCount &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 2/county-level&quot;, &quot;IL_Counties&quot;)</code></pre>
+<pre class="r"><code>Output.AreasCount &lt;- readOGR(&quot;./county-level&quot;, &quot;IL_Counties&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
 ## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 2\county-level&quot;, layer: &quot;IL_Counties&quot;
 ## with 102 features
 ## It has 17 fields
 ## Integer64 fields read as strings:  ALAND AWATER</code></pre>
-<pre class="r"><code>Output.AreasTract &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 2/tract-level&quot;, &quot;IL_tracts&quot;)</code></pre>
+<pre class="r"><code>Output.AreasTract &lt;- readOGR(&quot;./tract-level&quot;, &quot;IL_tracts&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
 ## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 2\tract-level&quot;, layer: &quot;IL_tracts&quot;
 ## with 3121 features
 ## It has 12 fields
 ## Integer64 fields read as strings:  ALAND AWATER</code></pre>
-<pre class="r"><code>Output.AreasTractOrg &lt;- readOGR(&quot;../../2018.3 Summer/Intro to GIS/Assignment 2/tract-level&quot;, &quot;tl_2015_17_tract&quot;)</code></pre>
+<pre class="r"><code>Output.AreasTractOrg &lt;- readOGR(&quot;./tract-level&quot;, &quot;tl_2015_17_tract&quot;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
 ## Source: &quot;C:\Users\yhth9\Documents\2018.3 Summer\Intro to GIS\Assignment 2\tract-level&quot;, layer: &quot;tl_2015_17_tract&quot;
 ## with 3123 features
@@ -410,33 +408,33 @@ ILTract$AgInc15 &lt;- as.numeric(as.character(ILTract$AgInc15))</code></pre>
 <h2><strong>Mapping</strong></h2>
 <p>First, I Created a map for quick overview.</p>
 <pre class="r"><code>qtm(ILCounty, fill=&quot;MedInc15&quot;)</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>qtm(ILTract, fill=&quot;MedInc15&quot;)</code></pre>
 <pre><code>## Some legend labels were too wide. These labels have been resized to 0.56, 0.52, 0.52, 0.52. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
 <pre class="r"><code>qtm(ILCounty, fill=&quot;AgInc15&quot;)</code></pre>
 <pre><code>## Some legend labels were too wide. These labels have been resized to 0.65, 0.61. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
 <pre class="r"><code>qtm(ILTract, fill=&quot;AgInc15&quot;)</code></pre>
 <pre><code>## Some legend labels were too wide. These labels have been resized to 0.52, 0.52, 0.52. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
 <p><br></p>
 <p>From this quick overview, I realized that while the county-level map seemed to be okay, the tract-level maps showed the variables were concentrated in the intervals between 0 and 100,000. With curiosity about how the variables were naturally clustered, I created another map using natural breaks. I also wanted to change the palette to shape this map aesthetically better. I added border settings since I felt the thick borders disturbed the representation of the northeastern part of Illinois, which was top-right part of the maps.</p>
 <pre class="r"><code>tm_shape(ILCounty) + 
   tm_fill(&quot;MedInc15&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;) + tm_borders(lwd = 0.01, alpha = .4)</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <pre class="r"><code>tm_shape(ILTract) + 
   tm_fill(&quot;MedInc15&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;) + tm_borders(lwd = 0.01, alpha = .4)</code></pre>
 <pre><code>## Some legend labels were too wide. These labels have been resized to 0.65, 0.60, 0.60, 0.56, 0.52. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <pre class="r"><code>tm_shape(ILCounty) + 
   tm_fill(&quot;AgInc15&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;) + tm_borders(lwd = 0.01, alpha = .4)</code></pre>
 <pre><code>## Some legend labels were too wide. These labels have been resized to 0.65. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
 <pre class="r"><code>tm_shape(ILTract) + 
   tm_fill(&quot;AgInc15&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;) + tm_borders(lwd = 0.01, alpha = .4)</code></pre>
 <pre><code>## Some legend labels were too wide. These labels have been resized to 0.65, 0.60, 0.56, 0.52, 0.52. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
 <p><br></p>
 <p>As we see the geographical “distribution” of income-level, I chose the natural break map to see how those variables were geographically clustered. I could see three clusters at top-right, center, and bottom-left part of the map. (I did not specify the number of bins for the assignment.) Then, I changed the title of legend and added a title, a legend, a compass, a scale-bar, and a source credit to each map.</p>
 <pre class="r"><code>tm_shape(ILCounty) + 
@@ -452,7 +450,7 @@ ILTract$AgInc15 &lt;- as.numeric(as.character(ILTract$AgInc15))</code></pre>
     panel.label.bg.color = &quot;white&quot;,
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre class="r"><code>tm_shape(ILTract) + 
   tm_fill(&quot;MedInc15&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;, title = &quot;Median Income ($)&quot;) + 
   tm_borders(lwd = .01, alpha = .4) + 
@@ -466,7 +464,7 @@ ILTract$AgInc15 &lt;- as.numeric(as.character(ILTract$AgInc15))</code></pre>
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)</code></pre>
 <pre><code>## Some legend labels were too wide. These labels have been resized to 0.60, 0.56, 0.56, 0.52, 0.49. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 <pre class="r"><code>tm_shape(ILCounty) + 
   tm_fill(&quot;AgInc15&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;, title = &quot;Average Income ($)&quot;) + 
   tm_borders(alpha = .4) + 
@@ -480,7 +478,7 @@ ILTract$AgInc15 &lt;- as.numeric(as.character(ILTract$AgInc15))</code></pre>
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)</code></pre>
 <pre><code>## Legend labels were too wide. The labels have been resized to 0.65, 0.65, 0.65, 0.65, 0.61. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
 <pre class="r"><code>tm_shape(ILTract) + 
   tm_fill(&quot;AgInc15&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;, title = &quot;Average Income ($)&quot;) + 
   tm_borders(lwd = .01, alpha = .4) + 
@@ -494,7 +492,7 @@ ILTract$AgInc15 &lt;- as.numeric(as.character(ILTract$AgInc15))</code></pre>
     legend.position = c(&quot;left&quot;, &quot;bottom&quot;), 
     frame = FALSE)</code></pre>
 <pre><code>## Some legend labels were too wide. These labels have been resized to 0.60, 0.56, 0.52, 0.49, 0.49. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-10-4.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
 <p><br></p>
 <p>To make multifacteted maps, I assigned a name to each mapping code and then used those names to arrange the maps. The outcomes of these codes were the final result of this assignment.</p>
 <pre class="r"><code>MedIncCount &lt;- tm_shape(ILCounty) + 
@@ -527,7 +525,7 @@ MedIncTract &lt;- tm_shape(ILTract) +
 current.mode &lt;- tmap_mode(&quot;plot&quot;) </code></pre>
 <pre><code>## tmap mode set to plotting</code></pre>
 <pre class="r"><code>tmap_arrange(MedIncCount, MedIncTract)</code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>AgIncCoun &lt;- tm_shape(ILCounty) + 
   tm_fill(&quot;AgInc15&quot;, palette = &quot;BuPu&quot;, style = &quot;jenks&quot;, title = &quot;Average Income ($)&quot;) + 
   tm_borders(alpha = .4) + 
@@ -555,7 +553,7 @@ AgIncTrac &lt;- tm_shape(ILTract) +
     frame = FALSE)
 
 tmap_arrange(AgIncCoun, AgIncTrac) </code></pre>
-<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+<p><img src="mapping2-ILInc_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 </div>
 
 

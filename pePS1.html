@@ -196,10 +196,13 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
+      <a href="PE_pset3.html">Ban the Box (DID)</a>
     </li>
     <li>
       <a href="PS2-f2018.html">Very Low Birth Weight (RDD)</a>
+    </li>
+    <li>
+      <a href="pePS1.html">Mexican Universal Health Insurance (ITT/LATE)</a>
     </li>
   </ul>
 </li>
@@ -305,9 +308,8 @@ library(haven)
 library(labelled)
 library(plm)
 library(lmtest)
-library(multiwayvcov)</code></pre>
-<pre><code>## Warning: package &#39;multiwayvcov&#39; was built under R version 3.5.3</code></pre>
-<pre class="r"><code>library(stargazer)</code></pre>
+library(multiwayvcov)
+library(stargazer)</code></pre>
 <pre class="r"><code># Call the data
 data &lt;- read_dta(&quot;SP_dataset.dta&quot;)
 head(data)
