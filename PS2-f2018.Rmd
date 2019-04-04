@@ -1,5 +1,5 @@
 ---
-title: "34600 Problem Set 2"
+title: "Very Low Birth Weight (Regression Discontinuity)"
 author: "Yoon Hong Park"
 date: "10/30/2018"
 runtime: shiny

@@ -3,7 +3,7 @@ navbar:
   title: "Yoon's Archive"
   left:
     - text: "Home"
-      href: index.html
+      href: about.html
     - text: "About me"
       href: about.html
     - text: "Program Evaluation (R/Stata)"

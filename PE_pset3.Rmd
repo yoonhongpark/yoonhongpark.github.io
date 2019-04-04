@@ -1,5 +1,5 @@
 ---
-title: "34600 Problem Set 3"
+title: "Ban the Box (Diff in Diff)"
 author: "Yoon Hong Park"
 date: "11/13/2018"
 runtime: shiny
